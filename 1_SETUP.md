@@ -1,12 +1,14 @@
 # Setting the Podman/Buildah/Runj ecosystem up
 
-* **[Guides](##Guides)**: in-depth, detailed installation process information
-* **[Quickstart](##Quickstart)**: verything you need for aa barebones happy path
+* **[Guides](#guides)**: in-depth, detailed installation process information
+* **[Quickstart](#quickstart)**: everything you need for a barebones happy path
   * [Packages](#packages)
   * [Storage](#storage)
   * [Networking](#networking)
   * [Finishing touches](#finishing-touches)
   * [Building your own base images](#building-your-own-base-images)
+
+Once ready you can find experiments to run [Here](#readme)
 
 ## Guides
 > * **the most comprehensive: https://docs.skunkwerks.at/LqHthEkTSeGDwV0PDUQSyg**
@@ -25,15 +27,22 @@ pkg install podman-suite
 
 Make sure you leverage the **invaluable** shell completions
 https://docs.podman.io/en/v3.0/markdown/podman-completion.1.html
+
+bash
 ``` bash
-# bash
 pkg install bash_completion
 podman completion bash
-# zsh
+```
+
+zsh
+``` bash
 pkg install zsh-completions
 podman completion zsh
-# fish
-# https://fishshell.com/docs/current/completions.html
+```
+
+fish
+https://fishshell.com/docs/current/completions.html
+``` bash
 podman completion fish
 ```
 
@@ -105,3 +114,5 @@ service podman enable
 ```
 pkg install emulators/qemu-user-static jq
 ```
+
+Once ready you can find experiments to run [Here](#readme)
