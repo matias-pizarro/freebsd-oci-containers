@@ -17,6 +17,7 @@ A repository of Podman/Docker images for FreeBSD
 * [Experiment](#experiment)
 
 # [Setup podman](1_SETUP.md)
+![Screenshot_20241016_093723](https://github.com/user-attachments/assets/649ebcad-47ad-405a-add2-211f5010c6f3)
 
 # Hello world!
 
