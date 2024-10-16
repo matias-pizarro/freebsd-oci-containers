@@ -79,7 +79,7 @@ cd containers
 
 # Build a single image. e.g. nginx
 ```bash=
-./nginx/rebuild_all_images.sh
+./nginx/build.sh
 ```
 
 # Experiment
