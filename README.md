@@ -75,10 +75,15 @@ podman run -it --rm --os=linux docker.io/alpine /bin/sh
 ```bash=
 git clone git@github.com:matias-pizarro/containers.git
 cd containers
+```
+
+# the following scripts can be invoked from any location on the machine
+# Build all images
+```bash=
 ./rebuild_all_images.sh
 ```
 
-# Build a single image. e.g. nginx
+# Build a single image, for instance nginx
 ```bash=
 ./nginx/build.sh
 ```
@@ -191,16 +196,26 @@ echo ${IP}
 inspect the container
 ```bash=
 podman inspect base-nginx
+```
+see the output [at the bottom of the page](#output-of-podman-inspect-base-nginx), it's a bit long
+
+```bash=
 JAIL_ID=$(podman inspect base-nginx | grep Id | awk -F '"' '{print $4}')
 JAIL_IP=$(podman inspect base-nginx | grep -m 1 IPAddress | awk -F '"' '{print $4}')
+echo "jail id: ${JAIL_ID}" && echo "jail ip: ${JAIL_IP}"
 ```
 
-Check that the nginx
+```
+jail id: c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e
+jail ip: 10.88.0.27
+```
+
+Check that the nginx server is actually responding
 ```bash=
 curl -v ${JAIL_IP}
 ```
 
-```html=
+```html
 *   Trying 10.88.0.27:80...
 * Connected to 10.88.0.27 (10.88.0.27) port 80
 * using HTTP/1.x
@@ -300,7 +315,7 @@ c7674a02b085  base-nginx  0.00%       0B / 66.22GB       0.00%       1.278kB / 3
 podman generate kube base-nginx 
 ```
 
-```yaml=
+```yaml
 # Save the output of this file and use kubectl create -f to import
 # Save the output of this file and use kubectl create -f to import
 # it into Kubernetes.
@@ -366,3 +381,274 @@ podman start base-nginx
 podman attach base-nginx
 ```
 exit with ctrl+Z
+
+========================================
+
+### output of podman inspect base-nginx
+```json
+[
+     {
+          "Id": "c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e",
+          "Created": "2024-10-16T15:19:16.935517862+02:00",
+          "Path": "/usr/local/bin/run.sh",
+          "Args": [
+               "/usr/local/bin/run.sh"
+          ],
+          "State": {
+               "OciVersion": "1.2.0",
+               "Status": "running",
+               "Running": true,
+               "Paused": false,
+               "Restarting": false,
+               "OOMKilled": false,
+               "Dead": false,
+               "Pid": 68426,
+               "ConmonPid": 67079,
+               "ExitCode": 0,
+               "Error": "",
+               "StartedAt": "2024-10-16T15:32:22.24863305+02:00",
+               "FinishedAt": "2024-10-16T15:26:21.290131+02:00",
+               "CheckpointedAt": "0001-01-01T00:00:00Z",
+               "RestoredAt": "0001-01-01T00:00:00Z"
+          },
+          "Image": "02b3df058b3b38a2e6f8bfa3a84b99e49eb2483b60dac408247698350a0c3104",
+          "ImageDigest": "sha256:1f4f963ed2a77ace394b154ca15431b6de714bfee42c04d740083a50d8755a36",
+          "ImageName": "localhost/nginx:latest",
+          "Rootfs": "",
+          "Pod": "",
+          "ResolvConfPath": "/var/run/containers/storage/zfs-containers/c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e/userdata/resolv.conf",
+          "HostnamePath": "",
+          "HostsPath": "/var/run/containers/storage/zfs-containers/c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e/userdata/hosts",
+          "StaticDir": "/var/db/containers/storage/zfs-containers/c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e/userdata",
+          "OCIConfigPath": "/var/db/containers/storage/zfs-containers/c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e/userdata/config.json",
+          "OCIRuntime": "ocijail",
+          "ConmonPidFile": "/var/run/containers/storage/zfs-containers/c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e/userdata/conmon.pid",
+          "PidFile": "/var/run/containers/storage/zfs-containers/c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e/userdata/pidfile",
+          "Name": "base-nginx",
+          "RestartCount": 0,
+          "Driver": "zfs",
+          "MountLabel": "",
+          "ProcessLabel": "",
+          "AppArmorProfile": "",
+          "EffectiveCaps": null,
+          "BoundingCaps": null,
+          "ExecIDs": [],
+          "GraphDriver": {
+               "Name": "zfs",
+               "Data": {
+                    "Dataset": "zroot/TOOLING/oci/containers/255c8654d32243862e2590212b930f74ea0ae6c9f0ed24dc124628e03375eb81",
+                    "Mountpoint": "/var/db/containers/storage/zfs/graph/255c8654d32243862e2590212b930f74ea0ae6c9f0ed24dc124628e03375eb81"
+               }
+          },
+          "Mounts": [
+               {
+                    "Type": "volume",
+                    "Name": "90ab56b460bf6dc88769f034304df75153b4d458da0a2cf6590cb7d7a13871b6",
+                    "Source": "/var/db/containers/storage/volumes/90ab56b460bf6dc88769f034304df75153b4d458da0a2cf6590cb7d7a13871b6/_data",
+                    "Destination": "/var/cache/pkg",
+                    "Driver": "local",
+                    "Mode": "",
+                    "Options": [
+                         "nodev",
+                         "exec",
+                         "rbind"
+                    ],
+                    "RW": true,
+                    "Propagation": "rprivate"
+               }
+          ],
+          "Dependencies": [],
+          "NetworkSettings": {
+               "EndpointID": "",
+               "Gateway": "10.88.0.1",
+               "IPAddress": "10.88.0.27",
+               "IPPrefixLen": 16,
+               "IPv6Gateway": "",
+               "GlobalIPv6Address": "",
+               "GlobalIPv6PrefixLen": 0,
+               "MacAddress": "02:28:39:45:d4:0b",
+               "Bridge": "",
+               "SandboxID": "",
+               "HairpinMode": false,
+               "LinkLocalIPv6Address": "",
+               "LinkLocalIPv6PrefixLen": 0,
+               "Ports": {
+                    "80/tcp": [
+                         {
+                              "HostIp": "0.0.0.0",
+                              "HostPort": "8080"
+                         }
+                    ]
+               },
+               "SandboxKey": "c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e",
+               "Networks": {
+                    "podman": {
+                         "EndpointID": "",
+                         "Gateway": "10.88.0.1",
+                         "IPAddress": "10.88.0.27",
+                         "IPPrefixLen": 16,
+                         "IPv6Gateway": "",
+                         "GlobalIPv6Address": "",
+                         "GlobalIPv6PrefixLen": 0,
+                         "MacAddress": "02:28:39:45:d4:0b",
+                         "NetworkID": "podman",
+                         "DriverOpts": null,
+                         "IPAMConfig": null,
+                         "Links": null,
+                         "Aliases": [
+                              "c7674a02b085"
+                         ]
+                    }
+               }
+          },
+          "Namespace": "",
+          "IsInfra": false,
+          "IsService": false,
+          "KubeExitCodePropagation": "invalid",
+          "lockNumber": 6,
+          "Config": {
+               "Hostname": "c7674a02b085",
+               "Domainname": "",
+               "User": "",
+               "AttachStdin": false,
+               "AttachStdout": false,
+               "AttachStderr": false,
+               "Tty": false,
+               "OpenStdin": false,
+               "StdinOnce": false,
+               "Env": [
+                    "container=podman",
+                    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                    "HOME=/root",
+                    "HOSTNAME=c7674a02b085"
+               ],
+               "Cmd": null,
+               "Image": "localhost/nginx:latest",
+               "Volumes": null,
+               "WorkingDir": "/",
+               "Entrypoint": [
+                    "/usr/local/bin/run.sh"
+               ],
+               "OnBuild": null,
+               "Labels": {
+                    "io.buildah.version": "1.36.0"
+               },
+               "Annotations": {
+                    "io.container.manager": "libpod",
+                    "org.freebsd.jail.vnet": "new",
+                    "org.opencontainers.image.stopSignal": "15"
+               },
+               "StopSignal": "SIGTERM",
+               "HealthcheckOnFailureAction": "none",
+               "CreateCommand": [
+                    "podman",
+                    "run",
+                    "--replace",
+                    "-d",
+                    "--name",
+                    "base-nginx",
+                    "-p",
+                    "8080:80",
+                    "localhost/nginx"
+               ],
+               "Umask": "0022",
+               "Timeout": 0,
+               "StopTimeout": 10,
+               "Passwd": true,
+               "sdNotifyMode": "container"
+          },
+          "HostConfig": {
+               "Binds": [
+                    "90ab56b460bf6dc88769f034304df75153b4d458da0a2cf6590cb7d7a13871b6:/var/cache/pkg:rprivate,rw,nodev,exec,rbind"
+               ],
+               "CgroupMode": "",
+               "ContainerIDFile": "",
+               "LogConfig": {
+                    "Type": "k8s-file",
+                    "Config": null,
+                    "Path": "/var/db/containers/storage/zfs-containers/c7674a02b0850e0e6539fe39faea28f0dc2f5ade0afd355f74932fd97082771e/userdata/ctr.log",
+                    "Tag": "",
+                    "Size": "0B"
+               },
+               "NetworkMode": "bridge",
+               "PortBindings": {
+                    "80/tcp": [
+                         {
+                              "HostIp": "0.0.0.0",
+                              "HostPort": "8080"
+                         }
+                    ]
+               },
+               "RestartPolicy": {
+                    "Name": "no",
+                    "MaximumRetryCount": 0
+               },
+               "AutoRemove": false,
+               "Annotations": {
+                    "io.container.manager": "libpod",
+                    "org.freebsd.jail.vnet": "new",
+                    "org.opencontainers.image.stopSignal": "15"
+               },
+               "VolumeDriver": "",
+               "VolumesFrom": null,
+               "CapAdd": null,
+               "CapDrop": null,
+               "Dns": [],
+               "DnsOptions": [],
+               "DnsSearch": [],
+               "ExtraHosts": [],
+               "GroupAdd": [],
+               "IpcMode": "",
+               "Cgroup": "",
+               "Cgroups": "default",
+               "Links": null,
+               "OomScoreAdj": 0,
+               "PidMode": "host",
+               "Privileged": false,
+               "PublishAllPorts": false,
+               "ReadonlyRootfs": false,
+               "SecurityOpt": [],
+               "Tmpfs": {},
+               "UTSMode": "host",
+               "UsernsMode": "",
+               "ShmSize": 0,
+               "Runtime": "oci",
+               "ConsoleSize": [
+                    0,
+                    0
+               ],
+               "Isolation": "",
+               "CpuShares": 0,
+               "Memory": 0,
+               "NanoCpus": 0,
+               "CgroupParent": "",
+               "BlkioWeight": 0,
+               "BlkioWeightDevice": null,
+               "BlkioDeviceReadBps": null,
+               "BlkioDeviceWriteBps": null,
+               "BlkioDeviceReadIOps": null,
+               "BlkioDeviceWriteIOps": null,
+               "CpuPeriod": 0,
+               "CpuQuota": 0,
+               "CpuRealtimePeriod": 0,
+               "CpuRealtimeRuntime": 0,
+               "CpusetCpus": "",
+               "CpusetMems": "",
+               "Devices": [],
+               "DiskQuota": 0,
+               "KernelMemory": 0,
+               "MemoryReservation": 0,
+               "MemorySwap": 0,
+               "MemorySwappiness": 0,
+               "OomKillDisable": false,
+               "PidsLimit": 0,
+               "Ulimits": [],
+               "CpuCount": 0,
+               "CpuPercent": 0,
+               "IOMaximumIOps": 0,
+               "IOMaximumBandwidth": 0,
+               "CgroupConf": null
+          }
+     }
+]
+```
