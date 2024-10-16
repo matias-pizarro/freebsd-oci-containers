@@ -27,6 +27,7 @@ pkg install podman-suite
 
 Make sure you leverage the **invaluable** shell completions
 https://docs.podman.io/en/v3.0/markdown/podman-completion.1.html
+![Screenshot_20241016_093723](https://github.com/user-attachments/assets/649ebcad-47ad-405a-add2-211f5010c6f3)
 
 bash
 ``` bash
