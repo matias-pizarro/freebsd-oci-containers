@@ -1,0 +1,16 @@
+FROM quay.io/bergblume/freebsd:14.1
+MAINTAINER Matias Pizarro <matias@pizarro.net>
+
+VOLUME /var/cache/pkg
+
+RUN --network=host env ASSUME_ALWAYS_YES=YES pkg bootstrap && pkg update
+RUN --network=host env ASSUME_ALWAYS_YES=YES pkg install bash wget rsync ncdu ripgrep curl tmux doas sudo git
+# collections pkg
+RUN pw usermod -n root -s /usr/local/bin/bash
+
+RUN mkdir -p /home && chmod 755 /home
+COPY --chown=0:0 --chmod=0644 base-system/files/adduser.conf /etc/adduser.conf
+COPY --chown=0:0 --chmod=0640 base-system/files/default_users.conf /root/default_users.conf
+RUN adduser -q -f /root/default_users.conf
+
+CMD [ "/usr/local/bin/bash" ]
