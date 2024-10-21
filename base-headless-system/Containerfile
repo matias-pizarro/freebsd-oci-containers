@@ -1,8 +1,0 @@
-FROM docker.io/dougrabson/freebsd14.1-small
-MAINTAINER Matias Pizarro <matias@pizarro.net>
-
-VOLUME /var/cache/pkg
-
-RUN --network=host env ASSUME_ALWAYS_YES=YES pkg bootstrap && pkg update
-
-CMD [ "/bin/sh" ]

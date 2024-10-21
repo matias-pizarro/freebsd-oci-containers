@@ -1,0 +1,1 @@
+/run/lock/podman-cni.lock instead of /var/run/lock/podman-cni.lock

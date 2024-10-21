@@ -1,0 +1,14 @@
+name:               nginx-podman-api
+purpose:            serve a Podman REST API remotely
+status:             active
+build args:         none
+runtime env vars:   NGINX_PORT (defaults to 8888)
+exposed ports:      NGINX_PORT
+services:           Podman REST API
+stdout:             /var/log/nginx/error.log
+other logs:         /var/log/nginx/access.log
+mounts:             /var/run/podman
+readiness:          TBD
+heartbeat:          HTTP 200 OK! at /heartbeat
+links:              https://docs.podman.io/en/latest/_static/api.html
+                    https://www.redhat.com/en/blog/podman-rest-api

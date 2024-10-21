@@ -1,0 +1,12 @@
+name:               base-linux-alpine-headless-system
+purpose:            provide a base Linux Alpine environment to run headless services 
+status:             active
+build args:         none
+runtime env vars:   none
+exposed ports:      none
+services:           none
+stdout:             none
+other logs:         none
+mounts:             none
+readiness:          TBD
+heartbeat:          TBD

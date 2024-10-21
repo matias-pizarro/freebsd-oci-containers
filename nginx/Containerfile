@@ -1,9 +1,0 @@
-FROM localhost/base-headless-system
-
-RUN --network=host env ASSUME_ALWAYS_YES=YES pkg install -r FreeBSD nginx
-RUN nginx -t
-RUN sysrc nginx_enable="YES"
-
-COPY --chown=www:www --chmod=0550 nginx/files/run.sh /usr/local/bin/run.sh
-
-ENTRYPOINT ["/usr/local/bin/run.sh"]
