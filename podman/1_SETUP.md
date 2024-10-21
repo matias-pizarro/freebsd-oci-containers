@@ -8,8 +8,8 @@
   * [Finishing touches](#finishing-touches)
   * [Building your own base images](#building-your-own-base-images)
 
-Once ready you can [run a FreeBSD or Linux Hello world!](2-hello-world),
-[explore the Podman CLI](3-explore) or go straight to [build/run the images](../README.md)
+Once ready you can [run a FreeBSD or Linux Hello world!](2-hello-world.md),
+[explore the Podman CLI](3-explore.md) or go straight to [build/run the images](../README.md)
 
 ## Guides
 > * **the most comprehensive: https://docs.skunkwerks.at/LqHthEkTSeGDwV0PDUQSyg**
@@ -117,5 +117,5 @@ service podman enable
 pkg install emulators/qemu-user-static jq
 ```
 
-Once ready you can [run a FreeBSD or Linux Hello world!](2-hello-world),
-[explore the Podman CLI](3-explore) or go straight to [build/run the images](../README.md)
+Once ready you can [run a FreeBSD or Linux Hello world!](2-hello-world.md),
+[explore the Podman CLI](3-explore.md) or go straight to [build/run the images](../README.md)
