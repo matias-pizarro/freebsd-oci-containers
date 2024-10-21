@@ -4,7 +4,7 @@
 * [Hello world!](#hello-world)
   * [FreeBSD](#freebsd)
   * [Alpine Linux](#alpine-linux)
-* next: [Explore](3-explore.md)
+* next: [Explore](3-EXPLORE.md)
 
 
 ## FreeBSD
@@ -56,4 +56,4 @@ podman run --rm --os=linux docker.io/alpine cat /etc/os-release
 ```bash=
 podman run -it --rm --os=linux docker.io/alpine /bin/sh
 ```
-next: [Explore](3-explore.md)
+next: [Explore](3-EXPLORE.md)

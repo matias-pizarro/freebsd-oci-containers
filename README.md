@@ -9,7 +9,7 @@ freebsd-oci-containers
 
 A repository of Podman/Docker images for FreeBSD
 
-* [Setting up podman](podman/1_SETUP.md) (split into its own section)
+* [Setting up podman](podman/1-SETUP.md) (split into its own section)
 ![Screenshot_20241016_093723](https://github.com/user-attachments/assets/649ebcad-47ad-405a-add2-211f5010c6f3)
 
 * [Currently available blueprints](#currently-available-blueprints)
