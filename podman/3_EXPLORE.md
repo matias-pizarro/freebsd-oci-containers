@@ -1,6 +1,6 @@
 # Explore
 
-* Pre-requisite: a working podman set-up (see [Setup podman](1-setup.md))
+* Pre-requisite: a working podman set-up (see [Setup podman](1_SETUP.md))
 
 launch the nginx-base service
   * stateless, tailing the error log in the foreground

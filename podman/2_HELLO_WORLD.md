@@ -1,10 +1,10 @@
 # Hello world!
 
-* Pre-requisite: a working podman set-up (see [Setup podman](1-setup.md))
+* Pre-requisite: a working podman set-up (see [Setup podman](1_SETUP.md))
 * [Hello world!](#hello-world)
   * [FreeBSD](#freebsd)
   * [Alpine Linux](#alpine-linux)
-* next: [Explore](3-EXPLORE.md)
+* next: [Explore](3_EXPLORE.md)
 
 
 ## FreeBSD
@@ -56,4 +56,4 @@ podman run --rm --os=linux docker.io/alpine cat /etc/os-release
 ```bash=
 podman run -it --rm --os=linux docker.io/alpine /bin/sh
 ```
-next: [Explore](3-EXPLORE.md)
+next: [Explore](3_EXPLORE.md)
