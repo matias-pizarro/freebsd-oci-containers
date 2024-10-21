@@ -9,6 +9,13 @@ freebsd-oci-containers
 
 A repository of Podman/Docker images for FreeBSD
 
+<br>
+
+# TL:DR; You will find here images of your favourite services to experiment with Jail-based OCI containers on FreeBSD
+<br>
+<br>
+
+
 * [Setting up podman](podman/1_SETUP.md) (split into its own section)
 ![Screenshot_20241016_093723](https://github.com/user-attachments/assets/649ebcad-47ad-405a-add2-211f5010c6f3)
 
@@ -62,8 +69,7 @@ cd freebsd-oci-containers
 ./containerfiles/nginx-poudriere/build.sh
 ```
 
-## Launch a container using a pre-defined config that can be used as a starting
-## point for further customization 
+## Launch a container using a pre-defined config that can be used as a starting point for further customization 
 ```bash=
 ./containerfiles/nginx-poudriere/run.sh
 ```
@@ -77,6 +83,7 @@ cd freebsd-oci-containers
 ```bash=
 ./containerfiles/nginx-poudriere/description
 
+name:               nginx-poudriere
 purpose:            serve Poudriere packages and build stats
 status:             active
 build args:         none
@@ -101,7 +108,7 @@ bin/run_all_containers.sh
 
 # Podman API
 
-Once podman is installed you can optionally run the podman-service, which I highly recommend. This provides a fully funcyional REST API that can be used to get information but also start and manage the lifecycle of containers and jails
+Once Podman is installed you can optionally run the podman-service, which I highly recommend. This provides a fully functional REST API that can be used to get information but also start and manage the lifecycle of containers and jails
 
 API reference:
   * https://docs.podman.io/en/stable/_static/api.html
