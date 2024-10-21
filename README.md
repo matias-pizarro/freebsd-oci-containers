@@ -9,12 +9,12 @@ freebsd-oci-containers
 
 A repository of Podman/Docker images for FreeBSD
 
-* [Setup podman](#podman/1_SETUP.md)
+* [Setting up podman](podman/1_SETUP.md) (split into its own section)
 ![Screenshot_20241016_093723](https://github.com/user-attachments/assets/649ebcad-47ad-405a-add2-211f5010c6f3)
 
 * [Currently available blueprints](#currently-available-blueprints)
 * [Project intent](#project-intent)
-* [Quickstart: build/modify images](#quickstart-build-modify-images)
+* [Quickstart](#quickstart): build/modify images
 * [Podman API](#podman-api)
 * [Target images](#target-images)
 * [Roadmap](#roadmap)
@@ -49,7 +49,7 @@ A repository of Podman/Docker images for FreeBSD
     * CI/CD pipelines / Ansible / Python API / Terraform / Pulumi / Kubernetes
 * An area of particular interest is the [Podman API](#podman_api) and the pod paradigm
 
-# Quickstart: build/modify images
+# Quickstart
 
 ## Clone the repo
 ```bash=
@@ -168,5 +168,15 @@ curl -v http://${JAIL_IP}:${NGINX_PORT}/v${API_VERSION}/libpod/containers/${JAIL
 *Coming soon: launching containers and pods via the API*
 
 # Target images
+*Coming soon*
+```
+
+
+```
 
 # Roadmap
+*Coming soon*
+```
+
+
+```
