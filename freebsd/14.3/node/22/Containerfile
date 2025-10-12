@@ -1,0 +1,12 @@
+FROM ghcr.io/freebsd/freebsd-runtime:14.3@sha256:3a5ffe995405b5f6300797b38d87328a267bbeeb550d3707c9c5e0a76827a978
+RUN /bin/pkg upgrade -yr FreeBSD-base
+RUN /bin/pkg install -yr FreeBSD-base FreeBSD-utilities
+RUN /bin/pkg install -yr FreeBSD bash
+
+RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
+RUN /bin/pkg install -yr FreeBSD www/node22 www/npm-node22 www/yarn-node22
+
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD [ "node" ]

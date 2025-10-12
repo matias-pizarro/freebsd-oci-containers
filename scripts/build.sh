@@ -2,11 +2,15 @@
 
 base_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && cd .. && pwd)
 
+freebsd_major="${3:-14}"
+freebsd_minor="${4:-3}"
 template="${1:-base}"
-freebsd_major="${2:-14}"
-freebsd_minor="${3:-3}"
+template_version="${2}"
 scripts_dir="${base_dir}/scripts"
-template_dir="${base_dir}/freebsd_variants/freebsd-${template}/${freebsd_major}.${freebsd_minor}"
+template_dir="${base_dir}/freebsd/${freebsd_major}.${freebsd_minor}/${template}"
+if [ -n "${template_version}" ]; then
+  template_dir="${template_dir}/${template_version}"
+fi
 containerfile="${template_dir}/Containerfile"
 
 # echo ${scripts_dir}
@@ -19,5 +23,5 @@ podman build \
   --env ABI=FreeBSD:${freebsd_major}:$(sysctl -n hw.machine_arch) \
   --env OSVERSION=${freebsd_major}0${freebsd_minor}000 \
   --no-hosts \
-  --tag freebsd-${template}:${freebsd_major}.${freebsd_minor} \
+  --tag freebsd-${template}${template_version}:${freebsd_major}.${freebsd_minor} \
   --file Containerfile
