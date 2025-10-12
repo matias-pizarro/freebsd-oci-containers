@@ -32,14 +32,3 @@ for elements in $(find . -name "Containerfile"); do
         sed 's|'"${base_image_uri}"'|'"${target_base_image_uri}"'|g' "${base_template_dir}/Containerfile" > "${target_template_dir}/Containerfile"
     done
 done
-
-exit
-for template in $(\ls "${base_version_dir}"); do
-    template_dir="${base_version_dir}/${template}"
-    if [ -d "${template_dir}" ]; then
-        echo "${template_dir}"
-        for target_version in 14.snap 15.snap 16.snap; do
-            target_version_dir="${base_dir}/freebsd/${target_version}"
-        done
-    fi
-done
