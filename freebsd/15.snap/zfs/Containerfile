@@ -6,3 +6,5 @@ COPY files/repos /usr/local/etc/pkg/repos
 RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities
 RUN /usr/bin/env pkg install -yr FreeBSD bash
 RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-zfs
+
+CMD ["/bin/sh"]
