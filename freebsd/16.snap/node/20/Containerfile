@@ -1,4 +1,4 @@
-FROM ghcr.io/freebsd/freebsd-runtime:16.snap@sha256:06265958eb908b3a32a2a4e1d5a9c1d1e1ca0414f3af0f203ff66376abed089d
+FROM ghcr.io/freebsd/freebsd-runtime:16.snap
 RUN /usr/bin/env pkg upgrade -yr FreeBSD-base
 RUN rm -f /usr/local/etc/pkg/repos/base.conf
 COPY files/repos /usr/local/etc/pkg/repos
