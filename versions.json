@@ -1,0 +1,197 @@
+{
+  "14": {
+    "projects": {
+      "node": {
+        "versions": [
+          "20",
+          "22",
+          "24"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:nodejs/docker-node.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+        },
+        "ready_for_upstream_merge": false
+      },
+      "postgres": {
+        "versions": [
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:/docker-library/postgres.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+        },
+        "ready_for_upstream_merge": true
+      },
+      "python": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
+        "ready_for_upstream_merge": false
+      }
+    },
+    "branches": {
+      "3": {
+        "base_image": "ghcr.io/freebsd/freebsd-runtime:14.3@sha256:3a5ffe995405b5f6300797b38d87328a267bbeeb550d3707c9c5e0a76827a978"
+      },
+      "snapshot": {
+        "base_image": "ghcr.io/freebsd/freebsd-runtime:14.snap@sha256:8fd03f4c8ef2adf69bfef0f0295017f399e0b15c126798c3a4bc2b6987f3d99b"
+      }
+    }
+  },
+  "15": {
+    "projects": {
+      "node": {
+        "versions": [
+          "20",
+          "22",
+          "24"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:nodejs/docker-node.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+        },
+        "ready_for_upstream_merge": false
+      },
+      "postgres": {
+        "versions": [
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:/docker-library/postgres.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+        },
+        "ready_for_upstream_merge": true
+      },
+      "python": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
+        "ready_for_upstream_merge": false
+      }
+    },
+    "branches": {
+      "snapshot": {
+        "base_image": "ghcr.io/freebsd/freebsd-runtime:15.snap@sha256:62135da7877ecfa1e9487d973a844de36c8d9674b53cb25307842c5e56004bcb"
+      }
+    }
+  },
+  "16": {
+    "projects": {
+      "node": {
+        "versions": [
+          "20",
+          "22",
+          "24"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:nodejs/docker-node.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+        },
+        "ready_for_upstream_merge": false
+      },
+      "postgres": {
+        "versions": [
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:/docker-library/postgres.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+        },
+        "ready_for_upstream_merge": true
+      },
+      "python": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
+        "ready_for_upstream_merge": false
+      }
+    },
+    "branches": {
+      "snapshot": {
+        "base_image": "ghcr.io/freebsd/freebsd-runtime:16.snap@sha256:06265958eb908b3a32a2a4e1d5a9c1d1e1ca0414f3af0f203ff66376abed089d"
+      }
+    }
+  }
+}

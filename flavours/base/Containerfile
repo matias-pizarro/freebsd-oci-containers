@@ -1,0 +1,9 @@
+FROM ghcr.io/freebsd/freebsd-runtime:{{ freebsd_version }}
+RUN /usr/bin/env pkg upgrade -yr FreeBSD-base
+RUN rm -f /usr/local/etc/pkg/repos/base.conf
+COPY files/repos /usr/local/etc/pkg/repos
+
+RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities \
+    && rm -f /var/cache/pkg/*
+
+CMD ["/bin/sh"]
