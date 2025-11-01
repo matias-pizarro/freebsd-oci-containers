@@ -9,9 +9,12 @@ RUN /usr/bin/env pkg upgrade -yr FreeBSD-base
 RUN rm -f /usr/local/etc/pkg/repos/base.conf
 COPY files/repos /usr/local/etc/pkg/repos
 
-RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities
-RUN /usr/bin/env pkg install -yr FreeBSD bash
-RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-zfs
+RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities \
+    && rm -f /var/cache/pkg/*
+RUN /usr/bin/env pkg install -yr FreeBSD bash \
+    && rm -f /var/cache/pkg/*
+RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-zfs \
+    && rm -f /var/cache/pkg/*
 
 RUN /usr/bin/env pkg install -yr FreeBSD \
     binutils \
@@ -30,9 +33,11 @@ RUN /usr/bin/env pkg install -yr FreeBSD \
     perl5 \
     python311 \
     readline \
-    zstd
+    zstd \
+    && rm -f /var/cache/pkg/*
 
-RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-locales
+RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-locales \
+    && rm -f /var/cache/pkg/*
 
 ENV PG_MAJOR 18
 ENV PGDATA /var/db/postgres/data${PG_MAJOR}
@@ -40,7 +45,8 @@ ENV UNIX_SOCKET_DIRECTORIES /var/run/postgresql
 VOLUME /var/db/postgres/data${PG_MAJOR}
 
 RUN /usr/bin/env pkg install -yr FreeBSD \
-    postgresql${PG_MAJOR}-server
+    postgresql${PG_MAJOR}-server \
+    && rm -f /var/cache/pkg/*
 
 RUN sysrc postgresql_enable="YES"
 RUN sysrc postgresql_flags="-o '-k ${UNIX_SOCKET_DIRECTORIES}' -l ${PGDATA}/postgres.log -w -s -m fast"
