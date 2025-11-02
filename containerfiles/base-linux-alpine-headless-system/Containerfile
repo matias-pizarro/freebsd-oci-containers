@@ -1,8 +1,0 @@
-FROM docker.io/alpine
-MAINTAINER Matias Pizarro <matias@pizarro.net>
-
-RUN --network=host apk -U upgrade
-
-COPY --chown=0:0 --chmod=0550 base-system/files/run.sh /usr/local/bin/run.sh
-
-CMD ["/usr/local/bin/run.sh"]

@@ -1,6 +1,0 @@
-FROM localhost/nginx
-ENV NGINX_PORT=8888
-
-VOLUME /var/run/podman
-
-COPY --chown=0:0 --chmod=0644 nginx-podman-api/files/nginx.conf /usr/local/etc/nginx/nginx.conf

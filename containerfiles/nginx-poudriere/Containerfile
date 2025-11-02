@@ -1,8 +1,0 @@
-FROM localhost/nginx
-
-VOLUME /usr/local/poudriere/data
-VOLUME /usr/local/poudriere/data/logs/bulk
-VOLUME /usr/local/poudriere/data/packages
-VOLUME /usr/local/share/poudriere/html
-
-COPY --chown=0:0 --chmod=0644 nginx-poudriere/files/nginx.conf /usr/local/etc/nginx/nginx.conf
