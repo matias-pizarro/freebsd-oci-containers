@@ -12,7 +12,7 @@ The main goal is many-fold:
 
 n projects x 6 versions x 3 architectures
 
-target projects:
+Target projects:
 
 * freebsd-base -> available
 
@@ -22,7 +22,7 @@ target projects:
 
 * freebsd-node [20, 22, 24] -> available
 
-* freebsd-python [3.10, 3.11, 3.12, 3.13, 3.14] -> in progress
+* freebsd-python [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> in progress
 
 * freebsd-uv [3.10, 3.11, 3.12, 3.13, 3.14]
 
@@ -41,7 +41,7 @@ target projects:
 etc.
 
 
-target versions:
+Target versions:
 
 * 14.2
 
@@ -56,7 +56,7 @@ target versions:
 * 16.snap
 
 
-target architectures:
+Target architectures:
 
 * amd64
 
@@ -73,12 +73,14 @@ https://hub.docker.com/u/matiaspizarro
 
 https://quay.io/user/matiaspizarro/
 
-https://hub.docker.com/u/dougrabson
-
 https://download.freebsd.org/ftp/releases/OCI-IMAGES/
 
 https://hub.docker.com/u/freebsd
 
 https://github.com/orgs/freebsd/packages
+
+https://git.sr.ht/~dch/
+
+https://hub.docker.com/u/dougrabson
 
 https://gitlab.com/bergblume

@@ -13,4 +13,5 @@ ${scripts_dir}/build.sh ${scripts_dir}/build.sh \
     && ${scripts_dir}/build.sh -t postgres -v 15 \
     && ${scripts_dir}/build.sh -t postgres -v 16 \
     && ${scripts_dir}/build.sh -t postgres -v 17 \
-    && ${scripts_dir}/build.sh -t postgres -v 18
+    && ${scripts_dir}/build.sh -t postgres -v 18 \
+    && ${scripts_dir}/build.sh -t python -v 3.11

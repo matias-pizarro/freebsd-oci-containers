@@ -18,12 +18,12 @@ scripts_dir="${base_dir}/scripts"
 mkdir -p ${HOME}/.config/pat
 for registry in ghcr.io docker.io quay.io; do
     registry_config_file="${HOME}/.config/pat/${registry}"
-    if [ ! -f "${registry_config_file}" ]; do
+    if [ ! -f "${registry_config_file}" ]; then
         echo REGISTRY_USERNAME=\"\" > "${registry_config_file}"
         echo REGISTRY_PAT=\"\" > "${registry_config_file}"
         ee "${registry_config_file}"
-    done
-    source ${registry_config_file}
+    fi
+    . "${registry_config_file}"
     echo "logging into ${registry}"
     echo ${REGISTRY_PAT} | podman login --username ${REGISTRY_USERNAME} --password-stdin ${registry}
     if [ "${registry}" == "ghcr.io" ]; then
@@ -31,7 +31,7 @@ for registry in ghcr.io docker.io quay.io; do
     else
         IMAGE_PATH="${registry}/${REGISTRY_USERNAME}"
     fi
-    for project in base zfs node20 node22 node24 postgres13 postgres14 postgres15 postgres16 postgres17 postgres18; do
+    for project in base zfs node20 node22 node24 postgres13 postgres14 postgres15 postgres16 postgres17 postgres18 python3.11; do
         echo "Pushing ${project} to ${registry}"
         podman tag localhost/freebsd-${project}:14.3 localhost/freebsd-${project}:latest
         echo "."
