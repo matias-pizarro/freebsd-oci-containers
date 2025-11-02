@@ -1,0 +1,13 @@
+https://docs.skunkwerks.at/s/fUiAmi4pE
+
+https://freebsdfoundation.org/blog/oci-containers-on-freebsd/
+
+https://www.youtube.com/watch?v=HV-wUUzRCMo
+
+https://people.freebsd.org/~dch/posts/2025-06-27-oci-zfs/
+
+https://hackmd.io/xA1CxQT8SfKLUpCiQz-tWA
+
+https://docs.google.com/spreadsheets/d/1IGk2uZd2TG3CUddFmWi6_7PygER08n0XlGmronXq0Pk/edit?gid=0#gid=0
+
+https://wiki.freebsd.org/Containers
