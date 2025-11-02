@@ -13,8 +13,6 @@ for node_version in 20 22 24; do
             ${target_dir}/Dockerfile
         cp -p ${base_dir}/upstreams/node/docker-entrypoint.sh \
             ${target_dir}/docker-entrypoint.sh
-        cp -rp ${base_dir}/flavours/base/files \
-            ${target_dir}/
         if [ "${node_version}" == "20" ]; then
             sed -i '' 's|{{ install_archivers_line_1 }}||g' ${target_dir}/Dockerfile
             sed -i '' 's|{{ install_archivers_line_2 }}||g' ${target_dir}/Dockerfile

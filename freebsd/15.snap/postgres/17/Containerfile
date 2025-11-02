@@ -4,17 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM ghcr.io/freebsd/freebsd-runtime:15.snap
-RUN /usr/bin/env pkg upgrade -yr FreeBSD-base
-RUN rm -f /usr/local/etc/pkg/repos/base.conf
-COPY files/repos /usr/local/etc/pkg/repos
-
-RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities \
-    && rm -f /var/cache/pkg/*
-RUN /usr/bin/env pkg install -yr FreeBSD bash \
-    && rm -f /var/cache/pkg/*
-RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-zfs \
-    && rm -f /var/cache/pkg/*
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:15.snap
 
 RUN /usr/bin/env pkg install -yr FreeBSD \
     binutils \
