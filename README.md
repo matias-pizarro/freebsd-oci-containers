@@ -34,6 +34,8 @@ Target projects:
 
 * redis
 
+* valkey
+
 * celery
 
 * poudriere
@@ -42,12 +44,12 @@ Target projects:
 
 * podman-api
 
+* couchdb
+
 etc.
 
 
 Target versions:
-
-* 14.2
 
 * 14.3
 
