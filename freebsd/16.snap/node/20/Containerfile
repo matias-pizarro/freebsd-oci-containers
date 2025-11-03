@@ -1,6 +1,7 @@
 FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:16.snap
 
 RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
+
 RUN /usr/bin/env pkg install -yr FreeBSD \
     brotli \
     c-ares \

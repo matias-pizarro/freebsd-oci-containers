@@ -18,25 +18,29 @@ Target projects:
 
 * freebsd-zfs -> available (supports annotation to mount persistent ZFS datasets)
 
-* freebsd-postgres [13, 14, 15, 16, 17, 18] -> available (supports annotation to run sysv IPC-enabled containers)
+* postgres [13, 14, 15, 16, 17, 18] -> available (supports annotation to run sysv IPC-enabled containers)
 
-* freebsd-node [20, 22, 24, 25] -> available
+* node [20, 22, 24, 25] -> available
 
-* freebsd-python [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> in progress
+* python [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> pending pkg build
 
-* freebsd-uv [3.10, 3.11, 3.12, 3.13, 3.14]
+* uv [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> pending pkg build
 
-* freebsd-nginx
+* nginx
 
-* freebsd-go
+* go
 
-* freebsd-pulumi
+* pulumi
 
-* freebsd-redis
+* redis
 
-* freebsd-celery
+* celery
 
-* freebsd-poudriere
+* poudriere
+
+* poudriere-nginx
+
+* podman-api
 
 etc.
 

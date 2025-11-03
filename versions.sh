@@ -61,12 +61,12 @@ for os_major_version in "${os_major_versions[@]}"; do
     ) )
     for branch in "${branches[@]}"; do
         os_version="${os_major_version}.${branch/snapshot/snap}"
-        echo ${os_version}
+        echo "- ${os_version}"
         os_version_dir="${os_dir}/${os_version}"
         for flavour in base zfs; do
             flavour_dir="${flavours_dir}/${flavour}"
             os_flavour_dir="${os_version_dir}/${flavour}"
-            rsync -avz ${flavour_dir} ${os_version_dir}
+            rsync -avzq ${flavour_dir} ${os_version_dir}
             sed -i '' 's|{{ freebsd_version }}|'${os_version}'|g' ${os_flavour_dir}/Containerfile
         done
         for project in "${projects[@]}"; do
@@ -99,7 +99,7 @@ for os_major_version in "${os_major_versions[@]}"; do
             mkdir -p "${project_dir}"
             upstream_project_dir="${upstreams_dir}/${project}"
             if [ ! -f "${upstream_project_dir}/.git/config" ]; then
-                echo "creating ${upstream_project_dir}"
+                echo "      creating ${upstream_project_dir}"
                 git clone --branch freebsd -- ${upstream} ${upstream_project_dir}
             fi
             if [[ ! "${project_updated[@]}" =~ "${project}" ]]; then
@@ -112,17 +112,16 @@ for os_major_version in "${os_major_versions[@]}"; do
             fi
             for project_version in "${project_versions[@]}"; do
                 echo "        - ${project_version}"
-                echo "          mkdir -p ${project_dir}/${project_version}"
+                # echo "          mkdir -p ${project_dir}/${project_version}"
                 project_version_dir="${project_dir}/${project_version}"
                 mkdir -p "${project_version_dir}"
                 upstream_project_version_dir="${upstreams_dir}/${project}/${project_version}/${os}${os_version}"
-                echo "              ${upstream_project_version_dir}"
+                # echo "              ${upstream_project_version_dir}"
                 for arch in "${arches[@]}"; do
                     echo "            - ${arch}"
                 done
-                rsync -avz ${upstream_project_version_dir}/ ${project_version_dir}
-                echo rsync -avz ${upstream_project_version_dir}/ ${project_version_dir}
-                rsync -avz ${project_template_dir}/files/ ${project_version_dir}/
+                rsync -avzq ${upstream_project_version_dir}/ ${project_version_dir}
+                rsync -avzq ${project_template_dir}/files/ ${project_version_dir}/
                 mv ${project_version_dir}/Dockerfile ${project_version_dir}/Containerfile
             done
         done

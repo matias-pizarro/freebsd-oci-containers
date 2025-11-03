@@ -19,6 +19,44 @@
         },
         "ready_for_upstream_merge": false
       },
+      "python": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13",
+          "3.14"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
+        "ready_for_upstream_merge": true
+      },
+      "uv": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13",
+          "3.14"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:astral-sh/uv.git",
+          "freebsd": "git@github.com:matias-pizarro/uv.git"
+        },
+        "ready_for_upstream_merge": false
+      },
       "postgres": {
         "versions": [
           "13",
@@ -38,25 +76,6 @@
           "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
         },
         "ready_for_upstream_merge": true
-      },
-      "python": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:docker-library/python.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
-        },
-        "ready_for_upstream_merge": false
       }
     },
     "branches": {
@@ -88,6 +107,44 @@
         },
         "ready_for_upstream_merge": false
       },
+      "python": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13",
+          "3.14"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
+        "ready_for_upstream_merge": true
+      },
+      "uv": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13",
+          "3.14"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:astral-sh/uv.git",
+          "freebsd": "git@github.com:matias-pizarro/uv.git"
+        },
+        "ready_for_upstream_merge": false
+      },
       "postgres": {
         "versions": [
           "13",
@@ -107,25 +164,6 @@
           "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
         },
         "ready_for_upstream_merge": true
-      },
-      "python": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:docker-library/python.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
-        },
-        "ready_for_upstream_merge": false
       }
     },
     "branches": {
@@ -154,6 +192,44 @@
         },
         "ready_for_upstream_merge": false
       },
+      "python": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13",
+          "3.14"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
+        "ready_for_upstream_merge": true
+      },
+      "uv": {
+        "versions": [
+          "3.10",
+          "3.11",
+          "3.12",
+          "3.13",
+          "3.14"
+        ],
+        "arches": [
+          "amd64",
+          "aarch64",
+          "riscv64"
+        ],
+        "upstreams": {
+          "main": "git@github.com:astral-sh/uv.git",
+          "freebsd": "git@github.com:matias-pizarro/uv.git"
+        },
+        "ready_for_upstream_merge": false
+      },
       "postgres": {
         "versions": [
           "13",
@@ -173,25 +249,6 @@
           "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
         },
         "ready_for_upstream_merge": true
-      },
-      "python": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:docker-library/python.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
-        },
-        "ready_for_upstream_merge": false
       }
     },
     "branches": {

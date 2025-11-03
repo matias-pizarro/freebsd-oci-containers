@@ -1,0 +1,14 @@
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-python3.13:14.3
+
+ENV UV_VERSION=0.9.6
+
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD \
+    devel/py-uv@py313 \
+    devel/py-uv-build@py313 \
+    devel/py-uv-bump@py313 \
+    devel/py-uv-dynamic-versioning@py313; \
+    /usr/local/bin/uv --version; \
+    /bin/rm -f /var/cache/pkg/*
+
+CMD ["uv"]
