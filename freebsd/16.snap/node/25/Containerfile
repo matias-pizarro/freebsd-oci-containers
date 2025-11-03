@@ -1,4 +1,4 @@
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:14.snap
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:16.snap
 
 RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
 RUN /usr/bin/env pkg install -yr FreeBSD \
@@ -18,10 +18,13 @@ RUN /usr/bin/env pkg install -yr FreeBSD \
     simdjson \
     && rm -f /var/cache/pkg/*
 
+RUN /usr/bin/env pkg install -yr FreeBSD archivers/liblz4 archivers/zstd \
+    && rm -f /var/cache/pkg/*
+
 ENV NODE_VERSION=0.0.0
 
-RUN /usr/bin/env pkg install -yr FreeBSD www/node20 \
-    www/npm-node20 \
+RUN /usr/bin/env pkg install -yr FreeBSD www/node25 \
+    www/npm-node25 \
     && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
     # smoke tests
     && node --version \
@@ -30,7 +33,7 @@ RUN /usr/bin/env pkg install -yr FreeBSD www/node20 \
 
 ENV YARN_VERSION=0.0.0
 
-RUN /usr/bin/env pkg install -yr FreeBSD www/yarn-node20 \
+RUN /usr/bin/env pkg install -yr FreeBSD www/yarn-node25 \
     # smoke test
     && yarn --version \
     && rm -f /var/cache/pkg/*

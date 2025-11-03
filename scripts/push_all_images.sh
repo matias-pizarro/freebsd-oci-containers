@@ -8,6 +8,7 @@ scripts_dir="${base_dir}/scripts"
 #     && ${scripts_dir}/build.sh -t node -v 20 \
 #     && ${scripts_dir}/build.sh -t node -v 22 \
 #     && ${scripts_dir}/build.sh -t node -v 24 \
+#     && ${scripts_dir}/build.sh -t node -v 25 \
 #     && ${scripts_dir}/build.sh -t postgres -v 13 \
 #     && ${scripts_dir}/build.sh -t postgres -v 14 \
 #     && ${scripts_dir}/build.sh -t postgres -v 15 \
@@ -31,7 +32,7 @@ for registry in ghcr.io docker.io quay.io; do
     else
         IMAGE_PATH="${registry}/${REGISTRY_USERNAME}"
     fi
-    for project in base zfs node20 node22 node24 postgres13 postgres14 postgres15 postgres16 postgres17 postgres18 python3.11; do
+    for project in base zfs node20 node22 node24 node25 postgres13 postgres14 postgres15 postgres16 postgres17 postgres18 python3.11; do
         echo "Pushing ${project} to ${registry}"
         podman tag localhost/freebsd-${project}:14.3 localhost/freebsd-${project}:latest
         echo "."

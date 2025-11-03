@@ -21,9 +21,21 @@ RUN /usr/bin/env pkg install -yr FreeBSD \
 RUN /usr/bin/env pkg install -yr FreeBSD archivers/liblz4 archivers/zstd \
     && rm -f /var/cache/pkg/*
 
+ENV NODE_VERSION=0.0.0
+
 RUN /usr/bin/env pkg install -yr FreeBSD www/node24 \
     www/npm-node24 \
-    www/yarn-node24 \
+    && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+    # smoke tests
+    && node --version \
+    && npm --version \
+    && rm -f /var/cache/pkg/*
+
+ENV YARN_VERSION=0.0.0
+
+RUN /usr/bin/env pkg install -yr FreeBSD www/yarn-node24 \
+    # smoke test
+    && yarn --version \
     && rm -f /var/cache/pkg/*
 
 COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/

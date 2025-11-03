@@ -4,7 +4,7 @@ base_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && cd .. && cd .. && pwd)
 
 # ${base_dir}/upstreams/node/update.sh
 
-for node_version in 20 22 24; do
+for node_version in 20 22 24 25; do
     for os_version in 14.3 14.snap 15.snap 16.snap; do
         target_dir="${base_dir}/upstreams/node/${node_version}/freebsd${os_version}"
         rm -rf ${target_dir}

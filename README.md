@@ -20,7 +20,7 @@ Target projects:
 
 * freebsd-postgres [13, 14, 15, 16, 17, 18] -> available (supports annotation to run sysv IPC-enabled containers)
 
-* freebsd-node [20, 22, 24] -> available
+* freebsd-node [20, 22, 24, 25] -> available
 
 * freebsd-python [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> in progress
 

@@ -1,6 +1,7 @@
 FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:14.3
 
 RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
+
 RUN /usr/bin/env pkg install -yr FreeBSD \
     brotli \
     c-ares \
@@ -18,9 +19,21 @@ RUN /usr/bin/env pkg install -yr FreeBSD \
     simdjson \
     && rm -f /var/cache/pkg/*
 
+ENV NODE_VERSION=20.19.5
+
 RUN /usr/bin/env pkg install -yr FreeBSD www/node20 \
     www/npm-node20 \
-    www/yarn-node20 \
+    && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+    # smoke tests
+    && node --version \
+    && npm --version \
+    && rm -f /var/cache/pkg/*
+
+ENV YARN_VERSION=1.22.19
+
+RUN /usr/bin/env pkg install -yr FreeBSD www/yarn-node20 \
+    # smoke test
+    && yarn --version \
     && rm -f /var/cache/pkg/*
 
 COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/
