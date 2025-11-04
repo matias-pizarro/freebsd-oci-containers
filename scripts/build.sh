@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 base_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && cd .. && pwd)
 scripts_dir="${base_dir}/scripts"
@@ -88,7 +88,17 @@ containerfile="${template_dir}/Containerfile"
 # echo ${template_dir}
 
 echo
-echo "# Building freebsd-${template}${template_version} for FreeBSD ${freebsd_major}.${freebsd_minor}"
+
+case ${template_version:0:1} in
+    ''|[0-9])
+        version_separator=''
+        ;;
+    *)
+        version_separator='-'
+        ;;
+esac
+
+echo "# Building freebsd-${template}${version_separator}${template_version} for FreeBSD ${freebsd_major}.${freebsd_minor}"
 echo "#     context: ${template_dir}"
 echo "#     file   : ${containerfile}"
 echo
@@ -107,5 +117,5 @@ podman build \
     --env OSVERSION=${freebsd_major}0${freebsd_minor_digit}000 \
     --env VERSION_MINOR=${freebsd_minor_digit} \
     --no-hosts \
-    --tag freebsd-${template}${template_version}:${freebsd_major}.${freebsd_minor} \
+    --tag freebsd-${template}${version_separator}${template_version}:${freebsd_major}.${freebsd_minor} \
     --file Containerfile

@@ -1,0 +1,9 @@
+FROM localhost/freebsd-nginx-stable:14.3
+
+VOLUME /var/run/podman
+
+COPY --chown=0:0 --chmod=0644 nginx.conf /usr/local/etc/nginx/nginx.conf
+COPY --chown=0:0 --chmod=0644 podman_api.conf /usr/local/etc/nginx/conf.d/podman_api.conf
+RUN  rm -f /usr/local/etc/nginx/conf.d/default.conf
+
+RUN /usr/local/sbin/nginx -t

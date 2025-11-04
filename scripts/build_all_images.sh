@@ -4,7 +4,12 @@ base_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && cd .. && pwd)
 scripts_dir="${base_dir}/scripts"
 
 ${scripts_dir}/build.sh ${scripts_dir}/build.sh \
+    && ${scripts_dir}/build.sh -t base \
     && ${scripts_dir}/build.sh -t zfs \
+    && ${scripts_dir}/build.sh -t nginx -v stable \
+    && ${scripts_dir}/build.sh -t nginx -v mainline \
+    && ${scripts_dir}/build.sh -t nginx -v poudriere \
+    && ${scripts_dir}/build.sh -t nginx -v podman-api \
     && ${scripts_dir}/build.sh -t node -v 20 \
     && ${scripts_dir}/build.sh -t node -v 22 \
     && ${scripts_dir}/build.sh -t node -v 24 \

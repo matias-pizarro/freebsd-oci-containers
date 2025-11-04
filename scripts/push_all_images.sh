@@ -1,10 +1,35 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 base_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && cd .. && pwd)
 scripts_dir="${base_dir}/scripts"
 
+projects=( \
+    "base" \
+    "zfs" \
+    "nginx-stable" \
+    "nginx-mainline" \
+    "nginx-poudriere" \
+    "nginx-podman-api" \
+    "node20" \
+    "node22" \
+    "node24" \
+    "node25" \
+    "postgres13" \
+    "postgres14" \
+    "postgres15" \
+    "postgres16" \
+    "postgres17" \
+    "postgres18" \
+    "python3.11" \
+    "uv3.11" \
+)
+
 # ${scripts_dir}/build.sh ${scripts_dir}/build.sh \
 #     && ${scripts_dir}/build.sh -t zfs \
+#     && ${scripts_dir}/build.sh -t nginx -v stable \
+#     && ${scripts_dir}/build.sh -t nginx -v mainline \
+#     && ${scripts_dir}/build.sh -t nginx -v poudriere \
+#     && ${scripts_dir}/build.sh -t nginx -v podman-api \
 #     && ${scripts_dir}/build.sh -t node -v 20 \
 #     && ${scripts_dir}/build.sh -t node -v 22 \
 #     && ${scripts_dir}/build.sh -t node -v 24 \
@@ -34,7 +59,7 @@ for registry in ghcr.io docker.io quay.io; do
     else
         IMAGE_PATH="${registry}/${REGISTRY_USERNAME}"
     fi
-    for project in base zfs node20 node22 node24 node25 postgres13 postgres14 postgres15 postgres16 postgres17 postgres18 python3.11 uv3.11; do
+    for project in ${projects[@]}; do
         echo "Pushing ${project} to ${registry}"
         podman tag localhost/freebsd-${project}:14.3 localhost/freebsd-${project}:latest
         echo "."

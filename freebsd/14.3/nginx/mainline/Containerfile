@@ -1,0 +1,160 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:14.3
+
+LABEL maintainer="Matías Pizarro <docker@docbase.net>"
+
+# create nginx user/group first, to be consistent throughout docker variants
+RUN echo "nginx:101:::0:0:nginx user:/nonexistent:/usr/bin/false:" | adduser -D -S -f -
+
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD \
+        Imath \
+        aom \
+        brotli \
+        curl \
+        cyrus-sasl \
+        dav1d \
+        expat \
+        ffmpeg \
+        fontconfig \
+        freetype2 \
+        fribidi \
+        gdk-pixbuf2 \
+        giflib \
+        glib \
+        gmp \
+        gnutls \
+        google-perftools \
+        graphite2 \
+        harfbuzz \
+        highway \
+        hwdata \
+        ip2location \
+        ip2proxy \
+        jbigkit \
+        jpeg-turbo \
+        krb5 \
+        lame \
+        lcms2 \
+        lerc \
+        libX11 \
+        libXau \
+        libXdmcp \
+        libXext \
+        libXfixes \
+        libXrandr \
+        libXrender \
+        libass \
+        libbson \
+        libdeflate \
+        libdrizzle \
+        libdrm \
+        libedit \
+        libepoll-shim \
+        libffi \
+        libgcrypt \
+        libgd \
+        libglvnd \
+        libgpg-error \
+        libiconv \
+        libidn2 \
+        libinotify \
+        libjxl \
+        liblz4 \
+        libmaxminddb \
+        libnghttp2 \
+        libogg \
+        libpciaccess \
+        libplacebo \
+        libpsl \
+        libssh2 \
+        libtasn1 \
+        libudev-devd \
+        libunibreak \
+        libunistring \
+        libunwind \
+        libv4l \
+        libva \
+        libvdpau \
+        libvorbis \
+        libvpx \
+        libx264 \
+        libxcb \
+        libxml2 \
+        libxslt \
+        libyaml \
+        lua-resty-core \
+        lua-resty-lrucache \
+        luajit-openresty \
+        modsecurity3 \
+        mongo-c-driver \
+        mpdecimal \
+        msgpuck \
+        nettle \
+        openexr \
+        openjph \
+        openldap26-client \
+        opus \
+        p11-kit \
+        pcre \
+        pcre2 \
+        perl5 \
+        png \
+        postgresql17-client \
+        py311-packaging \
+        python311 \
+        readline \
+        ruby \
+        shaderc \
+        shared-mime-info \
+        sqlite3 \
+        svt-av1 \
+        tiff \
+        utf8proc \
+        vmaf \
+        vulkan-loader \
+        wayland \
+        webp \
+        x265 \
+        xorgproto \
+        xxhash \
+        yajl \
+        zstd \
+    && rm -f /var/cache/pkg/*
+
+ENV NGINX_VERSION   1.29.2
+ENV NJS_VERSION     0.9.3
+
+# should provide modules xslt geoip image njs
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD \
+        www/nginx-devel \
+    && rm -f /var/cache/pkg/* \
+    \
+# forward request and error logs to docker log collector
+    && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log \
+# create a docker-entrypoint.d directory
+    && mkdir /docker-entrypoint.d
+
+COPY docker-entrypoint.sh /
+COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
+COPY 15-local-resolvers.envsh /docker-entrypoint.d
+COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
+COPY 30-tune-worker-processes.sh /docker-entrypoint.d
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+COPY --chown=0:0 --chmod=0644 nginx.conf /usr/local/etc/nginx/nginx.conf
+COPY --chown=0:0 --chmod=0644 default.conf /usr/local/etc/nginx/conf.d/default.conf
+
+RUN /usr/local/sbin/nginx -t
+
+EXPOSE 80
+
+STOPSIGNAL SIGQUIT
+
+CMD ["/usr/local/sbin/nginx", "-g", "daemon off;"]
