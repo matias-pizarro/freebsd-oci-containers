@@ -26,7 +26,11 @@ Target projects:
 
 * uv [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> pending pkg build
 
-* nginx
+* nginx [stable, mainline] -> available
+
+* nginx + poudriere UI -> available
+
+* nginx + podman-api -> available
 
 * go
 
@@ -36,16 +40,39 @@ Target projects:
 
 * valkey
 
-* celery
+* Ray
 
 * poudriere
 
-* poudriere-nginx
+* CouchDB
 
-* podman-api
+* MongoDB
 
-* couchdb
+* Immich
 
+* GitLab
+
+* MailCow
+
+* Airflow
+
+* Paperless-ng
+
+* SourceHut
+
+* NextCloud
+
+* MinIO
+
+* HedgeDoc
+
+* Excalidraw
+
+* Ollama
+
+* n8n
+
+* Wireguard + ProCustodibus
 etc.
 
 
