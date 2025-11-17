@@ -1,0 +1,15 @@
+FROM ghcr.io/freebsd/freebsd-runtime:15.0.beta5@sha256:7ffa52fe32c50b110749096faf8bc22870deea9d618bd4dd292ef6bd881026f4
+
+RUN rm -f /usr/local/etc/pkg/repos/base.conf
+
+COPY files/repos /usr/local/etc/pkg/repos
+
+ENV FREEBSD_VERSION 15.0.beta5@20251109200119+0000
+
+RUN /usr/bin/env pkg bootstrap -yf \
+    && /usr/bin/env pkg upgrade -yr FreeBSD-base \
+    && /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+CMD ["/bin/sh"]

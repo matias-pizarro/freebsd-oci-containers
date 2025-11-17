@@ -1,0 +1,1 @@
+FROM ghcr.io/freebsd/freebsd-dynamic:16.snap@sha256:868b973c8bcc54753e1a9eb244654aa86a302b460f9ca50b81e1fee16f6706c3

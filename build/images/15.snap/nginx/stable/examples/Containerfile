@@ -1,0 +1,2 @@
+FROM freebsd-nginx-stable
+COPY static-html-directory /usr/local/www/nginx

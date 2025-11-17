@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -Eeuo pipefail
+
+cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+# TBD: smoke test of built images
+exit 0

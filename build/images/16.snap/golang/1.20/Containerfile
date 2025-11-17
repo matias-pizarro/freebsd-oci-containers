@@ -1,0 +1,33 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:16.snap
+
+ENV PATH /usr/local/go/bin:$PATH
+
+ENV GOLANG_VERSION 1.20.14
+ENV PORT_VERSION 1.20.14_5
+
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD-ports \
+    lang/go120; \
+    for src in $(ls /usr/local/go120/bin); do \
+        ln -sv "/usr/local/go120/bin/$src" "/usr/local/bin/"; \
+    done; \
+# smoke test
+    go version; \
+    go120 version; \
+    /bin/rm -rf /var/db/pkg/*; \
+    /bin/rm -f /var/cache/pkg/*
+
+# don't auto-upgrade the gotoolchain
+# https://github.com/docker-library/golang/issues/472
+ENV GOTOOLCHAIN=local
+
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/local/go120/bin:$PATH
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
+WORKDIR $GOPATH

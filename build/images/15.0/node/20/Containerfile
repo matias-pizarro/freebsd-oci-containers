@@ -1,0 +1,27 @@
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:15.0
+
+RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
+
+ENV NODE_VERSION=20.19.5
+
+RUN /usr/bin/env pkg install -yr FreeBSD-ports www/node20 \
+    www/npm-node20 \
+    && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+    # smoke tests
+    && node --version \
+    && npm --version \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+ENV YARN_VERSION=1.22.19
+
+RUN /usr/bin/env pkg install -yr FreeBSD-ports www/yarn-node20 \
+    # smoke test
+    && yarn --version \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD [ "node" ]

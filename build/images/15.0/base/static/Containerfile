@@ -1,0 +1,1 @@
+FROM ghcr.io/freebsd/freebsd-static:15.0.beta5@sha256:35e4eb768d5f3a0ab4d132fbad4fcde9834f17e104914a6a30d9b27ca80882e2

@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "hook": {
+    "path": "/usr/local/etc/containers/hooks.d/zfs.sh"
+  },
+  "when": {
+    "annotations": {
+      "^zfs.dataset$": ".+"
+    }
+  },
+  "stages": ["createRuntime", "poststop"]
+}
+

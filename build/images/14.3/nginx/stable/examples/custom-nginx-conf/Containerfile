@@ -1,0 +1,2 @@
+FROM freebsd-nginx-stable
+COPY nginx.conf /usr/local/etc/nginx/nginx.conf

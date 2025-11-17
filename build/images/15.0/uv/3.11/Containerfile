@@ -1,0 +1,15 @@
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/python:freebsd15.0
+
+ENV UV_VERSION=0.9.6
+
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD-ports\
+    devel/py-uv@py311 \
+    devel/py-uv-build@py311 \
+    devel/py-uv-bump@py311 \
+    devel/py-uv-dynamic-versioning@py311; \
+    /usr/local/bin/uv --version; \
+    /bin/rm -rf /var/db/pkg/*; \
+    /bin/rm -f /var/cache/pkg/*
+
+CMD ["uv"]

@@ -1,0 +1,1 @@
+FROM ghcr.io/freebsd/freebsd-dynamic:14.3@sha256:70da28b88a98d98501f2a3ac8a8c5da6038822514b759b119427f5b8e65b7d68

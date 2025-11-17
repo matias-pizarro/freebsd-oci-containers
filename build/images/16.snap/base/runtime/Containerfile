@@ -1,0 +1,15 @@
+FROM ghcr.io/freebsd/freebsd-runtime:16.snap@sha256:c7e5410d273d437f26b594da4f0b2eb30ff542f1d8f1a560f50cee54ebbf8fb5
+
+RUN rm -f /usr/local/etc/pkg/repos/base.conf
+
+COPY files/repos /usr/local/etc/pkg/repos
+
+ENV FREEBSD_VERSION 16.snap@20251110202747+0000
+
+RUN /usr/bin/env pkg bootstrap -yf \
+    && /usr/bin/env pkg upgrade -yr FreeBSD-base \
+    && /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+CMD ["/bin/sh"]

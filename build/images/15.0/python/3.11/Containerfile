@@ -1,0 +1,46 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:15.0
+
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD-ports\
+    databases/py-gdbm@py311 \
+    databases/py-sqlite3@py311 \
+    devel/py-pip@py311 \
+    devel/py-setuptools@py311 \
+    devel/py-wheel@py311 \
+    lang/python311 \
+    x11-toolkits/py-tkinter@py311; \
+    /bin/rm -rf /var/db/pkg/*; \
+    /bin/rm -f /var/cache/pkg/*
+
+RUN set -eux; \
+    /bin/ln -s /usr/local/bin/pip /usr/local/bin/pip3; \
+    /bin/ln -s /usr/local/bin/pip /usr/local/bin/pip3.11;
+
+RUN set -eux; \
+    for src in idle3.11 pydoc3.11 python3.11 python3.11-config; do \
+        dst="$(echo "$src" | tr -d .11)"; \
+        [ -s "/usr/local/bin/$src" ]; \
+        [ ! -e "/usr/local/bin/$dst" ]; \
+        ln -sv "$src" "/usr/local/bin/$dst"; \
+    done
+
+RUN set -eux; \
+    for src in idle3 pydoc3 python3 python3-config; do \
+        dst="$(echo "$src" | tr -d 3)"; \
+        [ -s "/usr/local/bin/$src" ]; \
+        [ ! -e "/usr/local/bin/$dst" ]; \
+        ln -sv "$src" "/usr/local/bin/$dst"; \
+    done
+
+RUN set -eux; \
+    export PYTHONDONTWRITEBYTECODE=1; \
+    python3 --version; \
+    pip3 --version
+
+CMD ["python3"]
