@@ -137,6 +137,9 @@ def main():
                         "images": {},
                         "reference_os_major_minor_version": reference_os_major_minor_version
                     }
+                    project_context[project]["details"]["usage_file_available"] = (template_dir / "usage.md").exists()
+                    project_context[project]["details"]["license_file_available"] = (template_dir / "LICENSE").exists()
+
                 for project_version in p_details["versions"]:
                     pv_parts = project_version.split(".")
                     project_major_version = pv_parts[0]
@@ -278,10 +281,7 @@ cd "$(CDPATH= cd -- "$(dirname -- "$0")" && cd ../../../.. && pwd)"
                                 j2_env.get_template(file_stub).render(context)
                             )
 
-    # for os_major_version, ovmj_details in os_versions.items():
-    #     for os_minor_version, ovmi_details in ovmj_details.items():
-    #         for project, p_details in projects.items():
-    #             for project_version in p_details["versions"]:
+    # Render docs
     (build_dir / "mkdocs.yml").write_text(
         j2_env.get_template("oci_containers_mkdocs/mkdocs.yml.j2").render({"projects": project_context})
     )

@@ -64,8 +64,14 @@
       "context": {},
       "reference_project_version": "1.25",
       "upstreams": {
-        "main": "git@github.com:docker-library/golang.git",
-        "freebsd": "git@github.com:matias-pizarro/docker-golang.git"
+        "git": {
+          "main": "git@github.com:docker-library/golang.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-golang.git"
+        },
+        "https": {
+          "main": "https://github.com/docker-library/golang",
+          "freebsd": "https://github.com/matias-pizarro/docker-golang"
+        }
       },
       "ready_for_upstream_merge": false
     },
@@ -91,8 +97,14 @@
       },
       "reference_project_version": "stable",
       "upstreams": {
-        "main": "git@github.com:nginx/docker-nginx.git",
-        "freebsd": "git@github.com:matias-pizarro/docker-nginx.git"
+        "git": {
+          "main": "git@github.com:nginx/docker-nginx.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-nginx.git"
+        },
+        "https": {
+          "main": "https://github.com/nginx/docker-nginx",
+          "freebsd": "https://github.com/matias-pizarro/docker-nginx"
+        }
       },
       "ready_for_upstream_merge": false
     },
@@ -126,8 +138,14 @@
       },
       "reference_project_version": "24",
       "upstreams": {
-        "main": "git@github.com:nodejs/docker-node.git",
-        "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+        "git": {
+          "main": "git@github.com:nodejs/docker-node.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+        },
+        "https": {
+          "main": "https://github.com/nodejs/docker-node",
+          "freebsd": "https://github.com/matias-pizarro/docker-node"
+        }
       },
       "ready_for_upstream_merge": false
     },
@@ -145,8 +163,14 @@
       "context": {},
       "reference_project_version": "3.11",
       "upstreams": {
-        "main": "git@github.com:docker-library/python.git",
-        "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        "git": {
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
+        "https": {
+          "main": "https://github.com/docker-library/python",
+          "freebsd": "https://github.com/matias-pizarro/docker-python"
+        }
       },
       "ready_for_upstream_merge": true
     },
@@ -164,8 +188,14 @@
       "context": {},
       "reference_project_version": "3.11",
       "upstreams": {
-        "main": "git@github.com:astral-sh/uv.git",
-        "freebsd": "git@github.com:matias-pizarro/uv.git"
+        "git": {
+          "main": "git@github.com:astral-sh/uv.git",
+          "freebsd": "git@github.com:matias-pizarro/uv.git"
+        },
+        "https": {
+          "main": "https://github.com/astral-sh/uv",
+          "freebsd": "https://github.com/matias-pizarro/uv"
+        }
       },
       "ready_for_upstream_merge": false
     },
@@ -184,8 +214,14 @@
       "context": {},
       "reference_project_version": "18",
       "upstreams": {
-        "main": "git@github.com:/docker-library/postgres.git",
-        "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+        "git": {
+          "main": "git@github.com:/docker-library/postgres.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+        },
+        "https": {
+          "main": "https://github.com//docker-library/postgres",
+          "freebsd": "https://github.com/matias-pizarro/docker-postgres"
+        }
       },
       "ready_for_upstream_merge": true
     }

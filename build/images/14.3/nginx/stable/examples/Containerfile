@@ -1,2 +1,2 @@
-FROM freebsd-nginx-stable
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd
 COPY static-html-directory /usr/local/www/nginx

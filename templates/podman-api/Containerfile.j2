@@ -1,5 +1,5 @@
 FROM {% if registry.name %}{{ registry.name }}/{% endif %}{% if registry.username %}{{ registry.username }}/{% endif %}{% if registry.project %}{{ registry.project }}/{% endif %}nginx:freebsd{{ os_major_version }}.{{ short_os_minor_version }}
-FROM localhost/freebsd-nginx-stable:14.3
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd
 
 VOLUME /var/run/podman
 

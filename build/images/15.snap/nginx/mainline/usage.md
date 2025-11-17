@@ -3,13 +3,13 @@
 
 ```console
 $ podman run --replace --detach --name some-nginx \
--v ./examples/static-html-directory:/usr/local/www/nginx:ro freebsd-nginx-stable
+-v ./examples/static-html-directory:/usr/local/www/nginx:ro ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd
 ```
 
 Alternatively, a simple `Dockerfile` can be used to generate a new image that includes the necessary content (which is a much cleaner solution than the bind mount above):
 
 ```dockerfile
-FROM freebsd-nginx-stable
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd
 COPY static-html-directory /usr/local/www/nginx
 ```
 
@@ -38,7 +38,7 @@ You can mount your configuration file, or build a new image with it.
 If you wish to adapt the default configuration, use something like the following to get it from a running nginx container:
 
 ```console
-$ podman run --rm --entrypoint=cat freebsd-nginx-stable \
+$ podman run --rm --entrypoint=cat ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd \
     /usr/local/etc/nginx/nginx.conf > ./examples/custom-nginx-conf/nginx.conf
 ```
 
@@ -51,13 +51,13 @@ For information on the syntax of the nginx configuration files, see [the officia
 ```console
 $ podman run --replace --detach --name my-custom-nginx-container \
     -v ./examples/custom-nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro \
-    freebsd-nginx-stable
+    ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd
 ```
 
 ### Build a new image with your configuration file
 
 ```dockerfile
-FROM freebsd-nginx-stable
+FROM ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd
 COPY nginx.conf /usr/local/etc/nginx/nginx.conf
 ```
 
