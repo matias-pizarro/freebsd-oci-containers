@@ -1,6 +1,8 @@
 freebsd-oci-containers
 ======================
 
+## View Containerfiles and  [documentation](https://matias-pizarro.github.io/freebsd-oci-containers/images/) at [https://matias-pizarro.github.io/freebsd-oci-containers/images/](https://matias-pizarro.github.io/freebsd-oci-containers/images/)
+
 Centralize a repository of image definitions that should be as functionally similar as the official docker images as possible.
 
 The main goal is many-fold:
@@ -12,27 +14,29 @@ The main goal is many-fold:
 
 n projects x 6 versions x 3 architectures
 
-Target projects:
+### Available projects:
 
-* freebsd-base -> available
+* [FreeBSD-base](https://matias-pizarro.github.io/freebsd-oci-containers/images/base/) -> available
 
-* freebsd-zfs -> available (supports annotation to mount persistent ZFS datasets)
+* [FreeBSD-zfs](https://matias-pizarro.github.io/freebsd-oci-containers/images/zfs/) (supports annotation to mount persistent ZFS datasets)
 
-* postgres [13, 14, 15, 16, 17, 18] -> available (supports annotation to run sysv IPC-enabled containers)
+* [Postgres](https://matias-pizarro.github.io/freebsd-oci-containers/images/postgres/) (supports annotation to allow SysV IPC)
 
-* node [20, 22, 24, 25] -> available
+* [Node.js](https://matias-pizarro.github.io/freebsd-oci-containers/images/node/)
 
-* python [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> pending pkg build
+* [Python](https://matias-pizarro.github.io/freebsd-oci-containers/images/python/)
 
-* uv [3.11] -> available [3.10, 3.12, 3.13, 3.14] -> pending pkg build
+* [uv](https://matias-pizarro.github.io/freebsd-oci-containers/images/uv/)
 
-* nginx [stable, mainline] -> available
+* [Nginx](https://matias-pizarro.github.io/freebsd-oci-containers/images/nginx/)
+
+* [Go](https://matias-pizarro.github.io/freebsd-oci-containers/images/golang/)
 
 * nginx + poudriere UI -> available
 
 * nginx + podman-api -> available
 
-* go
+### Coming soon
 
 * pulumi
 

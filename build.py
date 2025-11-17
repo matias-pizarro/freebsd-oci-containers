@@ -158,12 +158,12 @@ def main():
                     if p_details["type"] == 'os_variant' \
                         and os_name == "freebsd" \
                         and project_version in ["static", "dynamic"]:
-                        build_project = False
+                        build_image = False
                     elif project in ["python", "uv"] and project_version != "3.11":
                         # disabled until we deploy a poudriere + pkg server supporting 3.10 and 3.12 to 3.14 flavours
-                        build_project = False
+                        build_image = False
                     else:
-                        build_project = True
+                        build_image = True
 
                     # ALL
                     full_image_tag = f"{project_alias}:{project_major_minor_patch_version}-{tag_os_name}{os_major_minor_version}"
@@ -232,13 +232,14 @@ def main():
                         "push_registries": push_registries,
                         "tag_last_pushed": dt.datetime.fromisoformat(tag_last_pushed).strftime("%Y%m%d%H%M%S%z"),
                         "base_image_digest": base_image_digest,
+                        "build_image": build_image,
                         "extra": p_details["context"],
                     }
                     project_context[project]["images"][full_image_tag] = context
                     shutil.copytree(template_dir, image_dir, ignore=shutil.ignore_patterns('*.j2'))
 
                     # Render scripts
-                    if build_project:
+                    if build_image:
                         by_os_version_dir = build_scripts_dir / "by_os_version" / f"{os_name}{os_major_minor_version}"
                         by_os_version_dir.mkdir(parents=True,exist_ok=True)
                         by_project_dir = build_scripts_dir / "by_project" / project_alias
