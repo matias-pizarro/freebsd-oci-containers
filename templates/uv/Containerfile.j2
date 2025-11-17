@@ -1,0 +1,15 @@
+FROM {% if registry.name %}{{ registry.name }}/{% endif %}{% if registry.username %}{{ registry.username }}/{% endif %}{% if registry.project %}{{ registry.project }}/{% endif %}python:freebsd{{ os_major_version }}.{{ short_os_minor_version }}
+
+ENV UV_VERSION=0.9.6
+
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD-ports\
+    devel/py-uv@py{{ project_major_version }}{{ project_minor_version }} \
+    devel/py-uv-build@py{{ project_major_version }}{{ project_minor_version }} \
+    devel/py-uv-bump@py{{ project_major_version }}{{ project_minor_version }} \
+    devel/py-uv-dynamic-versioning@py{{ project_major_version }}{{ project_minor_version }}; \
+    /usr/local/bin/uv --version; \
+    /bin/rm -rf /var/db/pkg/*; \
+    /bin/rm -f /var/cache/pkg/*
+
+CMD ["uv"]

@@ -72,7 +72,20 @@ Target projects:
 
 * n8n
 
+* PHP
+
+* MariaDB
+
 * Wireguard + ProCustodibus
+
+* Controllers
+
+* fastapi
+
+* grafana
+
+
+
 etc.
 
 

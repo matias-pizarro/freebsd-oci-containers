@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -Eeuo pipefail
+
+cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+podman build \
+    --env IGNORE_OSVERSION=yes \
+    --env ABI=FreeBSD:{{ os_major_version }}:$(sysctl -n hw.machine_arch) \
+    --env OSVERSION={{ os_major_version }}0{{ os_minor_version_digit }}000 \
+    --env VERSION_MINOR={{ os_minor_version }} \
+    --no-hosts \{% for tag in image_tags %}
+    --tag {{ tag }} \{% endfor %}
+    --file Containerfile

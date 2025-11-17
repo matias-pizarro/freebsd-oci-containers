@@ -1,259 +1,468 @@
 {
-  "14": {
-    "projects": {
-      "node": {
-        "versions": [
-          "20",
-          "22",
-          "24",
-          "25"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:nodejs/docker-node.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
-        },
-        "ready_for_upstream_merge": false
-      },
-      "python": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:docker-library/python.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
-        },
-        "ready_for_upstream_merge": true
-      },
-      "uv": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:astral-sh/uv.git",
-          "freebsd": "git@github.com:matias-pizarro/uv.git"
-        },
-        "ready_for_upstream_merge": false
-      },
-      "postgres": {
-        "versions": [
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "18"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:/docker-library/postgres.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
-        },
-        "ready_for_upstream_merge": true
-      }
+  "registries": {
+    "local": {
+      "name": null,
+      "username": null,
+      "project": null
     },
-    "branches": {
+    "github": {
+      "name": "ghcr.io",
+      "slug": "github",
+      "username": "matias-pizarro",
+      "project": "freebsd-oci-containers"
+    },
+    "docker": {
+      "name": "docker.io",
+      "slug": "docker",
+      "username": "matiaspizarro",
+      "project": null
+    },
+    "quay": {
+      "name": "quay.io",
+      "slug": "quay",
+      "username": "matiaspizarro",
+      "project": null
+    }
+  },
+  "projects": {
+    "base": {
+      "name": "Base",
+      "slug": "base",
+      "type": "os_variant",
+      "versions": [
+        "static",
+        "dynamic",
+        "runtime"
+      ],
+      "context": {},
+      "reference_project_version": "runtime"
+    },
+    "zfs": {
+      "name": "ZFS",
+      "slug": "zfs",
+      "type": "os_variant",
+      "versions": [
+        "static",
+        "dynamic",
+        "runtime"
+      ],
+      "context": {},
+      "reference_project_version": "runtime"
+    },
+    "golang": {
+      "name": "Go",
+      "slug": "golang",
+      "type": "upstream_adaptation",
+      "versions": [
+        "1.20.14.5",
+        "1.21.13.5",
+        "1.22.12.4",
+        "1.23.12",
+        "1.24.9",
+        "1.25.4"
+      ],
+      "context": {},
+      "reference_project_version": "1.25",
+      "upstreams": {
+        "main": "git@github.com:docker-library/golang.git",
+        "freebsd": "git@github.com:matias-pizarro/docker-golang.git"
+      },
+      "ready_for_upstream_merge": false
+    },
+    "nginx": {
+      "name": "Nginx",
+      "slug": "nginx",
+      "type": "upstream_adaptation",
+      "versions": [
+        "stable",
+        "mainline"
+      ],
+      "context": {
+        "stable": {
+          "pkg_version": "full",
+          "nginx_version": "1.28.0",
+          "njs_version": "0.9.3"
+        },
+        "mainline": {
+          "pkg_version": "devel",
+          "nginx_version": "1.29.2",
+          "njs_version": "0.9.3"
+        }
+      },
+      "reference_project_version": "stable",
+      "upstreams": {
+        "main": "git@github.com:nginx/docker-nginx.git",
+        "freebsd": "git@github.com:matias-pizarro/docker-nginx.git"
+      },
+      "ready_for_upstream_merge": false
+    },
+    "node": {
+      "name": "Node.js",
+      "slug": "node",
+      "type": "upstream_adaptation",
+      "versions": [
+        "20",
+        "22",
+        "24",
+        "25"
+      ],
+      "context": {
+        "20": {
+          "node_version": "20.19.5",
+          "yarn_version": "1.22.19"
+        },
+        "22": {
+          "node_version": "22.19.0",
+          "yarn_version": "1.22.19"
+        },
+        "24": {
+          "node_version": "24.10.0",
+          "yarn_version": "1.22.19"
+        },
+        "25": {
+          "node_version": "25.0.0",
+          "yarn_version": "1.22.19"
+        }
+      },
+      "reference_project_version": "24",
+      "upstreams": {
+        "main": "git@github.com:nodejs/docker-node.git",
+        "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+      },
+      "ready_for_upstream_merge": false
+    },
+    "python": {
+      "name": "Python",
+      "slug": "python",
+      "type": "upstream_adaptation",
+      "versions": [
+        "3.10",
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14"
+      ],
+      "context": {},
+      "reference_project_version": "3.11",
+      "upstreams": {
+        "main": "git@github.com:docker-library/python.git",
+        "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+      },
+      "ready_for_upstream_merge": true
+    },
+    "uv": {
+      "name": "uv",
+      "slug": "uv",
+      "type": "upstream_adaptation",
+      "versions": [
+        "3.10",
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14"
+      ],
+      "context": {},
+      "reference_project_version": "3.11",
+      "upstreams": {
+        "main": "git@github.com:astral-sh/uv.git",
+        "freebsd": "git@github.com:matias-pizarro/uv.git"
+      },
+      "ready_for_upstream_merge": false
+    },
+    "postgres": {
+      "name": "Postgres",
+      "slug": "postgres",
+      "type": "upstream_adaptation",
+      "versions": [
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18"
+      ],
+      "context": {},
+      "reference_project_version": "18",
+      "upstreams": {
+        "main": "git@github.com:/docker-library/postgres.git",
+        "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+      },
+      "ready_for_upstream_merge": true
+    }
+  },
+  "os_reference_versions": {
+    "14": "3",
+    "15": "0",
+    "16": "snapshot",
+    "reference_os_major_version": "14"
+  },
+  "os_security_patches": {
+    "14.3": "p5"
+  },
+  "tags_last_pushed": {},
+  "os_versions": {
+    "14": {
       "3": {
-        "base_image": "ghcr.io/freebsd/freebsd-runtime:14.3@sha256:3a5ffe995405b5f6300797b38d87328a267bbeeb550d3707c9c5e0a76827a978"
+        "static": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "dynamic": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "runtime": {
+          "amd64": "",
+          "aarch64": ""
+        }
       },
       "snapshot": {
-        "base_image": "ghcr.io/freebsd/freebsd-runtime:14.snap@sha256:8fd03f4c8ef2adf69bfef0f0295017f399e0b15c126798c3a4bc2b6987f3d99b"
+        "static": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "dynamic": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "runtime": {
+          "amd64": "",
+          "aarch64": ""
+        }
+      }
+    },
+    "15": {
+      "0.beta5": {
+        "static": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "dynamic": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "runtime": {
+          "amd64": "",
+          "aarch64": ""
+        }
+      },
+      "snapshot": {
+        "static": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "dynamic": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "runtime": {
+          "amd64": "",
+          "aarch64": ""
+        }
+      }
+    },
+    "16": {
+      "snapshot": {
+        "static": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "dynamic": {
+          "amd64": "",
+          "aarch64": ""
+        },
+        "runtime": {
+          "amd64": "",
+          "aarch64": ""
+        }
       }
     }
   },
-  "15": {
-    "projects": {
-      "node": {
-        "versions": [
-          "20",
-          "22",
-          "24",
-          "25"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:nodejs/docker-node.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+  "image_digests": {
+    "14": {
+      "3": {
+        "dynamic": {
+          "aarch64": "sha256:dfc1a5cdedb424d7098c822052ae88307492cfedacd648e7cf7342c2ca1938ac",
+          "amd64": "sha256:a12e54f75f6db1e2962167c989dcb4c49586be03a8432270dba345fe91c5ea5c",
+          "index": "sha256:70da28b88a98d98501f2a3ac8a8c5da6038822514b759b119427f5b8e65b7d68"
         },
-        "ready_for_upstream_merge": false
+        "runtime": {
+          "aarch64": "sha256:8dd2d7a7e72a2ce3f05223a32f1659dc20cd6ca18c81588fd93e330f1c788a78",
+          "amd64": "sha256:d562aecf3be5ad03f9c4fc61b5c8a02087e0195a538ebc99148ad2015cc3a5cc",
+          "index": "sha256:3a5ffe995405b5f6300797b38d87328a267bbeeb550d3707c9c5e0a76827a978"
+        },
+        "static": {
+          "aarch64": "sha256:4e77ec764653cf9f6463aac597ea73357537c683d345e249fce4ce27d786d194",
+          "amd64": "sha256:c62c238853b8b5b06a66047ee4b94c0136601353ff1eee7812d8ddddbd676e36",
+          "index": "sha256:ad289f6c4bb15e05b6f8f6f4a26a3ecd576fb30d9997d16ba1886a6c83009587"
+        },
+        "tag_last_pushed": "2025-09-22T22:33:16.914774Z"
       },
-      "python": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:docker-library/python.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+      "3-beta4": {
+        "dynamic": {
+          "aarch64": "sha256:3ac09e8670df2023133494dde5660dc8c904e905402e15e36f176faa42e008b4",
+          "amd64": "sha256:c0d4cb5e419f61a5c3807269ca5b8e04af12739a447aea7469b311bbccfe83c5",
+          "index": "sha256:150283147967608a71d9ae24a11bf1d46290dbfc76ab1cdc23d57a56c98a46e5"
         },
-        "ready_for_upstream_merge": true
+        "runtime": {
+          "aarch64": "sha256:68ca6232cbdac757b92e374f13300f383cd5ae5f1aa7ef6c59fc908659e6f3a6",
+          "amd64": "sha256:ee114554248936864edb25bfc0012ee7438417f0bab308b46fb219b3322f20e5",
+          "index": "sha256:671620f35a88c5316da2b5e80265b3f0eadd2a570809fd96480413b12f8c62bb"
+        },
+        "static": {
+          "aarch64": "sha256:c3a9e4bcca5ed3f8b2343e64bca40c07a1f5e78b2ee61f510961bbc38419d40b",
+          "amd64": "sha256:f801743f81807bd013094f90e474d9c9358c171c44318dc77452aef815248a5a",
+          "index": "sha256:d207ecc4c8a32e667c75a59adba973ce72a1c65151bd13e84e677ad5f56a3b69"
+        },
+        "tag_last_pushed": "2025-09-22T22:33:04.083053Z"
       },
-      "uv": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:astral-sh/uv.git",
-          "freebsd": "git@github.com:matias-pizarro/uv.git"
+      "3.rc1": {
+        "dynamic": {
+          "aarch64": "sha256:e6c76237cc312316a319ac95f6bb4ecf76a9406284b63c66fc02c3872048dd62",
+          "amd64": "sha256:b58d7efcf29bad73f0e616931064e4ce5df934cf981a3f70a85732706f111e62",
+          "index": "sha256:1007ddfe03b5dce274e2b2a6dac5f1f3749e38ad3aea5ad3c7f14ec0372f7597"
         },
-        "ready_for_upstream_merge": false
+        "runtime": {
+          "aarch64": "sha256:52d501d164357a420a1a2ea56c473bd10f71c3926b31f6f455438f077bc084fa",
+          "amd64": "sha256:72927e4b1093c981c7dedd2fbcecb5e307271f851f2e59b3cf46f857affd2657",
+          "index": "sha256:3e401b40dd2217eefaacf87e4f1fccaad334f73af8caf9a8c9cb8265001f5c9c"
+        },
+        "static": {
+          "aarch64": "sha256:6326a345c0575a066c24997cb512c8a3f69a0fab1f755cb5d02b95a953e38a45",
+          "amd64": "sha256:34884f5ab33feb2a7261ec5d5e037b092f880bffa6e4196bdc8b5dc8ffbaf613",
+          "index": "sha256:51a4e1adcaf56ab876cc72f65508798a53262d4ab3eaafbba29ab682bbee8052"
+        },
+        "tag_last_pushed": "2025-09-22T22:33:10.437982Z"
       },
-      "postgres": {
-        "versions": [
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "18"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:/docker-library/postgres.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+      "snapshot": {
+        "dynamic": {
+          "aarch64": "sha256:d59014c475d743396542151915fc5540bb8fb4fd075c38fcebb217732207d34c",
+          "amd64": "sha256:e44ae1c83001083343289785ae7a7eb02188f4442caea90f0049aa79f06bfa84",
+          "index": "sha256:0c62569770f635a526d50e176512bedfef848c9f712ed59ac0f9fdeddf5c6d03"
         },
-        "ready_for_upstream_merge": true
+        "runtime": {
+          "aarch64": "sha256:0829046cac875dcf5478380f40effcb9abd2d2de8a4010d7bfac607b30076135",
+          "amd64": "sha256:ed9343b8cec679da264bbdde187ee261e808eea185e6b15dc8f595f240b88d6a",
+          "index": "sha256:e04750fed6540720e2a831d0e536a79e53f1ad48e0b18fdf98c4e95b70931e95"
+        },
+        "static": {
+          "aarch64": "sha256:1d3e7c7fd044bfdca900c8d70d5ab0314ea090688b54d182215858d834fe53e2",
+          "amd64": "sha256:acfb25eae48b9e61e1c4839d507057fe86221b8f5a779f28dde69604caaf1349",
+          "index": "sha256:8194a81b9fcd32fe1a15c98e584cc67202ebd94fc8876901f147eb70a88e6e6d"
+        },
+        "tag_last_pushed": "2025-11-07T00:54:18.322494Z"
       }
     },
-    "branches": {
+    "15": {
+      "0.beta2": {
+        "dynamic": {
+          "aarch64": "sha256:0ca15e6877e1ee3dd8988586c16c72431f298e86540562116978b9bed879de7c",
+          "amd64": "sha256:9ff6e61630dff1eadeee613e1ae9da73da28ae504e234ec5b09122c04e19099e",
+          "index": "sha256:09f4fb42d13372d40fef54b5dcfd71db8ee97db403babc23e92526cfa7d0a878"
+        },
+        "runtime": {
+          "aarch64": "sha256:034705cebc48b0c63627a49abcfcef16fe732977c900ca154b5353be0f71948f",
+          "amd64": "sha256:dd214f81c7f9616a77ca493d2d2ae61aa43e3704bfc7130252d0437fb973edea",
+          "index": "sha256:e2f9e27a6adaba3967c2ea06bb3b69686b6955ad12c9f8e3bfce60360c0be0de"
+        },
+        "static": {
+          "aarch64": "sha256:98dc68b5f697b693d8315f4114647d8599f16daed63d040c26ac85f3b7754ba5",
+          "amd64": "sha256:5d81bc0dd14b1fcd7e13a3c04dff65cf1b6039412c14fa08685f184dc6ea5041",
+          "index": "sha256:3761e006e6534b2aec93a8afa4fd76a8903c222c7ca964eb9f8608456dbf2328"
+        },
+        "tag_last_pushed": "2025-10-18T02:39:06.367728Z"
+      },
+      "0.beta3": {
+        "dynamic": {
+          "aarch64": "sha256:05cc3b026971b8f99ab07d2ff6f5f6007275c36448532f4d05481655ccf0d43e",
+          "amd64": "sha256:4b6f987feed53ff3dda0648f08f9c73d11727e887784d57345eda957305eef67",
+          "index": "sha256:468ad49001648cf4a04ae47180d7eddae3d8a952f4ca890b0b6c655199d2c47d"
+        },
+        "runtime": {
+          "aarch64": "sha256:be5c1cde7b24b0b7dd5c41c50dd5ca9463834312370b13fb9c5db50322d6e8ad",
+          "amd64": "sha256:991f6b592aad646913fe6963e0dfe44fe0c6e0a43dc7bd143aaf119baee5fed4",
+          "index": "sha256:d97ba064014d0708a278757bdb2e1271c5fcdd9973f09ca0bdb13312730edfbf"
+        },
+        "static": {
+          "aarch64": "sha256:e04ab3f20ba53ea7dc5c8062804475eba7b1af0c3d891facab25e539f69bb707",
+          "amd64": "sha256:675119a464b29f47eab94a035c5b30c3eea4911f273cb063efb04f047504c0a2",
+          "index": "sha256:c859f9d6840d5c598f77c270a7e493141001b652727559c18e7157e2e9435d6f"
+        },
+        "tag_last_pushed": "2025-10-24T17:36:39.552052Z"
+      },
+      "0.beta4": {
+        "dynamic": {
+          "aarch64": "sha256:9c17748654d477b2c7a110729f629674f5ff15fe6bcde9442355302536eea905",
+          "amd64": "sha256:e1dd6eb815f2c608fe19476f9d33fcfc847c6a61b171133bfa2c35ce2997d0bf",
+          "index": "sha256:8c1895dc5c715981dd97b9f098276a4d45fa7fa0fc25348f2f6e999672f0be1e"
+        },
+        "runtime": {
+          "aarch64": "sha256:5ed5e3374e49395e4b4c6da481c6285ade1a9cd5484e2641389b8e481e6dd10f",
+          "amd64": "sha256:dafb3e47a8cd3a32f9f6eccd9704093070d82c4770eae060d40c8c2a916c0890",
+          "index": "sha256:85c12db4b0aa58480219bda74fa0ea11bbd99e1485d19961125d70483dfc9c88"
+        },
+        "static": {
+          "aarch64": "sha256:344c586a1234c000f437863f4e28d3eff1ce53e8dfa2cc41b07cfce97e35e953",
+          "amd64": "sha256:53ee3ee2cf2dcadcbf5a0d79af8aa6a05d73551add16cfa5f14f4c80601ae9d4",
+          "index": "sha256:30ea10d95374d19b34d27d43e855501a754ce5f1447febd39f8f0f314378b8e5"
+        },
+        "tag_last_pushed": "2025-10-31T20:07:11.254235Z"
+      },
+      "0.beta5": {
+        "dynamic": {
+          "aarch64": "sha256:cb8c75a84985c5d3045ab233927d7315c8637f4b5b84bbe4e8eb018267f873c6",
+          "amd64": "sha256:d3bc83668c8d99a0ace4888487bcd970a31c9f1b29c8795b5f62d10a227c0d5d",
+          "index": "sha256:33dfa856008b5b041d20cbaf29a48943895fce1b3793ca99763248e8ca597f92"
+        },
+        "runtime": {
+          "aarch64": "sha256:5597e99008af4bb63e85639f2321cc87a2b4ad5ac575de0f20b1b6f452072954",
+          "amd64": "sha256:c358c29dd69c6e0d9a6bc6f323d67554f420c3164dca8b2e1041bf5478820e8e",
+          "index": "sha256:7ffa52fe32c50b110749096faf8bc22870deea9d618bd4dd292ef6bd881026f4"
+        },
+        "static": {
+          "aarch64": "sha256:745a8be40df236aba7b7939b744044e530ae3b6f92c3740912932d3156bf71cf",
+          "amd64": "sha256:186e875d64d373b0e53706e45eb12c5891c2f855d44b2f656da67303e85d5dee",
+          "index": "sha256:35e4eb768d5f3a0ab4d132fbad4fcde9834f17e104914a6a30d9b27ca80882e2"
+        },
+        "tag_last_pushed": "2025-11-09T20:01:19.365765Z"
+      },
       "snapshot": {
-        "base_image": "ghcr.io/freebsd/freebsd-runtime:15.snap@sha256:62135da7877ecfa1e9487d973a844de36c8d9674b53cb25307842c5e56004bcb"
-      }
-    }
-  },
-  "16": {
-    "projects": {
-      "node": {
-        "versions": [
-          "20",
-          "22",
-          "24",
-          "25"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:nodejs/docker-node.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+        "dynamic": {
+          "aarch64": "sha256:2e179655f752bb305e31133c030d4b9ec9b36541b4a2bcb967d0a02ac8ae19ad",
+          "amd64": "sha256:ef430bef1b1377c5f45bc4a7ed6f8ace56c426aaa3d912a98edf3807f2d7066c",
+          "index": "sha256:e2d66d1397ed76255a0c6b784ccf7192f7320140484c2f54530b461315f9d5cd"
         },
-        "ready_for_upstream_merge": false
-      },
-      "python": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:docker-library/python.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        "runtime": {
+          "aarch64": "sha256:7032ffc1749cd7c154622c3c4a30817052a239d445e2fef5810473b9a092e572",
+          "amd64": "sha256:4c07784ecf42df2fe2bf8a99e950b87d89c16642de910abed21f7c796c5eb7cb",
+          "index": "sha256:e9d20968d9b63fa59981a1516544c2548378a986547e3e11ffc791474fc4d7ea"
         },
-        "ready_for_upstream_merge": true
-      },
-      "uv": {
-        "versions": [
-          "3.10",
-          "3.11",
-          "3.12",
-          "3.13",
-          "3.14"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:astral-sh/uv.git",
-          "freebsd": "git@github.com:matias-pizarro/uv.git"
+        "static": {
+          "aarch64": "sha256:1ccf86ed23fb5171f03ce320e6565bdb67a445af838f7f72380ab48be1dfba98",
+          "amd64": "sha256:a5b29024d6c5d4187f9eaf6fbe6b1691d1d465d4f26e64ba06571eec1b90a03d",
+          "index": "sha256:13f5bc7efbbccda754f7be1c0f531716cb8f80226d92d4bd43fbc16820df17eb"
         },
-        "ready_for_upstream_merge": false
-      },
-      "postgres": {
-        "versions": [
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "18"
-        ],
-        "arches": [
-          "amd64",
-          "aarch64",
-          "riscv64"
-        ],
-        "upstreams": {
-          "main": "git@github.com:/docker-library/postgres.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
-        },
-        "ready_for_upstream_merge": true
+        "tag_last_pushed": "2025-11-07T00:36:52.569798Z"
       }
     },
-    "branches": {
+    "16": {
       "snapshot": {
-        "base_image": "ghcr.io/freebsd/freebsd-runtime:16.snap@sha256:06265958eb908b3a32a2a4e1d5a9c1d1e1ca0414f3af0f203ff66376abed089d"
+        "dynamic": {
+          "aarch64": "sha256:d39d7fc44e53cd658a80d6b9119591d5524432c4a19d11057edf77a0e48af495",
+          "amd64": "sha256:a1b48e3668900cba727ce0fe1b5f26a88795da11acd8c31158b516061f960a8a",
+          "index": "sha256:868b973c8bcc54753e1a9eb244654aa86a302b460f9ca50b81e1fee16f6706c3"
+        },
+        "runtime": {
+          "aarch64": "sha256:bbf37725ec7260e3d29926b537d4336b358c66ff56004a164664ead2bfcac24c",
+          "amd64": "sha256:c2d20ba4f6229ab23db5311370ac1ff999b3556e33fb6eb1083c662325d71999",
+          "index": "sha256:c7e5410d273d437f26b594da4f0b2eb30ff542f1d8f1a560f50cee54ebbf8fb5"
+        },
+        "static": {
+          "aarch64": "sha256:6e57753e557f37d0d6afa3ae2b240a27495e11d41008e0f742395a1014284077",
+          "amd64": "sha256:d167f8833e9b30ed367f8319a8ac0cef53164d0d53fc1e9d7c3cde2dd81c473b",
+          "index": "sha256:ad4febfbc02d3fa11aca7cd96525a837333601009e8f13230f71f13b41b4229b"
+        },
+        "tag_last_pushed": "2025-11-10T20:27:47.516518Z"
       }
     }
   }

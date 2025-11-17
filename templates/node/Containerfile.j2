@@ -1,0 +1,27 @@
+FROM {% if registry.name %}{{ registry.name }}/{% endif %}{% if registry.username %}{{ registry.username }}/{% endif %}{% if registry.project %}{{ registry.project }}/{% endif %}freebsd-zfs:{{ os_major_version }}.{{ short_os_minor_version }}
+
+RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
+
+ENV NODE_VERSION={{ extra[project_version]["node_version"] }}
+
+RUN /usr/bin/env pkg install -yr FreeBSD-ports www/node{{ project_version }} \
+    www/npm-node{{ project_version }} \
+    && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+    # smoke tests
+    && node --version \
+    && npm --version \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+ENV YARN_VERSION={{ extra[project_version]["yarn_version"] }}
+
+RUN /usr/bin/env pkg install -yr FreeBSD-ports www/yarn-node{{ project_version }} \
+    # smoke test
+    && yarn --version \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD [ "node" ]

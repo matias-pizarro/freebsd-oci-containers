@@ -1,0 +1,33 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM {% if registry.name %}{{ registry.name }}/{% endif %}{% if registry.username %}{{ registry.username }}/{% endif %}{% if registry.project %}{{ registry.project }}/{% endif %}freebsd-zfs:{{ os_major_version }}.{{ short_os_minor_version }}
+
+ENV PATH /usr/local/go/bin:$PATH
+
+ENV GOLANG_VERSION {{ project_major_version }}.{{ project_minor_version }}.{{ project_patch_version }}
+ENV PORT_VERSION {{ project_major_version }}.{{ project_minor_version }}.{{ project_patch_version }}_{{ project_port_revision }}
+
+RUN set -eux; \
+    /usr/bin/env pkg install -yr FreeBSD-ports \
+    lang/go{{ project_major_version }}{{ project_minor_version }}; \
+    for src in $(ls /usr/local/go{{ project_major_version }}{{ project_minor_version }}/bin); do \
+        ln -sv "/usr/local/go{{ project_major_version }}{{ project_minor_version }}/bin/$src" "/usr/local/bin/"; \
+    done; \
+# smoke test
+    go version; \
+    go{{ project_major_version }}{{ project_minor_version }} version; \
+    /bin/rm -rf /var/db/pkg/*; \
+    /bin/rm -f /var/cache/pkg/*
+
+# don't auto-upgrade the gotoolchain
+# https://github.com/docker-library/golang/issues/472
+ENV GOTOOLCHAIN=local
+
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/local/go{{ project_major_version }}{{ project_minor_version }}/bin:$PATH
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
+WORKDIR $GOPATH

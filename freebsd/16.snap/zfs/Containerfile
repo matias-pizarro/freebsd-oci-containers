@@ -1,8 +1,0 @@
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-base:16.snap
-
-RUN /usr/bin/env pkg install -yr FreeBSD bash \
-    && rm -f /var/cache/pkg/*
-RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-zfs \
-    && rm -f /var/cache/pkg/*
-
-CMD ["/bin/sh"]

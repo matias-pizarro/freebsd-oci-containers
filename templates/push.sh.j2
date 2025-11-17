@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+set -Eeuo pipefail
+
+cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+{% for push_registry_slug, push_registry in push_registries.items() %}
+# {{ push_registry_slug|capitalize }}
+echo
+echo "################################################################################"
+IMAGE_PATH="{{ push_registry.name }}/{{ push_registry.username }}{% if push_registry.project %}/{{ push_registry.project }}{% endif %}"
+echo "Pushing {{ project_alias }}-{{ project_version }} to ${IMAGE_PATH}"
+{% for tag in image_tags %}
+echo
+echo "{{ tag }}"
+podman tag localhost/{{ tag }} "${IMAGE_PATH}"/{{ tag }}
+podman push "${IMAGE_PATH}"/{{ tag }}
+{% endfor %}
+{% endfor %}

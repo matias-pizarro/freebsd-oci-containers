@@ -1,0 +1,16 @@
+FROM ghcr.io/freebsd/freebsd-{{ project_version }}:{{ os_major_version }}.{{ short_os_minor_version }}{% if os_patch_version|length %}.{{ os_patch_version }}{% endif %}@{{ base_image_digest }}
+{% if project_version == "runtime" %}
+RUN rm -f /usr/local/etc/pkg/repos/base.conf
+
+COPY files/repos /usr/local/etc/pkg/repos
+
+ENV FREEBSD_VERSION {{ os_major_version }}.{{ short_os_minor_version }}{{ os_security_patch or "" }}{% if os_patch_version|length %}.{{ os_patch_version }}{% endif %}@{{ tag_last_pushed }}
+
+RUN /usr/bin/env pkg bootstrap -yf \
+    && /usr/bin/env pkg upgrade -yr FreeBSD-base \
+    && /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-utilities \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+CMD ["/bin/sh"]
+{% endif %}

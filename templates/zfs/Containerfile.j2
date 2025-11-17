@@ -1,0 +1,8 @@
+FROM {% if registry.name %}{{ registry.name }}/{% endif %}{% if registry.username %}{{ registry.username }}/{% endif %}{% if registry.project %}{{ registry.project }}/{% endif %}freebsd-base:{{ project_version }}-{{ os_major_version }}.{{ short_os_minor_version }}
+
+RUN /usr/bin/env pkg install -yr FreeBSD-ports bash \
+    && /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-zfs \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+CMD ["/bin/sh"]
