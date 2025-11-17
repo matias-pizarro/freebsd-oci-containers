@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "hook": {
+    "path": "/usr/local/etc/containers/hooks.d/sysv.sh"
+  },
+  "when": {
+    "annotations": {
+      "^sysv$": ".+"
+    }
+  },
+  "stages": ["createRuntime"]
+}

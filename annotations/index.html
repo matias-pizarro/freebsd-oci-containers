@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../images/postgres/">
+        <link rel="prev" href="../getting_started/">
       
       
-        <link rel="next" href="../changelog/">
+        <link rel="next" href="../images/">
       
       
       <link rel="icon" href="../img/favicon.ico">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Bibliography - FreeBSD OCI Containers</title>
+        <title>How to test ZFS and sysv IPC annotations - FreeBSD OCI Containers</title>
       
     
     
@@ -75,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#how-to-test-zfs-and-sysv-ipc-annotations" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -106,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Bibliography
+              How to test ZFS and sysv IPC annotations
             
           </span>
         </div>
@@ -264,11 +269,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../annotations/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -304,11 +311,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../bibliography/" class="md-tabs__link">
         
   
   
@@ -458,28 +463,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -492,7 +500,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Annotations
@@ -503,10 +511,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../annotations/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    How to test ZFS and sysv IPC annotations
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -517,6 +547,121 @@
   
 
       </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Page contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Page contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#activate-oci-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Activate OCI hooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add hooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Add hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0-clone-the-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      0. Clone the repo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-to-mount-persistent-zfs-datasets-in-any-given-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. To mount persistent ZFS datasets in any given container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-to-enable-sysv-ipc-in-any-given-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. To enable sysv IPC in any given container
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-with-a-postgresql-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test with a PostgreSQL container
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test with a PostgreSQL container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-create-a-persistent-zfs-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Create a persistent ZFS dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-initialize-a-postgresql-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Initialize a PostgreSQL instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-run-a-postgresql-server-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Run a PostgreSQL server instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -529,7 +674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../annotations/zfs.md" class="md-nav__link">
+      <a href="zfs.md" class="md-nav__link">
         
   
   
@@ -552,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../annotations/sysv_ipc.md" class="md-nav__link">
+      <a href="sysv_ipc.md" class="md-nav__link">
         
   
   
@@ -838,17 +983,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
         
   
   
@@ -859,7 +997,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -980,6 +1117,109 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Page contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#activate-oci-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Activate OCI hooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add hooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Add hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0-clone-the-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      0. Clone the repo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-to-mount-persistent-zfs-datasets-in-any-given-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. To mount persistent ZFS datasets in any given container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-to-enable-sysv-ipc-in-any-given-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. To enable sysv IPC in any given container
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-with-a-postgresql-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test with a PostgreSQL container
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test with a PostgreSQL container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-create-a-persistent-zfs-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Create a persistent ZFS dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-initialize-a-postgresql-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Initialize a PostgreSQL instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-run-a-postgresql-server-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Run a PostgreSQL server instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -998,17 +1238,79 @@
   
 
 
-  <h1>Bibliography</h1>
-
+<h1 id="how-to-test-zfs-and-sysv-ipc-annotations">How to test ZFS and sysv IPC annotations<a class="headerlink" href="#how-to-test-zfs-and-sysv-ipc-annotations" title="Permanent link">&para;</a></h1>
 <ul>
-<li>https://docs.skunkwerks.at/s/fUiAmi4pE</li>
-<li>https://freebsdfoundation.org/blog/oci-containers-on-freebsd/</li>
-<li>https://www.youtube.com/watch?v=HV-wUUzRCMo</li>
-<li>https://people.freebsd.org/~dch/posts/2025-06-27-oci-zfs/</li>
-<li>https://hackmd.io/xA1CxQT8SfKLUpCiQz-tWA</li>
-<li>https://docs.google.com/spreadsheets/d/1IGk2uZd2TG3CUddFmWi6_7PygER08n0XlGmronXq0Pk/edit?gid=0#gid=0</li>
-<li>https://wiki.freebsd.org/Containers</li>
+<li>for a detailed explanation you can refer to <a href="https://people.freebsd.org/~dch/posts/2025-06-27-oci-zfs/">Dave Cottlehuber's tutorial</a></li>
+<li>for an extremely complete overview of all aspects of running containers on Freebsd you can refer to <a href="https://docs.skunkwerks.at/s/fUiAmi4pE#">Dave Cottlehuber's documentation page</a></li>
+<li>all praise and thanks be heaped on Doug Rabson, Samuel Karp and Alice Sowerby for their work</li>
 </ul>
+<h2 id="activate-oci-hooks">Activate OCI hooks<a class="headerlink" href="#activate-oci-hooks" title="Permanent link">&para;</a></h2>
+<p>Make sure <code>/usr/local/etc/containers/containers.conf</code> specifies the path to at least one  OCI hooks directory and that it is not commented, e.g.:</p>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">hooks_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="s2">&quot;/usr/local/etc/containers/hooks.d&quot;</span>,
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">]</span>
+</code></pre></div>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># execute as root</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/usr/local/etc/containers/hooks.d/
+</code></pre></div>
+<h2 id="add-hooks">Add hooks<a class="headerlink" href="#add-hooks" title="Permanent link">&para;</a></h2>
+<h3 id="0-clone-the-repo">0. Clone the repo<a class="headerlink" href="#0-clone-the-repo" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:matias-pizarro/freebsd-oci-containers.git
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>freebsd-oci-containers
+</code></pre></div>
+<h3 id="1-to-mount-persistent-zfs-datasets-in-any-given-container">1. To mount persistent ZFS datasets in any given container<a class="headerlink" href="#1-to-mount-persistent-zfs-datasets-in-any-given-container" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># execute as root</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cp<span class="w"> </span>-pf<span class="w"> </span>annotations/hooks.d/zfs*<span class="w"> </span>/usr/local/etc/containers/hooks.d/
+</code></pre></div>
+<h3 id="2-to-enable-sysv-ipc-in-any-given-container">2. To enable sysv IPC in any given container<a class="headerlink" href="#2-to-enable-sysv-ipc-in-any-given-container" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># execute as root</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>cp<span class="w"> </span>-pf<span class="w"> </span>annotations/hooks.d/sysv*<span class="w"> </span>/usr/local/etc/containers/hooks.d/
+</code></pre></div>
+<h2 id="test-with-a-postgresql-container">Test with a PostgreSQL container<a class="headerlink" href="#test-with-a-postgresql-container" title="Permanent link">&para;</a></h2>
+<h3 id="1-create-a-persistent-zfs-dataset">1. Create a persistent ZFS dataset<a class="headerlink" href="#1-create-a-persistent-zfs-dataset" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># execute as root</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>zfs<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">jailed</span><span class="o">=</span>on<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>-o<span class="w"> </span><span class="nv">mountpoint</span><span class="o">=</span>/var/db/postgres<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>zroot/jailed/postgres
+</code></pre></div>
+<h3 id="2-initialize-a-postgresql-instance">2. Initialize a PostgreSQL instance<a class="headerlink" href="#2-initialize-a-postgresql-instance" title="Permanent link">&para;</a></h3>
+<p>(You can find the Containerfile used to build this image <a href="https://github.com/matias-pizarro/freebsd-oci-containers/blob/main/freebsd/14.3/postgres/18/Containerfile">here</a>)</p>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># pg_major can be any major PostgreSQL version between 13 and 18 (included)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">pg_major</span><span class="o">=</span><span class="m">18</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">postgres_image</span><span class="o">=</span><span class="s2">&quot;ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-postgres</span><span class="si">${</span><span class="nv">pg_major</span><span class="si">}</span><span class="s2">:14.3&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>podman<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span>--annotation<span class="o">=</span><span class="s1">&#39;sysv=true&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span>--annotation<span class="o">=</span><span class="s1">&#39;zfs.dataset=zroot/jailed/postgres&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span>--env<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>password<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="si">${</span><span class="nv">postgres_image</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="m">770</span>:770<span class="w"> </span>/var/db/postgres
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>podman<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span>--annotation<span class="o">=</span><span class="s1">&#39;sysv=true&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span>--annotation<span class="o">=</span><span class="s1">&#39;zfs.dataset=zroot/jailed/postgres&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span>--env<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>password<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="si">${</span><span class="nv">postgres_image</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span>service<span class="w"> </span>postgresql<span class="w"> </span>initdb
+</code></pre></div>
+<h3 id="3-run-a-postgresql-server-instance">3. Run a PostgreSQL server instance<a class="headerlink" href="#3-run-a-postgresql-server-instance" title="Permanent link">&para;</a></h3>
+<p>This instance will be available for connections from the host via a socket at <code>/tmp/postgresql${pg_major}</code>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>podman<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>--annotation<span class="o">=</span><span class="s1">&#39;sysv=true&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>--volume<span class="w"> </span>/tmp/postgresql<span class="si">${</span><span class="nv">pg_major</span><span class="si">}</span>:/var/run/postgresql<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span>--env<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>password<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="si">${</span><span class="nv">postgres_image</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span>postgres<span class="w"> </span>-D<span class="w"> </span>/var/db/postgres/data<span class="si">${</span><span class="nv">pg_major</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">            </span>-c<span class="w"> </span><span class="nv">logging_collector</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">            </span>-c<span class="w"> </span><span class="nv">log_filename</span><span class="o">=</span>postgres.log<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">            </span>-c<span class="w"> </span><span class="nv">log_destination</span><span class="o">=</span>jsonlog<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">            </span>-k<span class="w"> </span>/var/run/postgresql
+</code></pre></div></p>
+<p>You can now connect to the server from another command line:</p>
+<div class="language-shell highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">pg_major</span><span class="o">=</span><span class="m">18</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>psql<span class="w"> </span>-h<span class="w"> </span>/tmp/postgresql<span class="si">${</span><span class="nv">pg_major</span><span class="si">}</span><span class="w"> </span>-U<span class="w"> </span>postgres
+</code></pre></div>
 
 
 
@@ -1046,7 +1348,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../images/postgres/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Postgres">
+          <a href="../getting_started/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Getting started">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1056,20 +1358,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Postgres
+                Getting started
               </div>
             </div>
           </a>
         
         
           
-          <a href="../changelog/" class="md-footer__link md-footer__link--next" aria-label="Next: Changelog">
+          <a href="../images/" class="md-footer__link md-footer__link--next" aria-label="Next: Postgres">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Changelog
+                Postgres
               </div>
             </div>
             <div class="md-footer__button md-icon">
