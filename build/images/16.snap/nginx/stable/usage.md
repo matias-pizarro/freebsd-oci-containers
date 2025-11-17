@@ -1,6 +1,4 @@
 
-# How to use this image
-
 ## Hosting some simple static content
 
 ```console

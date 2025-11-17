@@ -1,6 +1,6 @@
 site_name: FreeBSD OCI Containers
 site_description:  A repository of Podman/Docker images for FreeBSD
-strict: false
+strict: true
 repo_name: freebsd-oci-containers
 repo_url: https://github.com/matias-pizarro/freebsd-oci-containers
 theme:
@@ -100,6 +100,10 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+      combine_header_slug: true
   - tables
   - toc:
       permalink: true

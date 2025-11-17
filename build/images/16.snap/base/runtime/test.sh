@@ -4,4 +4,8 @@ set -Eeuo pipefail
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
 # TBD: smoke test of built images
+
+podman run -it --rm \
+    ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd nginx -v
+
 exit 0
