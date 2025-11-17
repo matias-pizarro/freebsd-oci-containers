@@ -18,9 +18,9 @@ n projects x 6 versions x 3 architectures
 
 * [FreeBSD-base](https://matias-pizarro.github.io/freebsd-oci-containers/images/base/) -> available
 
-* [FreeBSD-zfs](https://matias-pizarro.github.io/freebsd-oci-containers/images/zfs/) (supports annotation to mount persistent ZFS datasets)
+* [FreeBSD-zfs](https://matias-pizarro.github.io/freebsd-oci-containers/images/zfs/) (supports [annotations to mount persistent ZFS datasets](https://matias-pizarro.github.io/freebsd-oci-containers/annotations/))
 
-* [Postgres](https://matias-pizarro.github.io/freebsd-oci-containers/images/postgres/) (supports annotation to allow SysV IPC)
+* [Postgres](https://matias-pizarro.github.io/freebsd-oci-containers/images/postgres/) (supports [annotations to allow SysV IPC](https://matias-pizarro.github.io/freebsd-oci-containers/annotations/))
 
 * [Node.js](https://matias-pizarro.github.io/freebsd-oci-containers/images/node/)
 
