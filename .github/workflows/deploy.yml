@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build_mkdocs:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -45,25 +45,23 @@ jobs:
           # pip install -r requirements.txt
 
       - name: Build MkDocs site
-        run: mkdocs gh-deploy -f build/mkdocs.yml --force
+        run: mkdocs build --clean -f build/mkdocs.yml
 
-  deploy_mkdocs:
-    needs: build_mkdocs
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build/site
+
+  deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    needs: build
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
