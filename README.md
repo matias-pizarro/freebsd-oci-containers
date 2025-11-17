@@ -3,11 +3,7 @@ freebsd-oci-containers
 
 ## View Containerfiles and  [documentation](https://matias-pizarro.github.io/freebsd-oci-containers/images/) at [https://matias-pizarro.github.io/freebsd-oci-containers/images/](https://matias-pizarro.github.io/freebsd-oci-containers/images/)
 
-### The corresponding FreeBSD14.3p5-amd64 images are available on
-[Github CR](https://github.com/matias-pizarro?tab=packages&repo_name=freebsd-oci-containers),
-[DockerHub](https://hub.docker.com/u/matiaspizarro)
-and
-[Quay](https://quay.io/user/matiaspizarro/).
+### The corresponding FreeBSD14.3p5-amd64 images are available on [Github CR](https://github.com/matias-pizarro?tab=packages&repo_name=freebsd-oci-containers), [DockerHub](https://hub.docker.com/u/matiaspizarro) and [Quay](https://quay.io/user/matiaspizarro/).
 
 ### CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap and 16.snap.
 
