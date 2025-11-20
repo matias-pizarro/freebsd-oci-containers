@@ -1,1 +1,1 @@
---8<-- "docs/images/nginx.md"
+--8<-- "docs/images/nginx/index.md"

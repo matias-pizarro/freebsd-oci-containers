@@ -1,4 +1,4 @@
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-base:dynamic-14.snap
+FROM freebsd-base:dynamic-14.snap
 
 RUN /usr/bin/env pkg install -yr FreeBSD-ports bash \
     && /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-zfs \

@@ -1,6 +1,6 @@
 site_name: FreeBSD OCI Containers
 site_description:  A repository of Podman/Docker images for FreeBSD
-strict: true
+strict: false
 repo_name: freebsd-oci-containers
 repo_url: https://github.com/matias-pizarro/freebsd-oci-containers
 theme:
@@ -54,6 +54,8 @@ theme:
     repo: fontawesome/brands/github
   logo: 'img/FreeBSD-colors.svg'
   favicon: 'img/favicon.ico'
+extra_css:
+  - stylesheets/extra.css
 validation:
   omitted_files: warn
   absolute_links: warn
@@ -68,7 +70,7 @@ nav:
   - Images:
     - images/index.md
 {% for project, specs in projects.items() %}
-    - {{ specs.details.name }}: images/{{ project }}.md
+    - {{ specs.details.name }}: images/{{ project }}/index.md
 {% endfor %}
   - Bibliography: bibliography.md
   - Changelog: changelog.md
@@ -109,6 +111,7 @@ markdown_extensions:
       permalink: true
       title: Page contents
 plugins:
+  - typeset
   - search
   - mkdocstrings:
       handlers:

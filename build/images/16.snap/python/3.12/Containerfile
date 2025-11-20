@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:16.snap
+FROM freebsd-zfs:16.snap
 
 RUN set -eux; \
     /usr/bin/env pkg install -yr FreeBSD-ports\

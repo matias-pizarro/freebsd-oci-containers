@@ -1,4 +1,4 @@
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/python:freebsd16.snap
+FROM python:freebsd16.snap
 
 ENV UV_VERSION=0.9.6
 

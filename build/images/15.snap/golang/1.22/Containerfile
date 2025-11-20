@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:15.snap
+FROM freebsd-zfs:15.snap
 
 ENV PATH /usr/local/go/bin:$PATH
 

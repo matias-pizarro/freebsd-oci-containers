@@ -1,4 +1,4 @@
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:15.0
+FROM freebsd-zfs:15.0
 
 RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
 

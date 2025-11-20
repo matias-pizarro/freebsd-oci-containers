@@ -3,6 +3,7 @@
 import datetime as dt
 import json
 import pathlib
+import re
 import shutil
 
 import jinja2 as j2
@@ -19,9 +20,17 @@ base_dir = pathlib.Path(__file__).resolve().parent
 base_dir_part_count = len(base_dir.parts)
 translated_archs = {"amd64": "amd64", "arm64": "aarch64", }
 force_download = False
-# registry_id = "local"
-registry_id = "github"
+registry_id = "local"
+# registry_id = "github"
 
+dollar_prompt_pattern = re.compile(r"\$ ")
+docker_pattern = re.compile(r'\bdocker\b')
+compose_pattern = re.compile(r'#* *%%COMPOSE%%')
+image_pattern = re.compile(r'%%IMAGE%%')
+logo_pattern = re.compile(r'%%LOGO%%')
+hash_pattern = re.compile(r"(\#+ )")
+hash_replacement_pattern = '#\\1'
+replacement_pattern = r'ALERT \\1'
 
 def main():
     j2_env = j2.Environment(
@@ -43,6 +52,8 @@ def main():
     build_docs_dir = build_dir / "docs"
     build_scripts_dir = build_dir / "bin"
     versions_file = base_dir / "versions.json"
+    upstream_dir = base_dir / "upstreams"
+    docker_docs_dir = upstream_dir / "docs"
 
     with open(versions_file, 'r') as _file:
         versions = json.load(_file)
@@ -122,22 +133,82 @@ def main():
             os_major_minor_version = f"{os_major_version}.{os_minor_version}"
             os_security_patch = os_security_patches[os_major_minor_version] if os_major_minor_version in os_security_patches else None
             for project, p_details in projects.items():
-                template_dir = base_dir / "templates" / project
-                template_dir.mkdir(parents=True,exist_ok=True)
                 if p_details["type"] == 'os_variant':
                     project_alias = f"{os_name}-{project}"
                     tag_os_name = ""
                 else:
                     project_alias = project
                     tag_os_name = os_name
+
+                template_dir = base_dir / "templates" / project
+                template_dir.mkdir(parents=True,exist_ok=True)
+                ci_cd_dir = template_dir / "ci_cd"
+                ci_cd_dir.mkdir(parents=True,exist_ok=True)
+                docs_dir = template_dir / "docs"
+                docs_freebsd_dir = docs_dir / "freebsd"
+                docs_freebsd_dir.mkdir(parents=True,exist_ok=True)
+                docs_upstream_dir = docs_dir / "upstream"
+                example_dir = template_dir / "examples"
+                example_dir.mkdir(parents=True,exist_ok=True)
+                docker_docs_project_dir = docker_docs_dir / project
+                if docker_docs_project_dir.exists():
+                    if docs_upstream_dir.exists():
+                        shutil.rmtree(docs_upstream_dir)
+                    shutil.copytree(docker_docs_project_dir, docs_upstream_dir)
+                    for _file in ["license.md", "logo.png", "metadata.json", "README-short.txt"]:
+                        _file_dest = _file.replace("-short", "")
+                        if not (docs_freebsd_dir / _file).exists():
+                            shutil.copy(docs_upstream_dir / _file, docs_freebsd_dir / _file_dest)
+
+                    if (docs_upstream_dir / "compose.yaml").exists():
+                        compose_content = '```containerfile\n' + (docs_upstream_dir / "compose.yaml").read_text(encoding='utf-8') + '\n```'
+                        if not (docs_freebsd_dir / "compose.yaml").exists():
+                            shutil.copy(docs_upstream_dir / "compose.yaml", docs_freebsd_dir / "compose.yaml")
+                    else:
+                        compose_content = ""
+
+                    if (docs_upstream_dir / "content.md").exists():
+                        content = (docs_upstream_dir / "content.md").read_text(encoding='utf-8')
+                        translated_content = re.sub(
+                            hash_pattern, hash_replacement_pattern, content
+                        )
+                        translated_content = re.sub(
+                            image_pattern, project_alias, translated_content
+                        )
+                        translated_content = re.sub(
+                            logo_pattern, '![Project logo](logo.png)', translated_content
+                        )
+                        translated_content = re.sub(
+                            compose_pattern, compose_content, translated_content
+                        )
+                        translated_content = re.sub(
+                            dollar_prompt_pattern, "", translated_content
+                        )
+                        translated_content = re.sub(
+                            docker_pattern, "podman", translated_content
+                        )
+                        translated_content_file = (docs_freebsd_dir / "content.md")
+                        # if translated_content_file.exists():
+                        #     translated_content_file = (docs_upstream_dir / "translated_content.md")
+                        translated_content_file.write_text(
+                            translated_content, encoding='utf-8'
+                        )
+                reference_project_version = p_details["reference_project_version"]
                 if project not in project_context:
+                    reference_path = f"images/{reference_os_major_minor_version}/{p_details['slug']}/{reference_project_version}"
                     project_context[project] = {
                         "project_alias": project_alias,
                         "details": p_details,
                         "images": {},
-                        "reference_os_major_minor_version": reference_os_major_minor_version
+                        "reference_os_major_minor_version": reference_os_major_minor_version,
+                        "reference_path": reference_path,
                     }
-                    project_context[project]["details"]["usage_file_available"] = (template_dir / "usage.md").exists()
+                    usage_file = (template_dir / "docs" / "freebsd" / "content.md")
+                    project_context[project]["details"]["usage_file"] = usage_file
+                    project_context[project]["details"]["usage_file_available"] = (template_dir / "docs" / "freebsd" / "content.md").exists()
+                    compose_file = (template_dir / "docs" / "freebsd" / "compose.yaml")
+                    project_context[project]["details"]["compose_file"] = compose_file
+                    project_context[project]["details"]["compose_file_available"] = (template_dir / "docs" / "freebsd" / "content.md").exists()
                     project_context[project]["details"]["license_file_available"] = (template_dir / "LICENSE").exists()
 
                 for project_version in p_details["versions"]:
@@ -149,7 +220,6 @@ def main():
                     project_major_minor_version = f"{project_major_version}.{project_minor_version}" if len(pv_parts) > 1 else project_major_version
                     project_major_minor_patch_version = f"{project_major_minor_version}.{project_patch_version}" if len(pv_parts) > 2 else project_major_minor_version
                     project_version_dir = project_major_minor_version
-                    reference_project_version = p_details["reference_project_version"]
                     image_dir = build_images_dir / f"{os_major_version}.{short_os_minor_version}" / project / project_version_dir
                     image_dir.parent.mkdir(parents=True,exist_ok=True)
                     print(f"{image_dir}")
@@ -239,7 +309,7 @@ def main():
                         "extra": p_details["context"],
                     }
                     project_context[project]["images"][full_image_tag] = context
-                    shutil.copytree(template_dir, image_dir, ignore=shutil.ignore_patterns('*.j2'))
+                    shutil.copytree(template_dir, image_dir, ignore=shutil.ignore_patterns('*.j2', 'ci_cd', 'docs'))
 
                     # Render scripts
                     if build_image:
@@ -286,7 +356,9 @@ cd "$(CDPATH= cd -- "$(dirname -- "$0")" && cd ../../../.. && pwd)"
         j2_env.get_template("oci_containers_mkdocs/mkdocs.yml.j2").render({"projects": project_context})
     )
     for project, context in project_context.items():
-        (build_docs_dir / "images" / f"{project}.md").write_text(
+        project_docs_dir = build_docs_dir / "images" / project
+        shutil.copytree(base_dir / "templates" / project / "docs" / "freebsd", project_docs_dir)
+        (project_docs_dir / "index.md").write_text(
             j2_env.get_template("oci_containers_mkdocs/project_page.md.j2").render(context)
         )
 

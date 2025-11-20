@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM ghcr.io/matias-pizarro/freebsd-oci-containers/freebsd-zfs:14.3
+FROM freebsd-zfs:14.3
 
 RUN /usr/bin/env pkg install -yr FreeBSD-base FreeBSD-locales \
     && rm -f /var/cache/pkg/* \

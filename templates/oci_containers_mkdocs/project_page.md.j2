@@ -1,4 +1,8 @@
-# {{ details.name }}
+---
+icon: {{ details.icon }}
+---
+
+# :{{ details.icon | replace('/', '-') }}:{ .{{ details.icon.split('/')|last }} } {{ details.name }}
 
 The corresponding FreeBSD14.3p5-amd64 images are available on
 [Github](https://github.com/matias-pizarro/freebsd-oci-containers/pkgs/container/freebsd-oci-containers%2F{{ project_alias }}),
@@ -10,42 +14,50 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 * Upstream repo: [{{ details.upstreams.https.main }}]({{ details.upstreams.https.main }})
 * FreeBSD fork: [{{ details.upstreams.https.freebsd }}]({{ details.upstreams.https.freebsd }})
 {% endif %}
-{% if details.usage_file_available %}
+{% set reference_github_path = "https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/" + reference_path %}
+{% if details.usage_file.exists() %}
 === "Usage"
 
-    --8<-- "images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/usage.md"
+    --8<-- "docs/images/{{ details.slug }}/{{ details.usage_file.name }}"
 
 {% endif %}
 === "Containerfile"
 
-     [images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/Containerfile](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/Containerfile)
+     {{ reference_path }}/Containerfile [:simple-github:]({{ reference_github_path }}/Containerfile)
 
     ```dockerfile
-    --8<-- "images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/Containerfile"
+    --8<-- "{{ reference_path }}/Containerfile"
+    ```
+{% if details.compose_file.exists() %}
+=== "Compose"
+
+    ```dockerfile
+    --8<-- "docs/images/{{ details.slug }}/{{ details.compose_file.name }}"
     ```
 
+{% endif %}
 === "Build"
 
-     [images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/build.sh](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/build.sh)
+     {{ reference_path }}/build.sh [:simple-github:]({{ reference_github_path }}/build.sh)
 
     ```console
-    --8<-- "images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/build.sh:6"
+    --8<-- "{{ reference_path }}/build.sh:6"
     ```
 
 === "Test"
 
-     [images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/test.sh](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/test.sh)
+     {{ reference_path }}/test.sh [:simple-github:]({{ reference_github_path }}/test.sh)
 
     ```console
-    --8<-- "images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/test.sh:6:-2"
+    --8<-- "{{ reference_path }}/test.sh:6:-2"
     ```
 
 === "Push"
 
-     [images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/push.sh](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/push.sh)
+     {{ reference_path }}/push.sh [:simple-github:]({{ reference_github_path }}/push.sh)
 
     ```console
-    --8<-- "images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/push.sh:6"
+    --8<-- "{{ reference_path }}/push.sh:6"
     ```
 
 === "Tags"
@@ -53,13 +65,13 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
     *Supported tags and respective Containerfile links*
 
     {% for full_image_tag, image in images.items() %}
-    * {% for tag in image.supported_tags %}[{{ tag }}](https://github.com/matias-pizarro/freebsd-oci-containers/blob/main/build/images/{{ image.os_major_version }}.{{ image.os_minor_version }}/{{ image.project }}/{{ image.project_version }}/Containerfile){% if not loop.last %}, {% endif %}{% endfor %}
+    * {% for tag in image.supported_tags %}[{{ tag }}]({{ reference_github_path }}/Containerfile){% if not loop.last %}, {% endif %}{% endfor %}
     {% endfor %}
 {% if details.license_file_available %}
 === "License"
 
-     [images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/LICENSE](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/LICENSE)
+     {{ reference_path }}/LICENSE [:simple-github:]({{ reference_github_path }}/LICENSE)
 
     ```console
-    --8<-- "images/{{ reference_os_major_minor_version }}/{{ details.slug }}/{{ details.reference_project_version }}/LICENSE"
+    --8<-- "{{ reference_path }}/LICENSE"
     ```{% endif %}

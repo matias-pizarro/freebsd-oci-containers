@@ -8,18 +8,21 @@
     "github": {
       "name": "ghcr.io",
       "slug": "github",
+      "icon": "simple/github",
       "username": "matias-pizarro",
       "project": "freebsd-oci-containers"
     },
     "docker": {
       "name": "docker.io",
       "slug": "docker",
+      "icon": "simple/docker",
       "username": "matiaspizarro",
       "project": null
     },
     "quay": {
       "name": "quay.io",
       "slug": "quay",
+      "icon": "simple/quay",
       "username": "matiaspizarro",
       "project": null
     }
@@ -28,6 +31,7 @@
     "base": {
       "name": "Base",
       "slug": "base",
+      "icon": "simple/freebsd",
       "type": "os_variant",
       "versions": [
         "static",
@@ -40,6 +44,7 @@
     "zfs": {
       "name": "ZFS",
       "slug": "zfs",
+      "icon": "simple/freebsd",
       "type": "os_variant",
       "versions": [
         "static",
@@ -52,6 +57,7 @@
     "golang": {
       "name": "Go",
       "slug": "golang",
+      "icon": "fontawesome/brands/golang",
       "type": "upstream_adaptation",
       "versions": [
         "1.20.14.5",
@@ -65,9 +71,9 @@
       "reference_project_version": "1.25",
       "upstreams": {
         "git": {
-          "main": "git@github.com:docker-library/golang.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-golang.git"
-        },
+            "main": "git@github.com:docker-library/golang.git",
+            "freebsd": "git@github.com:matias-pizarro/docker-golang.git"
+          },
         "https": {
           "main": "https://github.com/docker-library/golang",
           "freebsd": "https://github.com/matias-pizarro/docker-golang"
@@ -78,6 +84,7 @@
     "nginx": {
       "name": "Nginx",
       "slug": "nginx",
+      "icon": "simple/nginx",
       "type": "upstream_adaptation",
       "versions": [
         "stable",
@@ -98,9 +105,9 @@
       "reference_project_version": "stable",
       "upstreams": {
         "git": {
-          "main": "git@github.com:nginx/docker-nginx.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-nginx.git"
-        },
+            "main": "git@github.com:nginx/docker-nginx.git",
+            "freebsd": "git@github.com:matias-pizarro/docker-nginx.git"
+          },
         "https": {
           "main": "https://github.com/nginx/docker-nginx",
           "freebsd": "https://github.com/matias-pizarro/docker-nginx"
@@ -111,6 +118,7 @@
     "node": {
       "name": "Node.js",
       "slug": "node",
+      "icon": "fontawesome/brands/node-js",
       "type": "upstream_adaptation",
       "versions": [
         "20",
@@ -139,9 +147,9 @@
       "reference_project_version": "24",
       "upstreams": {
         "git": {
-          "main": "git@github.com:nodejs/docker-node.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
-        },
+            "main": "git@github.com:nodejs/docker-node.git",
+            "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+          },
         "https": {
           "main": "https://github.com/nodejs/docker-node",
           "freebsd": "https://github.com/matias-pizarro/docker-node"
@@ -152,6 +160,7 @@
     "python": {
       "name": "Python",
       "slug": "python",
+      "icon": "simple/python",
       "type": "upstream_adaptation",
       "versions": [
         "3.10",
@@ -164,9 +173,9 @@
       "reference_project_version": "3.11",
       "upstreams": {
         "git": {
-          "main": "git@github.com:docker-library/python.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
-        },
+            "main": "git@github.com:docker-library/python.git",
+            "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+          },
         "https": {
           "main": "https://github.com/docker-library/python",
           "freebsd": "https://github.com/matias-pizarro/docker-python"
@@ -177,6 +186,7 @@
     "uv": {
       "name": "uv",
       "slug": "uv",
+      "icon": "simple/uv",
       "type": "upstream_adaptation",
       "versions": [
         "3.10",
@@ -189,9 +199,9 @@
       "reference_project_version": "3.11",
       "upstreams": {
         "git": {
-          "main": "git@github.com:astral-sh/uv.git",
-          "freebsd": "git@github.com:matias-pizarro/uv.git"
-        },
+            "main": "git@github.com:astral-sh/uv.git",
+            "freebsd": "git@github.com:matias-pizarro/uv.git"
+          },
         "https": {
           "main": "https://github.com/astral-sh/uv",
           "freebsd": "https://github.com/matias-pizarro/uv"
@@ -202,6 +212,7 @@
     "postgres": {
       "name": "Postgres",
       "slug": "postgres",
+      "icon": "simple/postgresql",
       "type": "upstream_adaptation",
       "versions": [
         "13",
@@ -215,9 +226,9 @@
       "reference_project_version": "18",
       "upstreams": {
         "git": {
-          "main": "git@github.com:/docker-library/postgres.git",
-          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
-        },
+            "main": "git@github.com:/docker-library/postgres.git",
+            "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+          },
         "https": {
           "main": "https://github.com//docker-library/postgres",
           "freebsd": "https://github.com/matias-pizarro/docker-postgres"
