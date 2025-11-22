@@ -15,9 +15,9 @@ Go (a.k.a., Golang) is a programming language first developed at Google. It is a
 The most straightforward way to use this image is to use a Go container as both the build and runtime environment. In your `Dockerfile`, writing something along the lines of the following will compile and run your project (assuming it uses `go.mod` for dependency management):
 
 ```dockerfile
-FROM golang:1.25
+FROM golang:1.25-freebsd
 
-WORKDIR /usr/src/app
+WORKDIR /go/src/app
 
 ## pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
 COPY go.mod go.sum ./
@@ -41,13 +41,15 @@ podman run -it --rm --name my-running-app my-golang-app
 There may be occasions where it is not appropriate to run your app inside a container. To compile, but not run your app inside the Docker instance, you can write something like:
 
 ```console
-podman run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.25 go build -v
+podman run --rm -v "$PWD":/go/src/myapp -w /go/src/myapp \
+    golang:1.25-freebsd go build -v
 ```
 
 This will add your current directory as a volume to the container, set the working directory to the volume, and run the command `go build` which will tell go to compile the project in the working directory and output the executable to `myapp`. Alternatively, if you have a `Makefile`, you can run the `make` command inside your container.
 
 ```console
-podman run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.25 make
+podman run --rm -v "$PWD":/go/src/myapp -w /go/src/myapp \
+    golang:1.25-freebsd make
 ```
 
 ### Cross-compile your app inside the Docker container
@@ -55,19 +57,26 @@ podman run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.25 make
 If you need to compile your application for a platform other than `linux/amd64` (such as `windows/386`):
 
 ```console
-podman run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=windows -e GOARCH=386 golang:1.25 go build -v
+podman run --rm -v "$PWD":/go/src/myapp -w /go/src/myapp \
+    -e GOOS=windows -e GOARCH=386 \
+    golang:1.25-freebsd go build -v
 ```
 
 Alternatively, you can build for multiple platforms at once:
 
+launch the container:
 ```console
-podman run --rm -it -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.25 bash
+podman run --rm -it -v "$PWD":/go/src/myapp -w /go/src/myapp \
+golang:1.25-freebsd bash
+```
+
+Then run this inside the container:
+```console
 for GOOS in darwin linux; do
->   for GOARCH in 386 amd64; do
->     export GOOS GOARCH
->     go build -v -o myapp-$GOOS-$GOARCH
->   done
-> done
+    for GOARCH in 386 amd64; do
+        go build -v -o myapp-$GOOS-$GOARCH;
+    done
+done
 ```
 
 ### Git LFS

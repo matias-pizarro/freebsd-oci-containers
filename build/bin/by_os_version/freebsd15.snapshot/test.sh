@@ -3,25 +3,25 @@ set -Eeuo pipefail
 
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && cd ../../../.. && pwd)"
 
-build/images/15.snap/base/runtime/test.sh
-build/images/15.snap/zfs/runtime/test.sh
-build/images/15.snap/golang/1.20/test.sh
-build/images/15.snap/golang/1.21/test.sh
-build/images/15.snap/golang/1.22/test.sh
-build/images/15.snap/golang/1.23/test.sh
-build/images/15.snap/golang/1.24/test.sh
-build/images/15.snap/golang/1.25/test.sh
-build/images/15.snap/nginx/stable/test.sh
-build/images/15.snap/nginx/mainline/test.sh
-build/images/15.snap/node/20/test.sh
-build/images/15.snap/node/22/test.sh
-build/images/15.snap/node/24/test.sh
-build/images/15.snap/node/25/test.sh
-build/images/15.snap/python/3.11/test.sh
-build/images/15.snap/uv/3.11/test.sh
-build/images/15.snap/postgres/13/test.sh
-build/images/15.snap/postgres/14/test.sh
-build/images/15.snap/postgres/15/test.sh
-build/images/15.snap/postgres/16/test.sh
-build/images/15.snap/postgres/17/test.sh
-build/images/15.snap/postgres/18/test.sh
+build/images/15.snap/base/runtime/ci_cd/test.sh
+build/images/15.snap/zfs/runtime/ci_cd/test.sh
+build/images/15.snap/golang/1.20/ci_cd/test.sh
+build/images/15.snap/golang/1.21/ci_cd/test.sh
+build/images/15.snap/golang/1.22/ci_cd/test.sh
+build/images/15.snap/golang/1.23/ci_cd/test.sh
+build/images/15.snap/golang/1.24/ci_cd/test.sh
+build/images/15.snap/golang/1.25/ci_cd/test.sh
+build/images/15.snap/nginx/stable/ci_cd/test.sh
+build/images/15.snap/nginx/mainline/ci_cd/test.sh
+build/images/15.snap/node/20/ci_cd/test.sh
+build/images/15.snap/node/22/ci_cd/test.sh
+build/images/15.snap/node/24/ci_cd/test.sh
+build/images/15.snap/node/25/ci_cd/test.sh
+build/images/15.snap/python/3.11/ci_cd/test.sh
+build/images/15.snap/uv/3.11/ci_cd/test.sh
+build/images/15.snap/postgres/13/ci_cd/test.sh
+build/images/15.snap/postgres/14/ci_cd/test.sh
+build/images/15.snap/postgres/15/ci_cd/test.sh
+build/images/15.snap/postgres/16/ci_cd/test.sh
+build/images/15.snap/postgres/17/ci_cd/test.sh
+build/images/15.snap/postgres/18/ci_cd/test.sh

@@ -3,8 +3,8 @@ set -Eeuo pipefail
 
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && cd ../../../.. && pwd)"
 
-build/images/14.3/base/runtime/run_pipeline.sh
-build/images/14.snap/base/runtime/run_pipeline.sh
-build/images/15.0/base/runtime/run_pipeline.sh
-build/images/15.snap/base/runtime/run_pipeline.sh
-build/images/16.snap/base/runtime/run_pipeline.sh
+build/images/14.3/base/runtime/ci_cd/run_pipeline.sh
+build/images/14.snap/base/runtime/ci_cd/run_pipeline.sh
+build/images/15.0/base/runtime/ci_cd/run_pipeline.sh
+build/images/15.snap/base/runtime/ci_cd/run_pipeline.sh
+build/images/16.snap/base/runtime/ci_cd/run_pipeline.sh

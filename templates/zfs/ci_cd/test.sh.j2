@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+set -Eeuo pipefail
+
+cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+# execute as root or as a user that has privileges
+# to run `zfs create` on {{ build_environment.pool_name }}/test and `podman`
+RANDOM_STRING="$(cat /dev/random | head -c 100  | md5sum | head -c 20)"
+ZFS_MOUNTPOINT="/tmp/rand${RANDOM_STRING}"
+zfs create -p \
+    -o jailed=on \
+    -o mountpoint="${ZFS_MOUNTPOINT}" \
+{{ build_environment.pool_name }}/test
+
+podman_output=$(
+    podman run -it --rm \
+        --annotation='zfs.dataset={{ build_environment.pool_name }}/test' \
+        {{ full_image_tag }} \
+        zfs list -Ho mountpoint {{ build_environment.pool_name }}/test
+)
+expected_output="${ZFS_MOUNTPOINT}"
+if [ "${podman_output::-1}" == "${expected_output}" ]; then
+    echo "Image {{ full_image_tag }} is valid"
+else
+    echo "Image {{ full_image_tag }} is not valid"
+    exit 1
+fi
+
+zfs destroy -rv {{ build_environment.pool_name }}/test
+
+exit 0

@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+set -Eeuo pipefail
+
+cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+podman_output=$(
+    podman run -it --rm \
+        {{ full_image_tag }} \
+        go version
+)
+expected_output="go version go{{ project_major_minor_patch_version }} freebsd/$(uname -m)"
+if [ "${podman_output::-1}" == "${expected_output}" ]; then
+    echo "Image {{ full_image_tag }} is valid"
+else
+    echo "Image {{ full_image_tag }} is not valid"
+    exit 1
+fi
+
+exit 0

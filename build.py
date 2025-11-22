@@ -47,6 +47,9 @@ def main():
             templates_list[project] = {}
         templates_list[project][file_stub] = _file
 
+    from pprint import pprint
+    pprint(templates_list)
+
     build_dir = base_dir / "build"
     build_images_dir = build_dir / "images"
     build_docs_dir = build_dir / "docs"
@@ -93,6 +96,7 @@ def main():
         versions["image_digests"] = json.loads(json.dumps(digests, sort_keys=True))
         versions_file.write_text(json.dumps(versions, indent=2, sort_keys=False))
 
+    build_environment = versions["build_environment"].copy()
     os_versions = versions["os_versions"].copy()
     image_digests = versions["image_digests"].copy()
     projects = versions["projects"].copy()
@@ -105,7 +109,7 @@ def main():
     for os_major_version, ovmj_details in os_versions.items():
         for os_minor_version, ovmi_details in ovmj_details.items():
             for image_version, iv_details in ovmi_details.items():
-                print(f"{os_major_version}.{os_minor_version}-{image_version}")
+                # print(f"{os_major_version}.{os_minor_version}-{image_version}")
                 os_versions[os_major_version][os_minor_version][image_version] = image_digests[os_major_version][os_minor_version][image_version]
 
     os_name = "freebsd"
@@ -148,7 +152,7 @@ def main():
                 docs_freebsd_dir = docs_dir / "freebsd"
                 docs_freebsd_dir.mkdir(parents=True,exist_ok=True)
                 docs_upstream_dir = docs_dir / "upstream"
-                example_dir = template_dir / "examples"
+                example_dir = docs_freebsd_dir / "examples"
                 example_dir.mkdir(parents=True,exist_ok=True)
                 docker_docs_project_dir = docker_docs_dir / project
                 if docker_docs_project_dir.exists():
@@ -188,8 +192,8 @@ def main():
                             docker_pattern, "podman", translated_content
                         )
                         translated_content_file = (docs_freebsd_dir / "content.md")
-                        # if translated_content_file.exists():
-                        #     translated_content_file = (docs_upstream_dir / "translated_content.md")
+                        if translated_content_file.exists():
+                            translated_content_file = (docs_upstream_dir / "translated_content.md")
                         translated_content_file.write_text(
                             translated_content, encoding='utf-8'
                         )
@@ -222,7 +226,7 @@ def main():
                     project_version_dir = project_major_minor_version
                     image_dir = build_images_dir / f"{os_major_version}.{short_os_minor_version}" / project / project_version_dir
                     image_dir.parent.mkdir(parents=True,exist_ok=True)
-                    print(f"{image_dir}")
+                    # print(f"{image_dir}")
                     if p_details["type"] == 'os_variant':
                         base_image_digest = ovmj_details[os_minor_and_patch_version][project_version]["index"]
                     else:
@@ -274,6 +278,8 @@ def main():
                                 f"{project_alias}:{project_major_version}-{tag_os_name}".strip("-"),
                                 f"{project_alias}:{tag_os_name}".strip(":"),
                             ]))
+                            project_context[project]['details']["project_major_minor_patch_version"] = project_major_minor_patch_version
+                            project_context[project]['details']["reference_full_image_tag"] = full_image_tag
                     image_tags = sorted(image_tags)
                     supported_tags = []
                     for tag in image_tags:
@@ -296,6 +302,8 @@ def main():
                         "project_alias": project_alias,
                         "project_major_version": project_major_version,
                         "project_minor_version": project_minor_version,
+                        "project_major_minor_version": project_major_minor_version,
+                        "project_major_minor_patch_version": project_major_minor_patch_version,
                         "project_patch_version": project_patch_version,
                         "project_port_revision": project_port_revision,
                         "image_tags": image_tags,
@@ -304,8 +312,10 @@ def main():
                         "registry": registry,
                         "push_registries": push_registries,
                         "tag_last_pushed": dt.datetime.fromisoformat(tag_last_pushed).strftime("%Y%m%d%H%M%S%z"),
+                        "full_image_tag": full_image_tag,
                         "base_image_digest": base_image_digest,
                         "build_image": build_image,
+                        "build_environment": build_environment,
                         "extra": p_details["context"],
                     }
                     project_context[project]["images"][full_image_tag] = context
@@ -313,15 +323,16 @@ def main():
 
                     # Render scripts
                     if build_image:
+                        (image_dir / "ci_cd").mkdir(parents=True,exist_ok=True)
                         by_os_version_dir = build_scripts_dir / "by_os_version" / f"{os_name}{os_major_minor_version}"
                         by_os_version_dir.mkdir(parents=True,exist_ok=True)
                         by_project_dir = build_scripts_dir / "by_project" / project_alias
                         by_project_dir.mkdir(parents=True,exist_ok=True)
                         for script_id in ["build", "test", "push", "run_pipeline"]:
-                            default_script_template = j2_env.get_template(f"{script_id}.sh.j2")
-                            script_file = image_dir / f"{script_id}.sh"
-                            if f"{project}/{script_id}.sh.j2" in templates_list:
-                                script_template = j2_env.get_template(f"{project}/{script}.sh.j2")
+                            default_script_template = j2_env.get_template(f"ci_cd/{script_id}.sh.j2")
+                            script_file = image_dir / "ci_cd" / f"{script_id}.sh"
+                            if f"{project}/ci_cd/{script_id}.sh.j2" in templates_list:
+                                script_template = j2_env.get_template(f"{project}/ci_cd/{script}.sh.j2")
                             else:
                                 script_template = default_script_template
                             script_file.write_text(script_template.render(context))
@@ -347,6 +358,8 @@ cd "$(CDPATH= cd -- "$(dirname -- "$0")" && cd ../../../.. && pwd)"
                     # Render project templates
                     if project in templates_list:
                         for file_stub, _file in templates_list[project].items():
+                            if  _file.parent.parent != pathlib.Path("."):
+                                continue
                             (image_dir / _file.stem).write_text(
                                 j2_env.get_template(file_stub).render(context)
                             )
@@ -357,10 +370,22 @@ cd "$(CDPATH= cd -- "$(dirname -- "$0")" && cd ../../../.. && pwd)"
     )
     for project, context in project_context.items():
         project_docs_dir = build_docs_dir / "images" / project
-        shutil.copytree(base_dir / "templates" / project / "docs" / "freebsd", project_docs_dir)
+        shutil.copytree(
+            base_dir / "templates" / project / "docs" / "freebsd",
+            project_docs_dir,
+            ignore=shutil.ignore_patterns('*.j2')
+        )
         (project_docs_dir / "index.md").write_text(
             j2_env.get_template("oci_containers_mkdocs/project_page.md.j2").render(context)
         )
+        for file_stub, _file in templates_list[project].items():
+            if  _file.parent.parent == pathlib.Path(".") or _file.parent.stem == "ci_cd":
+                continue
+            rendered_file = project_docs_dir / "/".join(_file.parts[3:-1]) / _file.stem
+            rendered_file.parent.mkdir(parents=True,exist_ok=True)
+            rendered_file.write_text(
+                j2_env.get_template(file_stub).render(context)
+            )
 
 if __name__ == "__main__":
     main()

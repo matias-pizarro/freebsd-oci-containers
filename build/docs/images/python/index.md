@@ -31,26 +31,26 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 
 === "Build"
 
-     images/14.3/python/3.11/build.sh [:simple-github:](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/14.3/python/3.11/build.sh)
+     images/14.3/python/3.11/ci_cd/build.sh [:simple-github:](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/14.3/python/3.11/ci_cd/build.sh)
 
     ```console
-    --8<-- "images/14.3/python/3.11/build.sh:6"
+    --8<-- "images/14.3/python/3.11/ci_cd/build.sh:6"
     ```
 
 === "Test"
 
-     images/14.3/python/3.11/test.sh [:simple-github:](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/14.3/python/3.11/test.sh)
+     images/14.3/python/3.11/ci_cd/test.sh [:simple-github:](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/14.3/python/3.11/ci_cd/test.sh)
 
     ```console
-    --8<-- "images/14.3/python/3.11/test.sh:6:-2"
+    --8<-- "images/14.3/python/3.11/ci_cd/test.sh:6"
     ```
 
 === "Push"
 
-     images/14.3/python/3.11/push.sh [:simple-github:](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/14.3/python/3.11/push.sh)
+     images/14.3/python/3.11/ci_cd/push.sh [:simple-github:](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/14.3/python/3.11/ci_cd/push.sh)
 
     ```console
-    --8<-- "images/14.3/python/3.11/push.sh:6"
+    --8<-- "images/14.3/python/3.11/ci_cd/push.sh:6"
     ```
 
 === "Tags"

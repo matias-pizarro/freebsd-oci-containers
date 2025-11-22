@@ -3,25 +3,25 @@ set -Eeuo pipefail
 
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && cd ../../../.. && pwd)"
 
-build/images/15.0/base/runtime/build.sh
-build/images/15.0/zfs/runtime/build.sh
-build/images/15.0/golang/1.20/build.sh
-build/images/15.0/golang/1.21/build.sh
-build/images/15.0/golang/1.22/build.sh
-build/images/15.0/golang/1.23/build.sh
-build/images/15.0/golang/1.24/build.sh
-build/images/15.0/golang/1.25/build.sh
-build/images/15.0/nginx/stable/build.sh
-build/images/15.0/nginx/mainline/build.sh
-build/images/15.0/node/20/build.sh
-build/images/15.0/node/22/build.sh
-build/images/15.0/node/24/build.sh
-build/images/15.0/node/25/build.sh
-build/images/15.0/python/3.11/build.sh
-build/images/15.0/uv/3.11/build.sh
-build/images/15.0/postgres/13/build.sh
-build/images/15.0/postgres/14/build.sh
-build/images/15.0/postgres/15/build.sh
-build/images/15.0/postgres/16/build.sh
-build/images/15.0/postgres/17/build.sh
-build/images/15.0/postgres/18/build.sh
+build/images/15.0/base/runtime/ci_cd/build.sh
+build/images/15.0/zfs/runtime/ci_cd/build.sh
+build/images/15.0/golang/1.20/ci_cd/build.sh
+build/images/15.0/golang/1.21/ci_cd/build.sh
+build/images/15.0/golang/1.22/ci_cd/build.sh
+build/images/15.0/golang/1.23/ci_cd/build.sh
+build/images/15.0/golang/1.24/ci_cd/build.sh
+build/images/15.0/golang/1.25/ci_cd/build.sh
+build/images/15.0/nginx/stable/ci_cd/build.sh
+build/images/15.0/nginx/mainline/ci_cd/build.sh
+build/images/15.0/node/20/ci_cd/build.sh
+build/images/15.0/node/22/ci_cd/build.sh
+build/images/15.0/node/24/ci_cd/build.sh
+build/images/15.0/node/25/ci_cd/build.sh
+build/images/15.0/python/3.11/ci_cd/build.sh
+build/images/15.0/uv/3.11/ci_cd/build.sh
+build/images/15.0/postgres/13/ci_cd/build.sh
+build/images/15.0/postgres/14/ci_cd/build.sh
+build/images/15.0/postgres/15/ci_cd/build.sh
+build/images/15.0/postgres/16/ci_cd/build.sh
+build/images/15.0/postgres/17/ci_cd/build.sh
+build/images/15.0/postgres/18/ci_cd/build.sh

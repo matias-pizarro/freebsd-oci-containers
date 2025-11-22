@@ -1,4 +1,7 @@
 {
+  "build_environment": {
+    "pool_name": "zroot"
+  },
   "registries": {
     "local": {
       "name": null,

@@ -38,26 +38,26 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 {% endif %}
 === "Build"
 
-     {{ reference_path }}/build.sh [:simple-github:]({{ reference_github_path }}/build.sh)
+     {{ reference_path }}/ci_cd/build.sh [:simple-github:]({{ reference_github_path }}/ci_cd/build.sh)
 
     ```console
-    --8<-- "{{ reference_path }}/build.sh:6"
+    --8<-- "{{ reference_path }}/ci_cd/build.sh:6"
     ```
 
 === "Test"
 
-     {{ reference_path }}/test.sh [:simple-github:]({{ reference_github_path }}/test.sh)
+     {{ reference_path }}/ci_cd/test.sh [:simple-github:]({{ reference_github_path }}/ci_cd/test.sh)
 
     ```console
-    --8<-- "{{ reference_path }}/test.sh:6:-2"
+    --8<-- "{{ reference_path }}/ci_cd/test.sh:6"
     ```
 
 === "Push"
 
-     {{ reference_path }}/push.sh [:simple-github:]({{ reference_github_path }}/push.sh)
+     {{ reference_path }}/ci_cd/push.sh [:simple-github:]({{ reference_github_path }}/ci_cd/push.sh)
 
     ```console
-    --8<-- "{{ reference_path }}/push.sh:6"
+    --8<-- "{{ reference_path }}/ci_cd/push.sh:6"
     ```
 
 === "Tags"
