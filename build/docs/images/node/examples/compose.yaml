@@ -1,0 +1,12 @@
+services:
+  node:
+    image: "node:25-freebsd14.3"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./hello_world:/home/node/app
+    ports: # use if it is necessary to expose the container to the host machine
+      - "8888:8888"
+    command: ["npm", "start"]

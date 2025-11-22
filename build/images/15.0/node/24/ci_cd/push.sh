@@ -19,16 +19,6 @@ echo "node:24-freebsd15.0"
 podman tag localhost/node:24-freebsd15.0 "${IMAGE_PATH}"/node:24-freebsd15.0
 podman push "${IMAGE_PATH}"/node:24-freebsd15.0
 
-echo
-echo "node:freebsd15"
-podman tag localhost/node:freebsd15 "${IMAGE_PATH}"/node:freebsd15
-podman push "${IMAGE_PATH}"/node:freebsd15
-
-echo
-echo "node:freebsd15.0"
-podman tag localhost/node:freebsd15.0 "${IMAGE_PATH}"/node:freebsd15.0
-podman push "${IMAGE_PATH}"/node:freebsd15.0
-
 
 # Docker
 echo
@@ -46,16 +36,6 @@ echo "node:24-freebsd15.0"
 podman tag localhost/node:24-freebsd15.0 "${IMAGE_PATH}"/node:24-freebsd15.0
 podman push "${IMAGE_PATH}"/node:24-freebsd15.0
 
-echo
-echo "node:freebsd15"
-podman tag localhost/node:freebsd15 "${IMAGE_PATH}"/node:freebsd15
-podman push "${IMAGE_PATH}"/node:freebsd15
-
-echo
-echo "node:freebsd15.0"
-podman tag localhost/node:freebsd15.0 "${IMAGE_PATH}"/node:freebsd15.0
-podman push "${IMAGE_PATH}"/node:freebsd15.0
-
 
 # Quay
 echo
@@ -72,14 +52,4 @@ echo
 echo "node:24-freebsd15.0"
 podman tag localhost/node:24-freebsd15.0 "${IMAGE_PATH}"/node:24-freebsd15.0
 podman push "${IMAGE_PATH}"/node:24-freebsd15.0
-
-echo
-echo "node:freebsd15"
-podman tag localhost/node:freebsd15 "${IMAGE_PATH}"/node:freebsd15
-podman push "${IMAGE_PATH}"/node:freebsd15
-
-echo
-echo "node:freebsd15.0"
-podman tag localhost/node:freebsd15.0 "${IMAGE_PATH}"/node:freebsd15.0
-podman push "${IMAGE_PATH}"/node:freebsd15.0
 

@@ -15,40 +15,26 @@ Node.js internally uses the Google V8 JavaScript engine to execute code; a large
 ### Create a `Containerfile` in your Node.js app project
 
 ```Containerfile
-# specify the node base image with your desired version node:<version>
-FROM node:22
-# replace this with your application's default port
-EXPOSE 8888
+--8<-- "docs/images/node/examples/Containerfile"
 ```
 
 You can then build and run the OCI image:
 
 ```console
-$ podman build -t my-nodejs-app .
-$ podman run -it --rm --name my-running-app my-nodejs-app
+podman build -t my-nodejs-app .
+podman run -it --rm --name my-running-app my-nodejs-app
 ```
 
 If you prefer Podman Compose:
 
 ```yml
-services:
-  node:
-    image: "node:22"
-    user: "node"
-    working_dir: /home/node/app
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - ./:/home/node/app
-    ports: # use if it is necessary to expose the container to the host machine
-      - "8888:8888"
-    command: ["npm", "start"]
+--8<-- "docs/images/node/examples/compose.yaml"
 ```
 
 You can then run using Podman Compose:
 
 ```console
-$ podman-compose up -d
+podman-compose up -d
 ```
 
 Podman Compose example mounts your current directory (including node_modules) to the container.
@@ -66,7 +52,7 @@ complete `Containerfile`. In such cases, you can run a Node.js script by using t
 Node.js OCI image directly:
 
 ```console
-$ podman run -it --rm --name my-running-script -v "$PWD":/usr/src/app -w /usr/src/app node:22 node your-daemon-or-script.js
+podman run -it --rm --name my-running-script -v "$PWD":/usr/src/app -w /usr/src/app node:22 node your-daemon-or-script.js
 ```
 
 ### Verbosity
@@ -94,7 +80,7 @@ If you run the node image using `podman run`, you can use the `-e` flag to
 override `NPM_CONFIG_LOGLEVEL`.
 
 ```console
-$ podman run -e NPM_CONFIG_LOGLEVEL=info node ...
+podman run -e NPM_CONFIG_LOGLEVEL=info node ...
 ```
 
 #### NPM run
@@ -103,5 +89,5 @@ If you are running npm commands, you can use `--loglevel` to control the
 verbosity of the output.
 
 ```console
-$ podman run node npm --loglevel=warn ...
+podman run node npm --loglevel=warn ...
 ```

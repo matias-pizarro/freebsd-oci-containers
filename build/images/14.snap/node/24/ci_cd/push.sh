@@ -14,11 +14,6 @@ echo "node:24-freebsd14.snapshot"
 podman tag localhost/node:24-freebsd14.snapshot "${IMAGE_PATH}"/node:24-freebsd14.snapshot
 podman push "${IMAGE_PATH}"/node:24-freebsd14.snapshot
 
-echo
-echo "node:freebsd14.snapshot"
-podman tag localhost/node:freebsd14.snapshot "${IMAGE_PATH}"/node:freebsd14.snapshot
-podman push "${IMAGE_PATH}"/node:freebsd14.snapshot
-
 
 # Docker
 echo
@@ -31,11 +26,6 @@ echo "node:24-freebsd14.snapshot"
 podman tag localhost/node:24-freebsd14.snapshot "${IMAGE_PATH}"/node:24-freebsd14.snapshot
 podman push "${IMAGE_PATH}"/node:24-freebsd14.snapshot
 
-echo
-echo "node:freebsd14.snapshot"
-podman tag localhost/node:freebsd14.snapshot "${IMAGE_PATH}"/node:freebsd14.snapshot
-podman push "${IMAGE_PATH}"/node:freebsd14.snapshot
-
 
 # Quay
 echo
@@ -47,9 +37,4 @@ echo
 echo "node:24-freebsd14.snapshot"
 podman tag localhost/node:24-freebsd14.snapshot "${IMAGE_PATH}"/node:24-freebsd14.snapshot
 podman push "${IMAGE_PATH}"/node:24-freebsd14.snapshot
-
-echo
-echo "node:freebsd14.snapshot"
-podman tag localhost/node:freebsd14.snapshot "${IMAGE_PATH}"/node:freebsd14.snapshot
-podman push "${IMAGE_PATH}"/node:freebsd14.snapshot
 

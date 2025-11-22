@@ -42,7 +42,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
      images/14.3/nginx/stable/ci_cd/test.sh [:simple-github:](https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/images/14.3/nginx/stable/ci_cd/test.sh)
 
     ```console
-    --8<-- "images/14.3/nginx/stable/ci_cd/test.sh:6"
+    --8<-- "images/14.3/nginx/stable/ci_cd/test.sh:6:-2"
     ```
 
 === "Push"

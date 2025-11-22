@@ -15,18 +15,7 @@ Go (a.k.a., Golang) is a programming language first developed at Google. It is a
 The most straightforward way to use this image is to use a Go container as both the build and runtime environment. In your `Dockerfile`, writing something along the lines of the following will compile and run your project (assuming it uses `go.mod` for dependency management):
 
 ```dockerfile
-FROM golang:1.25-freebsd
-
-WORKDIR /go/src/app
-
-## pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
-COPY go.mod go.sum ./
-RUN go mod download
-
-COPY . .
-RUN go build -v -o /usr/local/bin/app ./...
-
-CMD ["app"]
+--8<-- "docs/images/golang/examples/hello/Containerfile"
 ```
 
 You can then build and run the Docker image:

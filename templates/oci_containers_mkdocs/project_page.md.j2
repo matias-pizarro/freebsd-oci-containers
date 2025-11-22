@@ -31,7 +31,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 {% if details.compose_file.exists() %}
 === "Compose"
 
-    ```dockerfile
+    ```yml
     --8<-- "docs/images/{{ details.slug }}/{{ details.compose_file.name }}"
     ```
 
@@ -49,7 +49,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
      {{ reference_path }}/ci_cd/test.sh [:simple-github:]({{ reference_github_path }}/ci_cd/test.sh)
 
     ```console
-    --8<-- "{{ reference_path }}/ci_cd/test.sh:6"
+    --8<-- "{{ reference_path }}/ci_cd/test.sh:6:-2"
     ```
 
 === "Push"

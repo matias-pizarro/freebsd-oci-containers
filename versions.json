@@ -135,19 +135,19 @@
           "yarn_version": "1.22.19"
         },
         "22": {
-          "node_version": "22.19.0",
+          "node_version": "22.21.0",
           "yarn_version": "1.22.19"
         },
         "24": {
-          "node_version": "24.10.0",
+          "node_version": "24.11.0",
           "yarn_version": "1.22.19"
         },
         "25": {
-          "node_version": "25.0.0",
+          "node_version": "25.1.0",
           "yarn_version": "1.22.19"
         }
       },
-      "reference_project_version": "24",
+      "reference_project_version": "25",
       "upstreams": {
         "git": {
             "main": "git@github.com:nodejs/docker-node.git",

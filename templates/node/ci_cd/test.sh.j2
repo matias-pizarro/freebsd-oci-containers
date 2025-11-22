@@ -5,14 +5,14 @@ cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
 podman_output=$(
     podman run -it --rm \
-        node:25-freebsd15.snapshot \
+        {{ full_image_tag }} \
         node --version
 )
-expected_output="v25.1.0"
+expected_output="v{{ extra[project_version]["node_version"] }}"
 if [ "${podman_output::-1}" == "${expected_output}" ]; then
-    echo "Image node:25-freebsd15.snapshot is valid"
+    echo "Image {{ full_image_tag }} is valid"
 else
-    echo "Image node:25-freebsd15.snapshot is not valid"
+    echo "Image {{ full_image_tag }} is not valid"
     # exit 1
 fi
 

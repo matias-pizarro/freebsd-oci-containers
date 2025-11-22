@@ -2,7 +2,7 @@ FROM freebsd-zfs:14.snap
 
 RUN echo "node:1000:::0:0:Node user:/home/node:/usr/local/bin/bash:" | adduser -f -
 
-ENV NODE_VERSION=22.19.0
+ENV NODE_VERSION=22.21.0
 
 RUN /usr/bin/env pkg install -yr FreeBSD-ports www/node22 \
     www/npm-node22 \

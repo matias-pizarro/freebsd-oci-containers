@@ -10,4 +10,5 @@ podman build \
     --env VERSION_MINOR=snapshot \
     --no-hosts \
     --tag node:25-freebsd14.snapshot \
+    --tag node:freebsd14.snapshot \
     --file Containerfile

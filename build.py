@@ -216,6 +216,7 @@ def main():
                     project_context[project]["details"]["license_file_available"] = (template_dir / "LICENSE").exists()
 
                 for project_version in p_details["versions"]:
+                    # print(project_version)
                     pv_parts = project_version.split(".")
                     project_major_version = pv_parts[0]
                     project_minor_version = pv_parts[1] if len(pv_parts) > 1 else "0"
@@ -280,6 +281,7 @@ def main():
                             ]))
                             project_context[project]['details']["project_major_minor_patch_version"] = project_major_minor_patch_version
                             project_context[project]['details']["reference_full_image_tag"] = full_image_tag
+                            project_context[project]['details']["reference_min_image_tag"] = f"{project_alias}:{project_major_version}-{tag_os_name}".strip("-")
                     image_tags = sorted(image_tags)
                     supported_tags = []
                     for tag in image_tags:
