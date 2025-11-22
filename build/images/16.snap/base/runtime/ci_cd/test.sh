@@ -3,9 +3,17 @@ set -Eeuo pipefail
 
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
-# TBD: smoke test of built images
-
-podman run -it --rm \
-    ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd nginx -v
+podman_output=$(
+    podman run -it --rm \
+        freebsd-base:runtime-16.snapshot \
+        uname -s -U
+)
+expected_output="FreeBSD 1600"
+if [ "${podman_output::12}" == "${expected_output}" ]; then
+    echo "Image freebsd-base:runtime-16.snapshot is valid"
+else
+    echo "Image freebsd-base:runtime-16.snapshot is not valid"
+    exit 1
+fi
 
 exit 0

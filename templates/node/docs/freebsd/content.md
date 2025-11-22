@@ -12,4 +12,96 @@ Node.js internally uses the Google V8 JavaScript engine to execute code; a large
 
 ## How to use this image
 
-See [How To Use This Image](https://github.com/nodejs/podman-node/blob/master/README.md#how-to-use-this-image) on GitHub for up-to-date documentation.
+### Create a `Containerfile` in your Node.js app project
+
+```Containerfile
+# specify the node base image with your desired version node:<version>
+FROM node:22
+# replace this with your application's default port
+EXPOSE 8888
+```
+
+You can then build and run the OCI image:
+
+```console
+$ podman build -t my-nodejs-app .
+$ podman run -it --rm --name my-running-app my-nodejs-app
+```
+
+If you prefer Podman Compose:
+
+```yml
+services:
+  node:
+    image: "node:22"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    ports: # use if it is necessary to expose the container to the host machine
+      - "8888:8888"
+    command: ["npm", "start"]
+```
+
+You can then run using Podman Compose:
+
+```console
+$ podman-compose up -d
+```
+
+Podman Compose example mounts your current directory (including node_modules) to the container.
+It assumes that your application has a file named [`package.json`](https://docs.npmjs.com/files/package.json)
+defining [start script](https://docs.npmjs.com/misc/scripts#default-values).
+
+### Best Practices
+
+We have assembled a [Best Practices Guide](./docs/BestPractices.md) for those using these images on a daily basis.
+
+### Run a single Node.js script
+
+For many simple, single file projects, you may find it inconvenient to write a
+complete `Containerfile`. In such cases, you can run a Node.js script by using the
+Node.js OCI image directly:
+
+```console
+$ podman run -it --rm --name my-running-script -v "$PWD":/usr/src/app -w /usr/src/app node:22 node your-daemon-or-script.js
+```
+
+### Verbosity
+
+Prior to 8.7.0 and 6.11.4, the docker images overrode the default npm log
+level from `warn` to `info`. However, due to improvements to npm and new Docker
+patterns (e.g. multi-stage builds) the working group reached a [consensus](https://github.com/nodejs/docker-node/issues/528)
+to revert the log level to npm defaults. If you need more verbose output, please
+use one of the following methods to change the verbosity level.
+
+#### Containerfile
+
+If you create your own `Containerfile` which inherits from the `node` image, you can
+simply use `ENV` to override `NPM_CONFIG_LOGLEVEL`.
+
+```Containerfile
+FROM node
+ENV NPM_CONFIG_LOGLEVEL=info
+...
+```
+
+#### Podman Run
+
+If you run the node image using `podman run`, you can use the `-e` flag to
+override `NPM_CONFIG_LOGLEVEL`.
+
+```console
+$ podman run -e NPM_CONFIG_LOGLEVEL=info node ...
+```
+
+#### NPM run
+
+If you are running npm commands, you can use `--loglevel` to control the
+verbosity of the output.
+
+```console
+$ podman run node npm --loglevel=warn ...
+```

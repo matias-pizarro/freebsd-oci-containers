@@ -3,9 +3,29 @@ set -Eeuo pipefail
 
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
-# TBD: smoke test of built images
+# execute as root or as a user that has privileges
+# to run `zfs create` on zroot/test and `podman`
+RANDOM_STRING="$(cat /dev/random | head -c 100  | md5sum | head -c 20)"
+ZFS_MOUNTPOINT="/tmp/rand${RANDOM_STRING}"
+zfs create -p \
+    -o jailed=on \
+    -o mountpoint="${ZFS_MOUNTPOINT}" \
+zroot/test
 
-podman run -it --rm \
-    ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd nginx -v
+podman_output=$(
+    podman run -it --rm \
+        --annotation='zfs.dataset=zroot/test' \
+        freebsd-zfs:runtime-14.snapshot \
+        zfs list -Ho mountpoint zroot/test
+)
+expected_output="${ZFS_MOUNTPOINT}"
+if [ "${podman_output::-1}" == "${expected_output}" ]; then
+    echo "Image freebsd-zfs:runtime-14.snapshot is valid"
+else
+    echo "Image freebsd-zfs:runtime-14.snapshot is not valid"
+    exit 1
+fi
+
+zfs destroy -rv zroot/test
 
 exit 0

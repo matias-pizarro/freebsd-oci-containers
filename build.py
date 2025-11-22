@@ -331,8 +331,9 @@ def main():
                         for script_id in ["build", "test", "push", "run_pipeline"]:
                             default_script_template = j2_env.get_template(f"ci_cd/{script_id}.sh.j2")
                             script_file = image_dir / "ci_cd" / f"{script_id}.sh"
-                            if f"{project}/ci_cd/{script_id}.sh.j2" in templates_list:
-                                script_template = j2_env.get_template(f"{project}/ci_cd/{script}.sh.j2")
+                            if project in templates_list and \
+                                f"{project}/ci_cd/{script_id}.sh.j2" in templates_list[project]:
+                                script_template = j2_env.get_template(f"{project}/ci_cd/{script_id}.sh.j2")
                             else:
                                 script_template = default_script_template
                             script_file.write_text(script_template.render(context))
