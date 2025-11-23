@@ -10,4 +10,4 @@ podman build \
     --env VERSION_MINOR={{ os_minor_version }} \
     --no-hosts \{% for tag in image_tags %}
     --tag {{ tag }} \{% endfor %}
-    --file Containerfile
+    --file ../Containerfile

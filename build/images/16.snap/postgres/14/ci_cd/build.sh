@@ -11,4 +11,4 @@ podman build \
     --no-hosts \
     --tag postgres:14-freebsd16 \
     --tag postgres:14-freebsd16.snapshot \
-    --file Containerfile
+    --file ../Containerfile

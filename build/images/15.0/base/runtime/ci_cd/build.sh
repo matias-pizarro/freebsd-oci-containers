@@ -13,4 +13,4 @@ podman build \
     --tag freebsd-base:15.0 \
     --tag freebsd-base:runtime-15 \
     --tag freebsd-base:runtime-15.0 \
-    --file Containerfile
+    --file ../Containerfile

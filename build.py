@@ -19,7 +19,7 @@ modules as well. It then needs to be documented and define tests.
 base_dir = pathlib.Path(__file__).resolve().parent
 base_dir_part_count = len(base_dir.parts)
 translated_archs = {"amd64": "amd64", "arm64": "aarch64", }
-force_download = False
+update_base_image_hashes = False
 registry_id = "local"
 # registry_id = "github"
 
@@ -53,7 +53,7 @@ def main():
     build_dir = base_dir / "build"
     build_images_dir = build_dir / "images"
     build_docs_dir = build_dir / "docs"
-    build_scripts_dir = build_dir / "bin"
+    build_scripts_dir = build_dir / "ci_cd"
     versions_file = base_dir / "versions.json"
     upstream_dir = base_dir / "upstreams"
     docker_docs_dir = upstream_dir / "docs"
@@ -61,11 +61,11 @@ def main():
     with open(versions_file, 'r') as _file:
         versions = json.load(_file)
 
-    if force_download or "image_digests" not in versions:
+    if update_base_image_hashes or "image_digests" not in versions:
         digests = {}
 
         for image_version in ["static", "dynamic", "runtime"]:
-            url = f"https://hub.docker.com/v2/repositories/freebsd/freebsd-{image_version}/tags"
+            url = f"https://hub.docker.com/v2/repositories/freebsd/freebsd-{image_version}/tags?page=1&page_size=300"
             response = requests.get(url)
 
             if response.status_code == 200:
@@ -110,7 +110,10 @@ def main():
         for os_minor_version, ovmi_details in ovmj_details.items():
             for image_version, iv_details in ovmi_details.items():
                 # print(f"{os_major_version}.{os_minor_version}-{image_version}")
-                os_versions[os_major_version][os_minor_version][image_version] = image_digests[os_major_version][os_minor_version][image_version]
+                try:
+                    os_versions[os_major_version][os_minor_version][image_version] = image_digests[os_major_version][os_minor_version][image_version]
+                except KeyError:
+                    import ipdb; ipdb.set_trace()
 
     os_name = "freebsd"
     tags = []

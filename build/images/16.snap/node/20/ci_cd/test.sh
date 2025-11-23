@@ -13,7 +13,7 @@ if [ "${podman_output::-1}" == "${expected_output}" ]; then
     echo "Image node:20-freebsd16.snapshot is valid"
 else
     echo "Image node:20-freebsd16.snapshot is not valid"
-    # exit 1
+    exit 1
 fi
 
 exit 0

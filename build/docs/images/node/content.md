@@ -52,7 +52,7 @@ complete `Containerfile`. In such cases, you can run a Node.js script by using t
 Node.js OCI image directly:
 
 ```console
-podman run -it --rm --name my-running-script -v "$PWD":/usr/src/app -w /usr/src/app node:25-freebsd node your-daemon-or-script.js
+podman run -it --rm --name my-running-script -v "$PWD":/usr/src/app -w /usr/src/app node:22 node your-daemon-or-script.js
 ```
 
 ### Verbosity
@@ -69,7 +69,7 @@ If you create your own `Containerfile` which inherits from the `node` image, you
 simply use `ENV` to override `NPM_CONFIG_LOGLEVEL`.
 
 ```Containerfile
-FROM node:25-freebsd
+FROM node
 ENV NPM_CONFIG_LOGLEVEL=info
 ...
 ```

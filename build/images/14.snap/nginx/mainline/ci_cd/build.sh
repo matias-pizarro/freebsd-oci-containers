@@ -10,4 +10,4 @@ podman build \
     --env VERSION_MINOR=snapshot \
     --no-hosts \
     --tag nginx:mainline-freebsd14.snapshot \
-    --file Containerfile
+    --file ../Containerfile

@@ -74,9 +74,9 @@
       "reference_project_version": "1.25",
       "upstreams": {
         "git": {
-            "main": "git@github.com:docker-library/golang.git",
-            "freebsd": "git@github.com:matias-pizarro/docker-golang.git"
-          },
+          "main": "git@github.com:docker-library/golang.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-golang.git"
+        },
         "https": {
           "main": "https://github.com/docker-library/golang",
           "freebsd": "https://github.com/matias-pizarro/docker-golang"
@@ -108,9 +108,9 @@
       "reference_project_version": "stable",
       "upstreams": {
         "git": {
-            "main": "git@github.com:nginx/docker-nginx.git",
-            "freebsd": "git@github.com:matias-pizarro/docker-nginx.git"
-          },
+          "main": "git@github.com:nginx/docker-nginx.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-nginx.git"
+        },
         "https": {
           "main": "https://github.com/nginx/docker-nginx",
           "freebsd": "https://github.com/matias-pizarro/docker-nginx"
@@ -150,9 +150,9 @@
       "reference_project_version": "25",
       "upstreams": {
         "git": {
-            "main": "git@github.com:nodejs/docker-node.git",
-            "freebsd": "git@github.com:matias-pizarro/docker-node.git"
-          },
+          "main": "git@github.com:nodejs/docker-node.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-node.git"
+        },
         "https": {
           "main": "https://github.com/nodejs/docker-node",
           "freebsd": "https://github.com/matias-pizarro/docker-node"
@@ -176,9 +176,9 @@
       "reference_project_version": "3.11",
       "upstreams": {
         "git": {
-            "main": "git@github.com:docker-library/python.git",
-            "freebsd": "git@github.com:matias-pizarro/docker-python.git"
-          },
+          "main": "git@github.com:docker-library/python.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-python.git"
+        },
         "https": {
           "main": "https://github.com/docker-library/python",
           "freebsd": "https://github.com/matias-pizarro/docker-python"
@@ -202,9 +202,9 @@
       "reference_project_version": "3.11",
       "upstreams": {
         "git": {
-            "main": "git@github.com:astral-sh/uv.git",
-            "freebsd": "git@github.com:matias-pizarro/uv.git"
-          },
+          "main": "git@github.com:astral-sh/uv.git",
+          "freebsd": "git@github.com:matias-pizarro/uv.git"
+        },
         "https": {
           "main": "https://github.com/astral-sh/uv",
           "freebsd": "https://github.com/matias-pizarro/uv"
@@ -229,9 +229,9 @@
       "reference_project_version": "18",
       "upstreams": {
         "git": {
-            "main": "git@github.com:/docker-library/postgres.git",
-            "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
-          },
+          "main": "git@github.com:/docker-library/postgres.git",
+          "freebsd": "git@github.com:matias-pizarro/docker-postgres.git"
+        },
         "https": {
           "main": "https://github.com//docker-library/postgres",
           "freebsd": "https://github.com/matias-pizarro/docker-postgres"
@@ -330,6 +330,42 @@
   },
   "image_digests": {
     "14": {
+      "2": {
+        "dynamic": {
+          "aarch64": "sha256:228d213b8414e4389287ba2c7a0ccd89b1de8951df4c555981ad86f1723698ad",
+          "amd64": "sha256:fd18badff59a8c4fb01a37c6298bb0f2a45a6d96cb00d842da932b0424390827",
+          "index": "sha256:66a765f0f3f1b36220e161b8a55f4df2838921a3592a515d25776b0810622b99"
+        },
+        "runtime": {
+          "aarch64": "sha256:57880b0df1de69f27d5d474b18a71be7831bdece12c6b2c2cadca7110facf296",
+          "amd64": "sha256:b98b8f5438a07e000a156ecb216529d8dfa191448ac3dc1f6add9848b4461d05",
+          "index": "sha256:faa29adbd532c607c8a9d015b9a3542515ecfd7f396bf6bac3fcf8256f13939d"
+        },
+        "static": {
+          "aarch64": "sha256:c19237d6f322d08a60be363e9970e48a49d2128a51f72d25459b8dd212eb45b2",
+          "amd64": "sha256:7b504eef1dfafb069c8e37c7ac6319b0f669a91ea10609e7797694056f29e123",
+          "index": "sha256:114c5ab53e251e0919fb154d1a96de0b230c4bf7764cc1c5f4fcc97554e540b6"
+        },
+        "tag_last_pushed": "2025-09-22T22:32:13.369138Z"
+      },
+      "2p0": {
+        "dynamic": {
+          "aarch64": "sha256:228d213b8414e4389287ba2c7a0ccd89b1de8951df4c555981ad86f1723698ad",
+          "amd64": "sha256:fd18badff59a8c4fb01a37c6298bb0f2a45a6d96cb00d842da932b0424390827",
+          "index": "sha256:66a765f0f3f1b36220e161b8a55f4df2838921a3592a515d25776b0810622b99"
+        },
+        "runtime": {
+          "aarch64": "sha256:57880b0df1de69f27d5d474b18a71be7831bdece12c6b2c2cadca7110facf296",
+          "amd64": "sha256:b98b8f5438a07e000a156ecb216529d8dfa191448ac3dc1f6add9848b4461d05",
+          "index": "sha256:faa29adbd532c607c8a9d015b9a3542515ecfd7f396bf6bac3fcf8256f13939d"
+        },
+        "static": {
+          "aarch64": "sha256:c19237d6f322d08a60be363e9970e48a49d2128a51f72d25459b8dd212eb45b2",
+          "amd64": "sha256:7b504eef1dfafb069c8e37c7ac6319b0f669a91ea10609e7797694056f29e123",
+          "index": "sha256:114c5ab53e251e0919fb154d1a96de0b230c4bf7764cc1c5f4fcc97554e540b6"
+        },
+        "tag_last_pushed": "2025-09-22T22:32:07.39062Z"
+      },
       "3": {
         "dynamic": {
           "aarch64": "sha256:dfc1a5cdedb424d7098c822052ae88307492cfedacd648e7cf7342c2ca1938ac",
@@ -347,6 +383,42 @@
           "index": "sha256:ad289f6c4bb15e05b6f8f6f4a26a3ecd576fb30d9997d16ba1886a6c83009587"
         },
         "tag_last_pushed": "2025-09-22T22:33:16.914774Z"
+      },
+      "3-beta2": {
+        "dynamic": {
+          "aarch64": "sha256:8495feb51ea049a08f8c060eaf634772892a78f5a2b3e5be70ee1c451aad7580",
+          "amd64": "sha256:55010744674bc02cf2544453c8a7cf3eb8381a8d439557d706522b61875ee8a5",
+          "index": "sha256:987fa70bb61f53851f3ecb1cb71b3b2d5ac4f4e412c5d559536c570f826893bd"
+        },
+        "runtime": {
+          "aarch64": "sha256:7b29c2e836c091778c859f4a7a69c98efb0f4a0bacbc56209932b64d55cfd9cc",
+          "amd64": "sha256:02f39f0b22465c0de196ea7fd4695277d62ff319fc30279cb64a3f2ff5ef8c38",
+          "index": "sha256:f4ef91121e1d2cc197d3e2617fd5fd919fd91ba48c4e62e97d0b8eeec43a122e"
+        },
+        "static": {
+          "aarch64": "sha256:dd4881b81d2142d4f499cafce005160791d9dd3e94964d453d87748ab1fdb49c",
+          "amd64": "sha256:01e5bfc7458da888c3a320a7f62a7b4aedaf5ec8c05436ea26c544c20d2109f5",
+          "index": "sha256:118b5593facb80f033343b80089f2317141d60435260434be3353565074326b2"
+        },
+        "tag_last_pushed": "2025-09-22T22:32:47.341021Z"
+      },
+      "3-beta3": {
+        "dynamic": {
+          "aarch64": "sha256:8c140837b168d56c744fe6702b6893a63ba7f781ad0442ae5524769f55a66bcb",
+          "amd64": "sha256:3b69bd401dfbe1b0abaa71a510b4e2a2f8eab8efd06f22dc5fce07c2debea1ba",
+          "index": "sha256:b87cc037e57c00f548a27f3270409cb9db2b72beed759b2aaa61681849f1195a"
+        },
+        "runtime": {
+          "aarch64": "sha256:1b75e1778ae92f0ce7b5cd84ed62bcc7e9f57e7f8db7061f71ed2d857d8e9d64",
+          "amd64": "sha256:c4f4f5816e687a3f2209ce93af58ec48d2880126308bc750e00a84d2190d4049",
+          "index": "sha256:ecc512dedc4ac087808ac4657f76fd28a9670e3389b4bc4a1b78ace9ff2e71da"
+        },
+        "static": {
+          "aarch64": "sha256:c0ccd17d38abfcb43a3d3194aac2846011dde056968b2cffc35d5604fba4b901",
+          "amd64": "sha256:8046a1e2932df70aaa7ebf05b163fd9f5a3f2fb4ff27670d708327bac15f7b14",
+          "index": "sha256:a68ba3825768673a519513e566be346ee1e6499100cca5ebb243ccff6496f0a8"
+        },
+        "tag_last_pushed": "2025-09-22T22:32:57.750713Z"
       },
       "3-beta4": {
         "dynamic": {
@@ -366,6 +438,24 @@
         },
         "tag_last_pushed": "2025-09-22T22:33:04.083053Z"
       },
+      "3-prerelease": {
+        "dynamic": {
+          "aarch64": "sha256:4b3d5b8dbe6332a19a553064d614a770d2363135e5b5b56e4f02cebf7d603fcb",
+          "amd64": "sha256:c8bad166dbba3d282f23943c66e1356ef527b342bb028dc14b4ecdac5f9b0504",
+          "index": "sha256:6cf293e232c75cfa60f23e48b6f33e8365a05239482821f66ad45fba0679bd21"
+        },
+        "runtime": {
+          "aarch64": "sha256:a829adea5df9db60c5b5372b971efb08c0969ba2e06ef78f6064a3ac59f2fa49",
+          "amd64": "sha256:ae027804b283dc1e9f89422713d17d3139c171835ebb855b7a8f7a9558cf8ba8",
+          "index": "sha256:9bb783780fe3c9affea2d1d6b4e6038f17061175bccdac24c071655c1405f406"
+        },
+        "static": {
+          "aarch64": "sha256:1832af00b0c3c31e805248c8e1a6aa9ad2f28535ae64a341da784ccc2b032adc",
+          "amd64": "sha256:3b175b1b73e2ccbd413fe64631559268e0e14c70ef35db20d9f3407bb0df1ca5",
+          "index": "sha256:2c040f9fc8fa6cd455ae8ec3c3cb285cfb373be36d62a44a11cbe6a878f9516a"
+        },
+        "tag_last_pushed": "2025-09-22T22:32:20.034012Z"
+      },
       "3.rc1": {
         "dynamic": {
           "aarch64": "sha256:e6c76237cc312316a319ac95f6bb4ecf76a9406284b63c66fc02c3872048dd62",
@@ -384,23 +474,56 @@
         },
         "tag_last_pushed": "2025-09-22T22:33:10.437982Z"
       },
-      "snapshot": {
+      "snap20250415190046": {
         "dynamic": {
-          "aarch64": "sha256:d59014c475d743396542151915fc5540bb8fb4fd075c38fcebb217732207d34c",
-          "amd64": "sha256:e44ae1c83001083343289785ae7a7eb02188f4442caea90f0049aa79f06bfa84",
-          "index": "sha256:0c62569770f635a526d50e176512bedfef848c9f712ed59ac0f9fdeddf5c6d03"
+          "aarch64": "sha256:140f5f160c480ec538b4647d5796345d45c26c722d43afd3729755d1d9cbbbd7",
+          "amd64": "sha256:9807fb589d7927c59b10ab8aa99c1f5fe567bb2b31e16327039d8f0edaf22209",
+          "index": "sha256:843d4e03e56ea4d7f7f65d7637ed8a65fcc916c6f4053e6d15c8e82e2ef4fbb2"
         },
         "runtime": {
-          "aarch64": "sha256:0829046cac875dcf5478380f40effcb9abd2d2de8a4010d7bfac607b30076135",
-          "amd64": "sha256:ed9343b8cec679da264bbdde187ee261e808eea185e6b15dc8f595f240b88d6a",
-          "index": "sha256:e04750fed6540720e2a831d0e536a79e53f1ad48e0b18fdf98c4e95b70931e95"
+          "aarch64": "sha256:5e20f75a92f1e6146b178e2ab854f5cff64d857bae4b433aec71c58989149145",
+          "amd64": "sha256:875eae921c188e1be0b7955ae67ad6a185e6992aa8f2088946ee3bb395be6d12",
+          "index": "sha256:4991e8ad46804aa2d00101b73884816175346e0208b6aa9c0e6ee6ab59532d3e"
         },
         "static": {
-          "aarch64": "sha256:1d3e7c7fd044bfdca900c8d70d5ab0314ea090688b54d182215858d834fe53e2",
-          "amd64": "sha256:acfb25eae48b9e61e1c4839d507057fe86221b8f5a779f28dde69604caaf1349",
-          "index": "sha256:8194a81b9fcd32fe1a15c98e584cc67202ebd94fc8876901f147eb70a88e6e6d"
+          "aarch64": "sha256:947f49533a758a6e46de69f8d11110711a28a7252690fa84f02e1e54af968a95",
+          "amd64": "sha256:c4d6cefbb4408449041a05ac90992d69ba3916e870e76f173e08b38c26a05fdf",
+          "index": "sha256:dfe6eb324d5e8aaf4c88123877b6e986420e5fed3c73f0d3f46298f4c1ba8e1d"
         },
-        "tag_last_pushed": "2025-11-07T00:54:18.322494Z"
+        "tag_last_pushed": "2025-09-22T22:32:32.730444Z"
+      },
+      "snap20250515090110": {
+        "dynamic": {
+          "amd64": "sha256:db5400c7404c7f4b1bf27e37b7981edda41fa98c7b9c6a6ba81329ca9d42f5ca",
+          "index": "sha256:db5400c7404c7f4b1bf27e37b7981edda41fa98c7b9c6a6ba81329ca9d42f5ca"
+        },
+        "runtime": {
+          "amd64": "sha256:5606ebb7826dc7b62fbb96ce45f0e51c010003cb79c443a8528fcabc4b8bc822",
+          "index": "sha256:5606ebb7826dc7b62fbb96ce45f0e51c010003cb79c443a8528fcabc4b8bc822"
+        },
+        "static": {
+          "amd64": "sha256:7b231166186e0d3b82e66e5c27f651f7098b3473d611db3efb630ca66c27936c",
+          "index": "sha256:7b231166186e0d3b82e66e5c27f651f7098b3473d611db3efb630ca66c27936c"
+        },
+        "tag_last_pushed": "2025-05-15T23:51:14.156456Z"
+      },
+      "snapshot": {
+        "dynamic": {
+          "aarch64": "sha256:0e23a281180f084be2aed705331da03b96cf93bef7419b3d26067b715dac891b",
+          "amd64": "sha256:13e9c2327a618883cee08cc3edd15a189bbf8349145ee294db49f0eb49dc4b8e",
+          "index": "sha256:79f7cabbca54138175699a837506172490c52f69c9e2cb15d4fcecce1562460e"
+        },
+        "runtime": {
+          "aarch64": "sha256:b63fdef655247e0f6b08f01d04c9fcdca5c6cfc801bf87e3839ea07d2086ca3d",
+          "amd64": "sha256:a3976aebc6efd48100008f620e319c2e4acc459c15af3d4b3a75c79983b06f94",
+          "index": "sha256:68d8a07f69e17c2c1a78fe5c8718f36b467b9376b95fbdc7a33e2b9209c966e9"
+        },
+        "static": {
+          "aarch64": "sha256:f16a2aeff9fba9b79e788cfc32990e18b882493c6bf4fd9c7574e05ff57cc617",
+          "amd64": "sha256:9861647826cc5b2ed6bff2aacd1310ee33a20fca479fcdd2b447c58fe16bdfed",
+          "index": "sha256:92d4a3d048ac2f55eee72d2ffc0ce6b3793ed5ceb9785a3ddca6f5745fc46726"
+        },
+        "tag_last_pushed": "2025-11-13T18:34:22.251233Z"
       }
     },
     "15": {
@@ -476,23 +599,107 @@
         },
         "tag_last_pushed": "2025-11-09T20:01:19.365765Z"
       },
-      "snapshot": {
+      "0.rc1": {
         "dynamic": {
-          "aarch64": "sha256:2e179655f752bb305e31133c030d4b9ec9b36541b4a2bcb967d0a02ac8ae19ad",
-          "amd64": "sha256:ef430bef1b1377c5f45bc4a7ed6f8ace56c426aaa3d912a98edf3807f2d7066c",
-          "index": "sha256:e2d66d1397ed76255a0c6b784ccf7192f7320140484c2f54530b461315f9d5cd"
+          "aarch64": "sha256:3ff7b1f3918bfefb2ff1990beebeacd033cddc4b0cbab2cb0f4c10cfb6ac1f64",
+          "amd64": "sha256:6d942caf14785503fca65ba24336025c58ae7e82242e9e2b575d11d0eb4fd96e",
+          "index": "sha256:a72a44313e43178734cc5434f44d541b8995b470f9d6d7b67ab966f919aa7c98"
         },
         "runtime": {
-          "aarch64": "sha256:7032ffc1749cd7c154622c3c4a30817052a239d445e2fef5810473b9a092e572",
-          "amd64": "sha256:4c07784ecf42df2fe2bf8a99e950b87d89c16642de910abed21f7c796c5eb7cb",
-          "index": "sha256:e9d20968d9b63fa59981a1516544c2548378a986547e3e11ffc791474fc4d7ea"
+          "aarch64": "sha256:0386afefae39d7385de5ca9c376a3975a72c22ee915345f2e13098a5d0162d00",
+          "amd64": "sha256:36ca25ba6b6c856b7a6dd97569469aa4d65db4cfda27683a0463e6eeb4bf6274",
+          "index": "sha256:2ad765532debfe2f23a31436362affc37697f32172e640f2cdf8dfc7d403f5ed"
         },
         "static": {
-          "aarch64": "sha256:1ccf86ed23fb5171f03ce320e6565bdb67a445af838f7f72380ab48be1dfba98",
-          "amd64": "sha256:a5b29024d6c5d4187f9eaf6fbe6b1691d1d465d4f26e64ba06571eec1b90a03d",
-          "index": "sha256:13f5bc7efbbccda754f7be1c0f531716cb8f80226d92d4bd43fbc16820df17eb"
+          "aarch64": "sha256:6aae05cbd083261e5530a6619f32b985376e9abd95f1184b8477165d201b5534",
+          "amd64": "sha256:5c101e7482779edc01cb416dd2b985d07f3587797bf81054aad03f3bdce89da6",
+          "index": "sha256:84a338a986ab5e5822bf5f599e3c6cd7bcb9e2a5a9e24256c137970ef7060176"
         },
-        "tag_last_pushed": "2025-11-07T00:36:52.569798Z"
+        "tag_last_pushed": "2025-11-17T04:02:04.265742Z"
+      },
+      "0.rc2": {
+        "dynamic": {
+          "aarch64": "sha256:9ded674a7d6be7c5594c69e24a6d1f4491e00b922331714478f7653fc7cac272",
+          "amd64": "sha256:26309e511c0a1fea5de0aaf73482d9e2e8d306b2037663a1ed416f9b2a072e8d",
+          "index": "sha256:b4f9c0139d0a2eafb3c482cda1d1ea5341aed55450c95d067a5a69015f097c64"
+        },
+        "runtime": {
+          "aarch64": "sha256:2092d87b5cb7dd2cfb48fbb28d76d13a78dae0896c6efadc0a6662cefa0ec01a",
+          "amd64": "sha256:d532289add6d5bcc823d2851e7a53fe7af166c6f523f54d058ee41033fd280c6",
+          "index": "sha256:d3838cd7b88f285f36dd69403ab00baf214c4dd5581d3fd6d88b14af7c7f3717"
+        },
+        "static": {
+          "aarch64": "sha256:4c0832576521a8cc214b703c38577cc2e6454ed61f3a11857ee515c927dee945",
+          "amd64": "sha256:01ad3b1a95d3f428f8217bb7f31ba88b1482843f047c95a0d0f80ca18d59b4ca",
+          "index": "sha256:578e12db82db445a765c49ea5a18ccf935437fe0ce71ffb7458295fed17ead50"
+        },
+        "tag_last_pushed": "2025-11-18T19:53:15.890012Z"
+      },
+      "0.rc3": {
+        "dynamic": {
+          "aarch64": "sha256:2336fc9378263a719ca147a294ae93f0197f62d7d323d1fb5e8f50384a86239f",
+          "amd64": "sha256:9530176bf5b303dea0fab2ede2c5033e766d3a47390083bd99ecb3f5050e5d23",
+          "index": "sha256:d04d060f56d4bd1ff1edc9eb95734a6293fa68baaeebf93f5822a7ddde862db0"
+        },
+        "runtime": {
+          "aarch64": "sha256:330d46bafe9ecc330571181c0fcaf071ed7cf9aabfbc93f6e46b6adbd58218a7",
+          "amd64": "sha256:635dc0df2e99961d5d13700bcf78e94540d42f9d619e9d53f0a914e87fc7fcc9",
+          "index": "sha256:ba4e4afb0d2b8f55addea4f84818300fe39ad52af2efc74b1fb0c2c0a955f66e"
+        },
+        "static": {
+          "aarch64": "sha256:dde1da5670aa679c590bc8218910d440eb89ec56ecb6d094e38e2f1225d9ef98",
+          "amd64": "sha256:da0fe8bed4761bed4dfbfb65cd569cdef55c0a1f2e927162ebad56181cf821df",
+          "index": "sha256:5517ce88b901086779db394cf21777923c2fb0c62991b4a3fbafe1359e27e654"
+        },
+        "tag_last_pushed": "2025-11-21T20:19:41.316428Z"
+      },
+      "snap20250424035343": {
+        "dynamic": {
+          "amd64": "sha256:b27b218772471482a9cb7c6afa7da7fbfb746e63ef597269bc5248b0bcecee4d",
+          "index": "sha256:b27b218772471482a9cb7c6afa7da7fbfb746e63ef597269bc5248b0bcecee4d"
+        },
+        "runtime": {
+          "amd64": "sha256:5961c1109a9baa1747184d69cddd601d4b2365dd23481e135b51074bf3e0192b",
+          "index": "sha256:5961c1109a9baa1747184d69cddd601d4b2365dd23481e135b51074bf3e0192b"
+        },
+        "static": {
+          "amd64": "sha256:e7beaf0f2ac46c16494994ac723c146e21ff455edf8270f8754f6a2122638371",
+          "index": "sha256:e7beaf0f2ac46c16494994ac723c146e21ff455edf8270f8754f6a2122638371"
+        },
+        "tag_last_pushed": "2025-05-01T21:17:50.072657Z"
+      },
+      "snap20250515052010": {
+        "dynamic": {
+          "amd64": "sha256:89bcc4de94e1350d1aa26fd52faad994b228528564d3d98f7e22895d0a8fd236",
+          "index": "sha256:89bcc4de94e1350d1aa26fd52faad994b228528564d3d98f7e22895d0a8fd236"
+        },
+        "runtime": {
+          "amd64": "sha256:a71269b2d7eef05ef24de0726e0e1523872e818ed62992c5bd4c1b662b7b2622",
+          "index": "sha256:a71269b2d7eef05ef24de0726e0e1523872e818ed62992c5bd4c1b662b7b2622"
+        },
+        "static": {
+          "amd64": "sha256:9e506b0e7ae0bf8afea095bf1eb20af157f859c1914176f68de14c5047c9cfbb",
+          "index": "sha256:9e506b0e7ae0bf8afea095bf1eb20af157f859c1914176f68de14c5047c9cfbb"
+        },
+        "tag_last_pushed": "2025-05-15T23:51:27.556496Z"
+      },
+      "snapshot": {
+        "dynamic": {
+          "aarch64": "sha256:70c22190ade532f25c2d9f4f7f81e709af570152ef7d312f455d13156573ab0e",
+          "amd64": "sha256:448c54ce0c8fcb522cb45b65dc9aacc7cb559a66256528fe1aaf4ee6318561c6",
+          "index": "sha256:ded417163d77a73c2e636cf0143332436c17889ae69533f9088f7a769538a9af"
+        },
+        "runtime": {
+          "aarch64": "sha256:c4c2237b877dadd504163092c320ccf930e3d5ea1463bd73c75d61a1829b37af",
+          "amd64": "sha256:ef7ed8bef2813a181f1bf658e2c5de8217f425cee36bb736b22e11865fa54aa5",
+          "index": "sha256:e61a18af549eb9c7883e1b6160ecab6806c08d359d291b5013787f262afe7953"
+        },
+        "static": {
+          "aarch64": "sha256:8bc4ed4771179f124d7716a776e39f6e6ade39c166db4a2b7fb165b8053e82f7",
+          "amd64": "sha256:b5dec63c68d3b54033c4dd2f2d364b3c6e2e172a4c8c132f9d45fff15614f8b7",
+          "index": "sha256:be2e2ad17f55c3007b91202f41308760b03399b0c32d3e4866ebbfddea21c96d"
+        },
+        "tag_last_pushed": "2025-11-20T20:23:55.715281Z"
       }
     },
     "16": {

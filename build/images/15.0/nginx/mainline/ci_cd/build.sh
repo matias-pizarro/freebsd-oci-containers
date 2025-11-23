@@ -11,4 +11,4 @@ podman build \
     --no-hosts \
     --tag nginx:mainline-freebsd15 \
     --tag nginx:mainline-freebsd15.0 \
-    --file Containerfile
+    --file ../Containerfile

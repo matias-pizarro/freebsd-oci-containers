@@ -13,7 +13,11 @@ PostgreSQL implements the majority of the SQL:2011 standard, is ACID-compliant a
 ### start a postgres instance
 
 ```console
-podman run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+podman run \
+    --annotation='sysv=true' \
+    --network some-network \
+    --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d \
+    postgres:freebsd
 ```
 
 The default `postgres` user and database are created in the entrypoint with `initdb`.
@@ -25,7 +29,11 @@ The default `postgres` user and database are created in the entrypoint with `ini
 ### ... or via `psql`
 
 ```console
-podman run -it --rm --network some-network postgres psql -h some-postgres -U postgres
+podman run -it --rm \
+    --annotation='sysv=true' \
+    --network podman \
+    postgres:freebsd \
+    psql -h some-postgres -U postgres
 psql (14.3)
 Type "help" for help.
 

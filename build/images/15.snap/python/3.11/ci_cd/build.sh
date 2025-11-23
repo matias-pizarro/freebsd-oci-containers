@@ -12,4 +12,4 @@ podman build \
     --tag python:3-freebsd15.snapshot \
     --tag python:3.11-freebsd15.snapshot \
     --tag python:freebsd15.snapshot \
-    --file Containerfile
+    --file ../Containerfile

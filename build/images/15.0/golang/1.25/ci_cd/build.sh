@@ -17,4 +17,4 @@ podman build \
     --tag golang:1.25.4-freebsd15.0 \
     --tag golang:freebsd15 \
     --tag golang:freebsd15.0 \
-    --file Containerfile
+    --file ../Containerfile

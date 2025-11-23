@@ -11,4 +11,4 @@ podman build \
     --no-hosts \
     --tag nginx:freebsd15.snapshot \
     --tag nginx:stable-freebsd15.snapshot \
-    --file Containerfile
+    --file ../Containerfile

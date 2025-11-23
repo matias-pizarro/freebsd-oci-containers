@@ -15,4 +15,4 @@ podman build \
     --tag golang:1.20.14-freebsd \
     --tag golang:1.20.14-freebsd14 \
     --tag golang:1.20.14-freebsd14.3 \
-    --file Containerfile
+    --file ../Containerfile

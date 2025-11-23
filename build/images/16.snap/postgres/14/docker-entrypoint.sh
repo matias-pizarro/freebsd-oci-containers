@@ -330,12 +330,12 @@ _main() {
 		set -- postgres "$@"
 	fi
 
-	if [ "$(id -u)" = '0' ]; then
-		# then restart script as postgres user
-		echo "executing as root"
-	else
-		echo "executing as postgres"
-	fi
+	# if [ "$(id -u)" = '0' ]; then
+	# 	# then restart script as postgres user
+	# 	echo "executing as root"
+	# else
+	# 	echo "executing as postgres"
+	# fi
 
 	if [ "$1" = 'postgres' ] && ! _pg_want_help "$@"; then
 		docker_setup_env

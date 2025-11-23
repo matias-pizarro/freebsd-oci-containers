@@ -18,4 +18,4 @@ podman build \
     --tag uv:freebsd \
     --tag uv:freebsd14 \
     --tag uv:freebsd14.3 \
-    --file Containerfile
+    --file ../Containerfile

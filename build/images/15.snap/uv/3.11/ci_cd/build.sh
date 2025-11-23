@@ -12,4 +12,4 @@ podman build \
     --tag uv:3-freebsd15.snapshot \
     --tag uv:3.11-freebsd15.snapshot \
     --tag uv:freebsd15.snapshot \
-    --file Containerfile
+    --file ../Containerfile

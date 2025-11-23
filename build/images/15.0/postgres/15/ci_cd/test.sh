@@ -3,9 +3,18 @@ set -Eeuo pipefail
 
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
-# TBD: smoke test of built images
-
-podman run -it --rm \
-    ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd nginx -v
+podman_output=$(
+    podman run -it --rm \
+        --annotation='sysv=true' \
+        postgres:15-freebsd15.0 \
+        postgres --version
+)
+expected_output="postgres (PostgreSQL) 15.0"
+if [ "${podman_output::-1}" == "${expected_output}" ]; then
+    echo "Image postgres:15-freebsd15.0 is valid"
+else
+    echo "Image postgres:15-freebsd15.0 is not valid"
+    exit 1
+fi
 
 exit 0

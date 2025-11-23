@@ -6,14 +6,14 @@ cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 podman_output=$(
     podman run -it --rm \
         --annotation='sysv=true' \
-        postgres:16-freebsd14.snapshot \
+        {{ full_image_tag }} \
         postgres --version
 )
-expected_output="postgres (PostgreSQL) 16.0"
+expected_output="postgres (PostgreSQL) {{ project_major_version }}.{{ project_minor_version }}"
 if [ "${podman_output::-1}" == "${expected_output}" ]; then
-    echo "Image postgres:16-freebsd14.snapshot is valid"
+    echo "Image {{ full_image_tag }} is valid"
 else
-    echo "Image postgres:16-freebsd14.snapshot is not valid"
+    echo "Image {{ full_image_tag }} is not valid"
     exit 1
 fi
 

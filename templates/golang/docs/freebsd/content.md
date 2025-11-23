@@ -30,14 +30,14 @@ podman run -it --rm --name my-running-app my-golang-app
 There may be occasions where it is not appropriate to run your app inside a container. To compile, but not run your app inside the Docker instance, you can write something like:
 
 ```console
-podman run --rm -v "$PWD":/go/src/myapp -w /go/src/myapp \
+podman run --rm -v "$PWD":/usr/local/share/myapp -w /usr/local/share/myapp \
     golang:1.25-freebsd go build -v
 ```
 
 This will add your current directory as a volume to the container, set the working directory to the volume, and run the command `go build` which will tell go to compile the project in the working directory and output the executable to `myapp`. Alternatively, if you have a `Makefile`, you can run the `make` command inside your container.
 
 ```console
-podman run --rm -v "$PWD":/go/src/myapp -w /go/src/myapp \
+podman run --rm -v "$PWD":/usr/local/share/myapp -w /usr/local/share/myapp \
     golang:1.25-freebsd make
 ```
 
@@ -46,7 +46,7 @@ podman run --rm -v "$PWD":/go/src/myapp -w /go/src/myapp \
 If you need to compile your application for a platform other than `linux/amd64` (such as `windows/386`):
 
 ```console
-podman run --rm -v "$PWD":/go/src/myapp -w /go/src/myapp \
+podman run --rm -v "$PWD":/usr/local/share/myapp -w /usr/local/share/myapp \
     -e GOOS=windows -e GOARCH=386 \
     golang:1.25-freebsd go build -v
 ```
@@ -55,7 +55,7 @@ Alternatively, you can build for multiple platforms at once:
 
 launch the container:
 ```console
-podman run --rm -it -v "$PWD":/go/src/myapp -w /go/src/myapp \
+podman run --rm -it -v "$PWD":/usr/local/share/myapp -w /usr/local/share/myapp \
 golang:1.25-freebsd bash
 ```
 

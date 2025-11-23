@@ -12,4 +12,4 @@ podman build \
     --tag nginx:mainline-freebsd \
     --tag nginx:mainline-freebsd14 \
     --tag nginx:mainline-freebsd14.3 \
-    --file Containerfile
+    --file ../Containerfile

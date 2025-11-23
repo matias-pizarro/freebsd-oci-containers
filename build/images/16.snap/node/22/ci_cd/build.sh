@@ -11,4 +11,4 @@ podman build \
     --no-hosts \
     --tag node:22-freebsd16 \
     --tag node:22-freebsd16.snapshot \
-    --file Containerfile
+    --file ../Containerfile

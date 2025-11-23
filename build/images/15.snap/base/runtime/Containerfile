@@ -1,10 +1,10 @@
-FROM ghcr.io/freebsd/freebsd-runtime:15.snap@sha256:e9d20968d9b63fa59981a1516544c2548378a986547e3e11ffc791474fc4d7ea
+FROM ghcr.io/freebsd/freebsd-runtime:15.snap@sha256:e61a18af549eb9c7883e1b6160ecab6806c08d359d291b5013787f262afe7953
 
 RUN rm -f /usr/local/etc/pkg/repos/base.conf
 
 COPY files/repos /usr/local/etc/pkg/repos
 
-ENV FREEBSD_VERSION 15.snap@20251107003652+0000
+ENV FREEBSD_VERSION 15.snap@20251120202355+0000
 
 RUN /usr/bin/env pkg bootstrap -yf \
     && /usr/bin/env pkg upgrade -yr FreeBSD-base \

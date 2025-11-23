@@ -11,4 +11,4 @@ podman build \
     --no-hosts \
     --tag golang:1.21-freebsd14.snapshot \
     --tag golang:1.21.13-freebsd14.snapshot \
-    --file Containerfile
+    --file ../Containerfile

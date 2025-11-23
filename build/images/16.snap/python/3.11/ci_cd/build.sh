@@ -15,4 +15,4 @@ podman build \
     --tag python:3.11-freebsd16.snapshot \
     --tag python:freebsd16 \
     --tag python:freebsd16.snapshot \
-    --file Containerfile
+    --file ../Containerfile

@@ -10,4 +10,4 @@ podman build \
     --env VERSION_MINOR=snapshot \
     --no-hosts \
     --tag postgres:13-freebsd14.snapshot \
-    --file Containerfile
+    --file ../Containerfile

@@ -13,7 +13,7 @@ if [ "${podman_output::-1}" == "${expected_output}" ]; then
     echo "Image node:25-freebsd15.0 is valid"
 else
     echo "Image node:25-freebsd15.0 is not valid"
-    # exit 1
+    exit 1
 fi
 
 exit 0

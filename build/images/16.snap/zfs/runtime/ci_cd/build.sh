@@ -13,4 +13,4 @@ podman build \
     --tag freebsd-zfs:16.snapshot \
     --tag freebsd-zfs:runtime-16 \
     --tag freebsd-zfs:runtime-16.snapshot \
-    --file Containerfile
+    --file ../Containerfile

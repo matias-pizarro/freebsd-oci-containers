@@ -12,4 +12,4 @@ podman build \
     --tag postgres:14-freebsd \
     --tag postgres:14-freebsd14 \
     --tag postgres:14-freebsd14.3 \
-    --file Containerfile
+    --file ../Containerfile

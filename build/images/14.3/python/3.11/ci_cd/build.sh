@@ -18,4 +18,4 @@ podman build \
     --tag python:freebsd \
     --tag python:freebsd14 \
     --tag python:freebsd14.3 \
-    --file Containerfile
+    --file ../Containerfile

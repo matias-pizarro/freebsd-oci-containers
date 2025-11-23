@@ -13,4 +13,4 @@ podman build \
     --tag postgres:18-freebsd15.0 \
     --tag postgres:freebsd15 \
     --tag postgres:freebsd15.0 \
-    --file Containerfile
+    --file ../Containerfile

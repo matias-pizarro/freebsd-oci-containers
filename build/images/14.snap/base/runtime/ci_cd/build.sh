@@ -11,4 +11,4 @@ podman build \
     --no-hosts \
     --tag freebsd-base:14.snapshot \
     --tag freebsd-base:runtime-14.snapshot \
-    --file Containerfile
+    --file ../Containerfile

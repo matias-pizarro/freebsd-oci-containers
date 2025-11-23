@@ -12,4 +12,4 @@ podman build \
     --tag node:20-freebsd \
     --tag node:20-freebsd14 \
     --tag node:20-freebsd14.3 \
-    --file Containerfile
+    --file ../Containerfile

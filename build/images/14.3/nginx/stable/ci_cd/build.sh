@@ -15,4 +15,4 @@ podman build \
     --tag nginx:stable-freebsd \
     --tag nginx:stable-freebsd14 \
     --tag nginx:stable-freebsd14.3 \
-    --file Containerfile
+    --file ../Containerfile
