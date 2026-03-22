@@ -1,0 +1,41 @@
+default_install_hook_types:
+- pre-commit
+- commit-msg
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v6.0.0
+  hooks:
+  - id: check-added-large-files
+  - id: check-case-conflict
+  - id: check-json
+  - id: check-shebang-scripts-are-executable
+  - id: check-toml
+  - id: check-xml
+  - id: check-yaml
+    args: ["--unsafe"]
+  - id: debug-statements
+  - id: name-tests-test
+    args: [ --pytest-test-first ]
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+- repo: local
+  hooks:
+  - id: commitizen
+    name: commitizen
+    entry: .venv/bin/cz check --commit-msg-file
+    language: system
+    stages:
+    - commit-msg
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.15.1
+  hooks:
+  - id: ruff
+    name: ruff
+    entry: ruff check --fix
+    language: system
+    types_or: [ python, pyi ]
+  - id: ruff-format
+    name: ruff-format
+    entry: ruff format
+    language: system
+    types_or: [ python, pyi ]

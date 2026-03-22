@@ -49,6 +49,10 @@ ignore = [
 ]
 fixable = ["ALL"]
 
+[tool.ruff.lint.per-file-ignores]
+# build.py is a PoC monolith — will be refactored in Phase 3 (Task 3.2)
+"build.py" = ["ALL"]
+
 [tool.ruff.lint.flake8-implicit-str-concat]
 allow-multiline = true
 
