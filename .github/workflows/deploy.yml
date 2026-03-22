@@ -3,14 +3,13 @@ name: Deploy MkDocs to GitHub Pages
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # This lets you trigger builds manually
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Prevent multiple deployments from running simultaneously
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -22,30 +21,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # We need the full history for git info
+          fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
 
-      - name: Cache pip dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: uv sync --group docs
 
-      - name: Install MkDocs and dependencies
-        run: |
-          pip install --upgrade pip
-          pip install mkdocs mkdocs-material pymdown-extensions mkdocstrings[python]
-          # Uncomment the next line if you have a requirements.txt file:
-          # pip install -r requirements.txt
+      - name: Generate build output
+        run: uv run python build.py
 
       - name: Build MkDocs site
-        run: mkdocs build --clean -f build/mkdocs.yml
+        run: uv run mkdocs build --clean -f build/mkdocs.yml
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
