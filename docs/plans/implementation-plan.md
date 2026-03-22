@@ -16,7 +16,22 @@
 
 ### Prerequisite: Fresh start from main
 
-All Phase 2 work begins on a new feature branch from `main`. Valuable commits from `partial_versioning_refactor` (pyproject.toml conformance, .gitignore cleanup, debug removal, legacy scripts removal, stale mkdocs.yml removal) should be cherry-picked or redone.
+All Phase 2 work begins on a new feature branch from `main`. Valuable commits
+from `partial_versioning_refactor` should be cherry-picked or redone. The
+relevant commits are:
+
+| Commit | Description | Action |
+|--------|-------------|--------|
+| `04c300a` | Replace .gitignore with focused version | Redo in Task 2.2 |
+| `252fcf1` | Remove build/ from git tracking | Redo in Task 2.2 |
+| `3940413` | Remove debug breakpoints | Redo if still present on main |
+| `0b2c5ae` | Remove legacy scripts/ directory | Cherry-pick if not on main |
+| `3dd8f3e` | Remove stale root mkdocs.yml | Cherry-pick if not on main |
+| `16cf541` | Bring pyproject.toml into conformance | Redo in Task 2.3 |
+
+Check which of these are already on `main` before cherry-picking. Tasks 2.2
+and 2.3 redo the .gitignore and pyproject.toml work from scratch, so those
+commits should not be cherry-picked.
 
 ---
 
@@ -98,6 +113,7 @@ htmlcov/
 
 # Project-specific
 upstreams/
+tmp/
 .env
 .env.*
 !.env*.dist
@@ -218,13 +234,23 @@ uv run pre-commit install
 uv run pre-commit run --all-files
 ```
 
-Fix any issues that surface.
+Fix any issues that surface (ruff may auto-fix formatting in existing files).
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Commit config file**
 
 ```bash
 git add .pre-commit-config.yaml
 git commit -m "chore: add .pre-commit-config.yaml matching hcloud conventions"
+```
+
+- [ ] **Step 5: Commit any auto-fixes from pre-commit run**
+
+If Step 3 modified existing files (trailing whitespace, formatting), commit
+those separately:
+
+```bash
+git add -u
+git commit -m "style: apply pre-commit auto-fixes to existing files"
 ```
 
 ---
@@ -259,30 +285,48 @@ git commit -m "chore: add CHANGELOG.md"
 
 **Files:**
 - Create: `tests/__init__.py`
+- Create: `tests/conftest.py`
 - Create: `tests/test_versions_json.py`
 
 - [ ] **Step 1: Create tests/__init__.py**
 
 Empty file.
 
-- [ ] **Step 2: Write failing tests for versions.json structure**
+- [ ] **Step 2: Create tests/conftest.py with shared fixtures**
 
 ```python
-"""Tests for versions.json schema validation."""
+"""Shared test fixtures for freebsd_containers tests."""
 
 import json
 from pathlib import Path
 
 import pytest
 
-VERSIONS_FILE = Path(__file__).resolve().parent.parent / "versions.json"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+@pytest.fixture
+def project_root():
+    """Return the project root directory."""
+    return PROJECT_ROOT
 
 
 @pytest.fixture
 def versions():
     """Load and return the parsed versions.json."""
-    with open(VERSIONS_FILE) as f:
+    versions_file = PROJECT_ROOT / "versions.json"
+    with open(versions_file) as f:
         return json.load(f)
+```
+
+- [ ] **Step 3: Write tests for versions.json structure**
+
+```python
+"""Tests for versions.json schema validation."""
+
+import re
+
+import pytest
 
 
 class TestTopLevelStructure:
@@ -296,13 +340,8 @@ class TestTopLevelStructure:
         "os_reference_versions",
     }
 
-    def test_file_exists(self):
-        assert VERSIONS_FILE.exists(), f"{VERSIONS_FILE} not found"
-
-    def test_valid_json(self):
-        with open(VERSIONS_FILE) as f:
-            data = json.load(f)
-        assert isinstance(data, dict)
+    def test_file_exists(self, project_root):
+        assert (project_root / "versions.json").exists()
 
     def test_required_keys_present(self, versions):
         missing = self.REQUIRED_KEYS - set(versions.keys())
@@ -312,27 +351,28 @@ class TestTopLevelStructure:
 class TestRegistries:
     """Verify registry configuration structure."""
 
-    REQUIRED_FIELDS = {"name", "username"}
+    REQUIRED_FIELDS = {"name", "username", "slug"}
 
     def test_at_least_one_registry(self, versions):
         assert len(versions["registries"]) >= 1
 
-    @pytest.mark.parametrize(
-        "registry_id",
-        ["github", "docker", "quay"],
-    )
-    def test_registry_has_required_fields(self, versions, registry_id):
-        if registry_id not in versions["registries"]:
-            pytest.skip(f"Registry {registry_id} not configured")
-        registry = versions["registries"][registry_id]
-        missing = self.REQUIRED_FIELDS - set(registry.keys())
-        assert not missing, f"Registry {registry_id} missing: {missing}"
+    def test_public_registries_have_required_fields(self, versions):
+        for reg_id, registry in versions["registries"].items():
+            if reg_id == "local":
+                continue  # local registry allows null values
+            missing = self.REQUIRED_FIELDS - set(registry.keys())
+            assert not missing, f"Registry {reg_id} missing: {missing}"
+            for field in self.REQUIRED_FIELDS:
+                assert registry[field] is not None, (
+                    f"Registry {reg_id}.{field} must not be null"
+                )
 
 
 class TestProjects:
     """Verify project definitions."""
 
     REQUIRED_FIELDS = {"name", "slug", "type", "versions", "versioning_scheme"}
+    UPSTREAM_REQUIRED = {"upstreams", "ready_for_upstream_merge"}
     VALID_TYPES = {"os_variant", "upstream_adaptation"}
 
     def test_at_least_one_project(self, versions):
@@ -349,12 +389,14 @@ class TestProjects:
                 f"Project {name} has invalid type: {project['type']}"
             )
 
-    def test_upstream_projects_have_upstream_urls(self, versions):
+    def test_upstream_projects_have_upstream_fields(self, versions):
         for name, project in versions["projects"].items():
             if project["type"] == "upstream_adaptation":
-                assert "upstreams" in project, (
-                    f"Upstream project {name} missing 'upstreams' field"
+                missing = self.UPSTREAM_REQUIRED - set(project.keys())
+                assert not missing, (
+                    f"Upstream project {name} missing: {missing}"
                 )
+                assert isinstance(project["ready_for_upstream_merge"], bool)
 
     def test_versions_is_nonempty_list(self, versions):
         for name, project in versions["projects"].items():
@@ -364,6 +406,19 @@ class TestProjects:
             assert len(project["versions"]) >= 1, (
                 f"Project {name}: versions must not be empty"
             )
+
+    def test_reference_project_version_in_versions(self, versions):
+        for name, project in versions["projects"].items():
+            if "reference_project_version" in project:
+                ref = project["reference_project_version"]
+                # Reference may be a prefix (e.g., "1.25" matches "1.25.4")
+                matches = [
+                    v for v in project["versions"] if v.startswith(ref)
+                ]
+                assert matches, (
+                    f"Project {name}: reference_project_version '{ref}' "
+                    f"not found in versions"
+                )
 
 
 class TestOsVersions:
@@ -380,6 +435,31 @@ class TestOsVersions:
             assert len(minors) >= 1, (
                 f"OS {major}: must have at least one minor version"
             )
+
+    def test_os_reference_versions_consistency(self, versions):
+        refs = versions["os_reference_versions"]
+        assert "reference_os_major_version" in refs
+        for major, minor in refs.items():
+            if major == "reference_os_major_version":
+                continue
+            assert major in versions["os_versions"], (
+                f"Reference OS {major} not in os_versions"
+            )
+
+
+class TestImageDigests:
+    """Verify image digest format when present."""
+
+    DIGEST_PATTERN = re.compile(r"^sha256:[a-f0-9]{64}$")
+
+    def test_digests_are_valid_format(self, versions):
+        if "image_digests" not in versions:
+            pytest.skip("No image_digests section")
+        for key, digest in versions["image_digests"].items():
+            if digest:  # skip empty strings (unfetched digests)
+                assert self.DIGEST_PATTERN.match(digest), (
+                    f"Digest {key} has invalid format: {digest}"
+                )
 ```
 
 - [ ] **Step 3: Run tests to verify they pass**
@@ -435,13 +515,29 @@ git mv templates/pkg_cache standalone/pkg_cache
 git mv templates/podman-api standalone/podman-api
 ```
 
-Note: `agent_sandbox` is shelved — add `templates/agent_sandbox/` to `.gitignore` if not already ignored.
+Note: `agent_sandbox` is shelved — add `templates/agent_sandbox/` to
+`.gitignore` if not already ignored.
+
+**Stays in `templates/`:** `poudriere/` remains because it is part of the
+build matrix (Specialty tier). `ci_cd/` and `oci_containers_mkdocs/` also
+remain — they are build system infrastructure templates, not image templates.
 
 - [ ] **Step 3: Update .gitignore for agent_sandbox**
 
 Add `templates/agent_sandbox/` to `.gitignore`.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Verify build.py still works after the move**
+
+```bash
+uv run python build.py
+```
+
+If build.py errors on missing templates, update it to skip directories that
+no longer exist in `templates/`. The standalone templates were never part of
+the Jinja2 build matrix (they lack versioning_scheme entries in
+versions.json), but verify this.
+
+- [ ] **Step 5: Commit**
 
 ```bash
 git add standalone/ .gitignore
@@ -578,6 +674,39 @@ git commit -m "ci: add validation workflow and modernize deploy workflow"
 
 ---
 
+### Task 2.12: Add community readiness files
+
+**Files:**
+- Create: `CONTRIBUTING.md`
+- Create: `CODE_OF_CONDUCT.md`
+- Verify: `LICENSE`
+
+- [ ] **Step 1: Verify LICENSE file is correct**
+
+Confirm the BSD 2-Clause License file exists and is properly formatted.
+
+- [ ] **Step 2: Create CONTRIBUTING.md**
+
+Cover:
+- How to report issues
+- How to submit patches (fork, branch, PR workflow)
+- Development setup (link to local-setup.md once it exists)
+- Coding conventions (link to vision-and-design.md Conventions section)
+- Commit message format (conventional commits)
+
+- [ ] **Step 3: Create CODE_OF_CONDUCT.md**
+
+Use the Contributor Covenant v2.1 (standard for open-source projects).
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add CONTRIBUTING.md CODE_OF_CONDUCT.md
+git commit -m "docs: add CONTRIBUTING.md and CODE_OF_CONDUCT.md"
+```
+
+---
+
 ## Phase 3: Streamline Base Image Builds
 
 ### Task 3.1: Refactor build.py into a Python package
@@ -600,55 +729,89 @@ git commit -m "ci: add validation workflow and modernize deploy workflow"
 - Create: `tests/test_versions.py`
 - Create: `tests/test_builder.py`
 
-This is the largest task in the plan. It should be broken into sub-tasks,
-each with its own TDD cycle:
+This is the largest task in the plan and should be executed as a dedicated
+session (or multiple sessions). It is broken into sub-tasks, each with its
+own TDD cycle.
 
-- [ ] **Step 1: Create package skeleton with __init__.py**
+**Critical: golden-output verification.** Before starting, capture the
+current build.py output as a reference:
 
-- [ ] **Step 2: Extract config module**
+```bash
+uv run python build.py
+cp -r build/ build_golden/
+```
+
+After **every** extraction step, re-run build.py and diff against the golden
+output. The refactored code must produce byte-identical output:
+
+```bash
+uv run python build.py
+diff -r build/ build_golden/
+```
+
+If the diff is non-empty, fix the extraction before proceeding. This catches
+regressions immediately rather than at the end of 10 extraction steps.
+
+- [ ] **Step 1: Capture golden output and create package skeleton**
+
+```bash
+uv run python build.py
+cp -r build/ build_golden/
+mkdir -p freebsd_containers
+touch freebsd_containers/__init__.py
+```
+
+- [ ] **Step 2: Extract config module (write tests first)**
 
 Extract registry configuration, build environment settings, architecture
 mappings, and regex patterns from build.py globals into
-`freebsd_containers/config.py`. Write tests first.
+`freebsd_containers/config.py`. The original build.py imports and uses
+the new module. Verify golden output matches. Commit.
 
-- [ ] **Step 3: Extract versions module**
+- [ ] **Step 3: Extract versions module (write tests first)**
 
 Extract versions.json loading, OS version iteration, project version
 iteration, and reference version resolution into
-`freebsd_containers/versions.py`. Write tests first.
+`freebsd_containers/versions.py`. Verify golden output matches. Commit.
 
-- [ ] **Step 4: Extract tags module**
+- [ ] **Step 4: Extract tags module (write tests first)**
 
-Extract the complex tagging logic (lines 256-325 of current build.py) into
+Extract the complex tagging logic (the `generate_tags` / image tag
+calculation code in build.py's main loop) into
 `freebsd_containers/tags.py`. This is the most intricate logic in the
-codebase — each upstream project has its own versioning scheme. Write
-thorough tests first using known-good tag outputs.
+codebase — each upstream project has its own versioning scheme encoded
+in the `versioning_scheme` field. Write thorough tests using known-good
+tag outputs. Verify golden output matches. Commit.
 
-- [ ] **Step 5: Extract digests module**
+- [ ] **Step 5: Extract digests module (write tests first)**
 
 Extract Docker Hub digest fetching and caching into
 `freebsd_containers/digests.py`. Write tests with mocked HTTP responses.
+Verify golden output matches. Commit.
 
-- [ ] **Step 6: Extract templates module**
+- [ ] **Step 6: Extract templates module (write tests first)**
 
 Extract Jinja2 template loading, organization by project, and rendering
-into `freebsd_containers/templates.py`. Write tests first.
+into `freebsd_containers/templates.py`. Verify golden output matches.
+Commit.
 
-- [ ] **Step 7: Extract CI/CD generator module**
+- [ ] **Step 7: Extract CI/CD generator module (write tests first)**
 
 Extract CI/CD script rendering (build.sh, test.sh, push.sh,
-run_pipeline.sh) into `freebsd_containers/cicd.py`. Write tests first.
+run_pipeline.sh) into `freebsd_containers/cicd.py`. Verify golden output
+matches. Commit.
 
-- [ ] **Step 8: Extract docs generator module**
+- [ ] **Step 8: Extract docs generator module (write tests first)**
 
 Extract MkDocs site generation (mkdocs.yml rendering, project page
-rendering, doc file copying) into `freebsd_containers/docs.py`. Write
-tests first.
+rendering, doc file copying) into `freebsd_containers/docs.py`. Verify
+golden output matches. Commit.
 
-- [ ] **Step 9: Create builder orchestrator**
+- [ ] **Step 9: Create builder orchestrator (write tests first)**
 
 Create `freebsd_containers/builder.py` that wires all modules together
-and provides the main build workflow. Write integration tests.
+and provides the main build workflow. Write integration tests. Verify
+golden output matches. Commit.
 
 - [ ] **Step 10: Create CLI module**
 
@@ -658,6 +821,8 @@ argparse or click) supporting:
 - `build --project postgres` — generate for a single project
 - `build --validate` — generate and verify determinism
 - `build --dry-run` — show what would be generated
+
+Commit.
 
 - [ ] **Step 11: Update build.py as thin wrapper**
 
@@ -670,16 +835,20 @@ from freebsd_containers.cli import main
 main()
 ```
 
-- [ ] **Step 12: Run full test suite and validate output matches**
+- [ ] **Step 12: Final validation**
 
 ```bash
 uv run pytest tests/ -v
-uv run python build.py --validate
+uv run python build.py
+diff -r build/ build_golden/
 ```
+
+Golden output must match. Clean up `build_golden/`.
 
 - [ ] **Step 13: Commit**
 
-Multiple commits throughout — at least one per extracted module.
+Final commit if any loose changes. The bulk of commits happen at each
+extraction step above.
 
 ---
 
@@ -753,38 +922,26 @@ git commit -m "docs: add base and zfs image build guides"
 
 ---
 
-### Task 3.4: Set up infra-containers project skeleton
+### Task 3.4: Set up infra-containers project (separate plan)
 
-**Files:**
-- This is a separate repo/project in infra-workspace
-- Create: `infra-containers/` directory structure following infra-dklos pattern
+The `infra-containers` project is a separate repo in infra-workspace,
+following the infra-dklos pattern. It requires its own dedicated plan
+covering Pulumi stack setup, layer architecture, and deployment
+configuration. This is substantial work that does not belong inline here.
 
-- [ ] **Step 1: Study infra-dklos structure as reference**
+- [ ] **Step 1: Create a dedicated plan for infra-containers**
 
-Examine the directory layout, Pulumi.yaml, pyproject.toml, and layer
-structure of infra-dklos.
+Use the `superpowers:writing-plans` skill to write a separate
+implementation plan for infra-containers. Reference infra-dklos as the
+template. Key areas:
+- Pulumi.yaml with virtualenv: .venv
+- Layer structure (L1: network, L2: volumes, L3: servers, L4: deploy)
+- pyproject.toml with infra-hcloud and infra-sops dependencies
+- Dev environment configuration
 
-- [ ] **Step 2: Create infra-containers skeleton**
+- [ ] **Step 2: Commit the plan**
 
-Following the infra-hcloud application project pattern:
-- `Pulumi.yaml` with virtualenv: .venv
-- `Pulumi.dev.yaml` for the dev environment
-- `pyproject.toml` with infra-hcloud and infra-sops dependencies
-- `layers/` directory structure
-- `bin/sops-env` script
-
-- [ ] **Step 3: Define initial layer structure**
-
-| Layer | Contents |
-|-------|----------|
-| L1 | Network, subnet for build servers |
-| L2 | Volumes for package cache, image cache |
-| L3 | Build server(s) with Podman |
-| L4 | Deploy configuration |
-
-- [ ] **Step 4: Commit**
-
-Initial commit of the skeleton project.
+Save to `docs/plans/infra-containers-plan.md` and commit.
 
 ---
 
@@ -821,6 +978,127 @@ git commit -m "docs: add local development setup guide"
 
 ---
 
+### Task 3.6: Review and document versions.json structure decision
+
+The spec notes that `versions.json` "needs reviewing and possible refactoring
+or deprecation in favour of a better solution." This task makes a deliberate
+decision.
+
+**Files:**
+- Create: `docs/design/versions-json-schema.md`
+
+- [ ] **Step 1: Audit current versions.json structure**
+
+Document the actual schema with field descriptions, noting pain points
+and inconsistencies discovered during the build.py refactoring.
+
+- [ ] **Step 2: Decide: keep, refactor, or replace**
+
+Evaluate options:
+- **Keep as-is** — it works and is well-understood
+- **Refactor** — split into per-project files, add JSON Schema validation
+- **Replace** — move to TOML, YAML, or a database
+
+Document the decision with rationale.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add docs/design/versions-json-schema.md
+git commit -m "docs: document versions.json schema and refactoring decision"
+```
+
+---
+
+### Task 3.7: Configure registry push workflow
+
+**Files:**
+- Create: `.github/workflows/push-images.yml` (or extend validate.yml)
+
+- [ ] **Step 1: Document required GitHub Actions secrets**
+
+List the secrets needed for each registry:
+- `GHCR_TOKEN` (or use `GITHUB_TOKEN`)
+- `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`
+- `QUAY_USERNAME`, `QUAY_TOKEN`
+
+- [ ] **Step 2: Create push workflow skeleton**
+
+A workflow that:
+- Triggers on tag push (`v*`)
+- Runs build.py to generate CI/CD scripts
+- Executes the generated push scripts for each registry
+- Initially gated behind a manual approval step
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add .github/workflows/
+git commit -m "ci: add registry push workflow skeleton"
+```
+
+---
+
+### Task 3.8: Document multi-architecture build strategy
+
+**Files:**
+- Create: `docs/design/multi-arch-strategy.md`
+
+- [ ] **Step 1: Document supported architectures and current status**
+
+| Architecture | FreeBSD support | Package availability | Status |
+|-------------|----------------|---------------------|--------|
+| amd64 | Full | Full | Primary |
+| aarch64 | Full | Partial | Secondary |
+| riscv64 | Experimental | Minimal | Future |
+
+- [ ] **Step 2: Document multi-arch manifest creation workflow**
+
+How `podman manifest create` and `podman manifest push` are used to
+produce multi-arch tags. How this integrates with the generated CI/CD
+scripts.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add docs/design/
+git commit -m "docs: document multi-architecture build strategy"
+```
+
+Note: Linux CI is a proxy for validation. Full FreeBSD-native testing
+requires `infra-containers` or a FreeBSD CI runner (e.g., Cirrus CI).
+This is documented but not blocking for initial phases.
+
+---
+
+### Task 3.9: Add security baseline
+
+**Files:**
+- Create: `tests/test_security.py`
+
+- [ ] **Step 1: Write tests for digest format validation**
+
+Test that all non-empty digest entries in versions.json match the
+`sha256:[a-f0-9]{64}` format. (Already included in Task 2.6 tests.)
+
+- [ ] **Step 2: Document security roadmap**
+
+Add a section to the vision doc or a separate `docs/design/security.md`
+covering:
+- Current: base image digest pinning (implemented)
+- Planned: image signing with cosign/SLSA provenance attestation
+- Planned: automated vulnerability scanning (Trivy or similar) in CI
+- Design principle: minimal attack surface via static/dynamic base variants
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add docs/design/ tests/
+git commit -m "docs: add security roadmap and digest validation tests"
+```
+
+---
+
 ## Phase 4: Update Upstream Projects One by One
 
 Phase 4 is a **repeatable template** applied to each image in priority order.
@@ -843,6 +1121,23 @@ below should be followed for each image.
 ### Template: Per-image update process
 
 For each image `<IMAGE>`:
+
+#### Task 4.X.0: Update versions.json for this image
+
+- [ ] **Step 1: Review current versions.json entries**
+
+Check that project versions, context fields, and upstream URLs are current.
+
+- [ ] **Step 2: Update with latest upstream releases**
+
+Add any new upstream versions, remove end-of-life versions, update context
+fields (e.g., yarn_version for node, njs_version for nginx).
+
+- [ ] **Step 3: Commit**
+
+```bash
+git commit -m "chore(<IMAGE>): update versions.json entries"
+```
 
 #### Task 4.X.1: Study upstream generation logic
 
