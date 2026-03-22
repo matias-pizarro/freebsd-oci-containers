@@ -1,4 +1,4 @@
-# FreeBSD OCI Containers — Vision & Design
+# FreeBSD OCI Containers
 
 ## Vision & Mission
 
@@ -75,16 +75,87 @@ images:
 - Serve the FreeBSD community that prefers native approaches over Linux
   compatibility layers
 
+### A note on filenames
+
+The OCI image specification does not mandate either filename — `Dockerfile` is
+Docker's convention, `Containerfile` is Podman's. The choice here is
+deliberate: `Dockerfile` signals "this works like the official Docker image
+you already know"; `Containerfile` signals "this is built the FreeBSD way."
+Both are standard OCI images and work with any compliant runtime.
+
+### Compatibility Contract
+
+For upstream-compliant images, "drop-in replacement" means specifically:
+
+- **Entrypoint and CMD** — same default entrypoint and command as the official
+  image (e.g., `docker-entrypoint.sh` for PostgreSQL)
+- **Environment variables** — same configuration variables with the same
+  semantics (e.g., `POSTGRES_PASSWORD`, `POSTGRES_DB`)
+- **Exposed ports** — same default ports (e.g., 5432 for PostgreSQL)
+- **Volume mount points** — same data directories (e.g., `/var/lib/postgresql/data`)
+- **Configuration file locations** — same paths where applicable
+- **Signal handling** — same graceful shutdown behaviour
+- **Health checks** — equivalent health check mechanisms
+
+FreeBSD-flavoured images may diverge on any of these where the FreeBSD
+convention provides a better experience (e.g., using `/var/db/postgres`
+instead of `/var/lib/postgresql/data`). Divergences are documented per image.
+
+## Base Image Architecture
+
+All images build on the foundation `base` and `zfs` images. These are not
+versioned by application version — instead they provide three variants that
+serve different use cases:
+
+| Variant | Contents | Use case |
+|---------|----------|----------|
+| **static** | Statically-linked FreeBSD base utilities only | Minimal base for images that bring their own runtime (e.g., Go binaries) |
+| **dynamic** | Dynamically-linked FreeBSD base with shared libraries | Base for images that need the FreeBSD shared library ecosystem |
+| **runtime** | Full FreeBSD userland with pkg manager | Base for images that install packages at build time (e.g., PostgreSQL, Python) |
+
+The `zfs` variant extends any of these with ZFS dataset support via OCI
+annotations (see below). Downstream images declare which base variant they
+build on — the choice depends on their runtime requirements.
+
+## OCI Annotations and Runtime Hooks
+
+FreeBSD's OCI container runtime supports custom annotations that enable
+features not available on Linux. This project provides and documents two
+annotation hooks:
+
+### ZFS dataset mounting
+
+The `zfs` annotation hook allows containers to mount persistent ZFS datasets
+directly, leveraging FreeBSD's native ZFS support. A container can declare
+a dataset via OCI annotations, and the runtime hook handles dataset creation,
+jailing (`zfs set jailed=on`), and mount management. This enables:
+
+- Persistent storage with ZFS snapshots, compression, and quotas
+- Dataset-per-container isolation
+- Zero-copy data sharing between host and container
+
+### SysV IPC
+
+The `sysv` annotation hook enables System V IPC (shared memory, semaphores,
+message queues) inside containers. This is required by applications like
+PostgreSQL that use SysV shared memory for performance.
+
+### Hook installation
+
+The runtime hooks are distributed as JSON configuration files and shell
+scripts in the `annotations/hooks.d/` directory. They are installed to
+`/usr/local/etc/containers/hooks.d/` on the host and activated by configuring
+`hooks_dir` in `containers.conf`. See `annotations/` for detailed setup
+instructions.
+
 ## Tagging Strategy
 
 Understanding and accurately implementing the tagging strategy of each
 upstream project is critical. Each docker-library project follows its own
-tagging conventions — PostgreSQL uses `17.4`, `17`, `latest`,
-`17.4-bookworm`; Node.js uses `22.14.0`, `22.14`, `22`, `lts`, `22-alpine`;
-and so on.
+tagging conventions that must be faithfully reproduced for both flavours.
 
-Both the upstream-compliant and FreeBSD-flavoured versions must faithfully
-reproduce these conventions, adapted for FreeBSD:
+Both the upstream-compliant and FreeBSD-flavoured versions reproduce upstream
+conventions, adapted for FreeBSD:
 
 - **Upstream-compliant tags** mirror official tags with a FreeBSD qualifier
   (e.g., `17.4-freebsd15.0`, `17-freebsd`)
@@ -92,12 +163,39 @@ reproduce these conventions, adapted for FreeBSD:
   variant (e.g., `17.4-freebsd15.0-native`, or a namespace-based approach
   like `freebsd-native/postgres:17.4`)
 
-The exact tagging scheme per image must be defined as part of each image's
-implementation session. The `versions.json` matrix must capture the full tag
-set for each image x FreeBSD version x project version x flavour combination.
+The exact tagging scheme per image is defined in `versions.json` via the
+`versioning_scheme` field. Tag generation is deterministic and verified by CI.
 
-Tag generation is deterministic — driven by `versions.json` and verified by
-CI.
+### Worked example: PostgreSQL
+
+PostgreSQL's `versioning_scheme` is `M[.m][-OSn[OSmm]]`, which produces:
+
+| Pattern | Example tags |
+|---------|-------------|
+| `M` | `17` — latest minor of major version 17 |
+| `M.m` | `17.7` — specific minor version |
+| `M-OSn` | `17-freebsd15` — major version on FreeBSD 15 |
+| `M.m-OSnOSmm` | `17.7-freebsd15.0` — fully qualified |
+
+For the upstream-compliant flavour, these mirror Docker Hub's official
+PostgreSQL tags with a FreeBSD suffix. For the FreeBSD-flavoured variant,
+the scheme is extended with a `-native` qualifier or served under a separate
+namespace.
+
+## Architecture Support
+
+The project targets the following architectures:
+
+| Architecture | Status | Notes |
+|-------------|--------|-------|
+| **amd64** | Primary | Full support, all images |
+| **aarch64** (arm64) | Secondary | Supported where FreeBSD and upstream packages are available |
+| **riscv64** | Experimental | Tracked in `versions.json` for future readiness |
+
+Multi-architecture OCI manifests are produced so that a single tag (e.g.,
+`freebsd/postgres:17`) resolves to the correct architecture automatically.
+The `os_versions` matrix in `versions.json` tracks base image digests per
+architecture.
 
 ## Image Catalog
 
@@ -105,7 +203,7 @@ The image catalog is organized in tiers by priority and dependency:
 
 | Tier | Images | Rationale |
 |------|--------|-----------|
-| **Foundation** | `base`, `zfs` | All other images build on these. `base` provides the minimal FreeBSD userland; `zfs` adds ZFS dataset support via OCI annotations. |
+| **Foundation** | `base`, `zfs` | All other images build on these. `base` provides the minimal FreeBSD userland in three variants (static, dynamic, runtime); `zfs` adds ZFS dataset support via OCI annotations. |
 | **Application** | `postgres`, `node`, `python`, `golang`, `nginx`, `uv` | The highest-demand images that cover the majority of container-based development workflows. Each has a corresponding upstream in docker-library. |
 | **Specialty** | `caddy_tls`, `pdfium`, `pkg_cache`, `podman-api`, `poudriere` | Project-specific or niche images that serve particular use cases. Not part of the upstream contribution effort. |
 
@@ -127,6 +225,18 @@ availability. Note that docker-library is the main source of official image
 definitions and documentation, but it is not the only one — some applications
 maintain their own independent image projects.
 
+### Supported FreeBSD versions
+
+The image matrix currently covers:
+
+| Version | Type | Status |
+|---------|------|--------|
+| **14.3** | Release | Stable, primary target |
+| **15.0** | Release | Primary target for upstream contributions |
+| **14.snapshot** | Snapshot | Tracking builds |
+| **15.snapshot** | Snapshot | Tracking builds |
+| **16.snapshot** | Snapshot | Experimental, future readiness |
+
 ## Build System Architecture
 
 The build system uses a **template-driven code generation** approach:
@@ -139,13 +249,18 @@ The build system uses a **template-driven code generation** approach:
 - **`build.py`** — the generation engine that combines `versions.json` with
   templates to produce the `build/` output directory
 
-The generation pipeline produces both flavours:
+### Dual generation pipeline
 
-1. **FreeBSD-side generation**: Our own Jinja2 templates render Containerfiles
-   and Dockerfiles with FreeBSD-specific adaptations
-2. **Upstream-side generation**: Patched upstream scripts (from `upstreams/`)
-   produce Dockerfiles that are merge-compatible with official docker-library
-   projects
+The build system produces both flavours through two complementary paths:
+
+1. **FreeBSD-side generation** produces **both** `Containerfile`
+   (FreeBSD-flavoured) and `Dockerfile` (upstream-compliant) using our own
+   Jinja2 templates with FreeBSD-specific adaptations. This is the primary
+   generation path for all images.
+2. **Upstream-side generation** uses patched upstream scripts (from
+   `upstreams/`) to produce Dockerfiles that are merge-compatible with
+   official docker-library projects. This path validates that our patches
+   produce correct output and serves as the basis for upstream PRs.
 
 The `build/` directory is a generated artifact — never committed to version
 control. It contains:
@@ -153,6 +268,8 @@ control. It contains:
 - `images/` — Containerfiles and Dockerfiles for every matrix combination
 - `ci_cd/` — generated CI/CD pipeline scripts
 - `docs/` — generated MkDocs documentation pages
+
+### Build system roadmap
 
 The build system is currently a monolithic script and will be refactored into
 a proper Python package (`freebsd_containers/`) with modules for template
@@ -163,6 +280,48 @@ preserved — the implementation needs professionalization.
 The effective matrix is four-dimensional: **Image x FreeBSD version x Project
 version x Flavour**. The build system must handle this combinatorial space
 efficiently and deterministically.
+
+## Testing Strategy
+
+Testing operates at multiple levels:
+
+### Build system tests
+
+Unit and integration tests for `build.py` (and its successor package) verify
+that template rendering, version matrix expansion, and tag generation produce
+correct, deterministic output. CI runs the generation step and validates that
+output matches expectations — detecting drift between templates and generated
+artifacts.
+
+### Container image build tests
+
+Every generated Containerfile and Dockerfile must build successfully. CI
+builds images for each matrix combination and reports failures. This catches
+missing packages, broken templates, and FreeBSD version incompatibilities.
+
+### Runtime smoke tests
+
+Each image includes executable documentation snippets that double as smoke
+tests. For each image, these verify:
+
+- The container starts and the primary process runs
+- The documented environment variables are respected
+- The documented ports are listening
+- Basic application functionality works (e.g., `SELECT 1` for PostgreSQL,
+  `node -e "console.log('ok')"` for Node.js)
+
+### Upstream compatibility tests
+
+For upstream-compliant images, tests verify that the image behaves identically
+to the official Docker image where possible. This includes entrypoint
+behaviour, environment variable handling, and default configuration.
+
+### Live testing
+
+The `infra-containers` project (see Infrastructure below) provides real
+FreeBSD servers for end-to-end validation. The goal is for anyone to be able
+to reproduce the full test suite locally with a clear, documented setup
+process.
 
 ## Documentation
 
@@ -184,8 +343,7 @@ The documentation has three layers:
    basis for documentation PRs to the upstream docs repository.
 
 Documentation follows the Python project and MkDocs conventions established in
-the infra-workspace. Exposing and capturing these conventions is one of the
-primary reasons the project is developed under infra-workspace.
+the infra-workspace (see Conventions below).
 
 ## Distribution
 
@@ -294,9 +452,68 @@ the infra-workspace:
 
 These conventions are captured in `pyproject.toml` and
 `.pre-commit-config.yaml` and mirror the patterns used across all
-infra-workspace sub-projects. Exposing these conventions for capture by the
-freebsd_containers project is one of the two primary reasons this repo is
-developed under infra-workspace.
+infra-workspace sub-projects. Exposing these conventions for capture is one
+reason the project is developed under infra-workspace. The other is to
+leverage infra-hcloud through the `infra-containers` project for live testing
+and hosting (see Infrastructure above).
+
+## Roadmap
+
+### Phase 1: Capture vision and high-level plan
+
+Capture the long-term objectives and design vision in project documentation.
+This document serves as both the community-facing project description and the
+ground truth for development work.
+
+### Phase 2: Align tooling with infra-workspace conventions
+
+Bring the Python project structure, MkDocs configuration, pre-commit hooks,
+and CI setup into full conformance with infra-workspace conventions. Clean up
+audit findings (remove tracked artifacts, fix build.py hygiene, add tests).
+Start from a clean `main` branch.
+
+### Phase 3: Streamline base image builds
+
+Streamline and improve the documentation and process for base image builds.
+Document OCI annotation hooks thoroughly. Set up live testing environments
+via `infra-containers` with a clear aim for anyone to reproduce locally.
+Establish the end-to-end workflow: template -> build -> test -> publish.
+
+### Phase 4: Update upstream projects one by one
+
+Bring each upstream project up to spec, one at a time. For each image:
+
+1. Study the upstream docker-library generation logic
+2. Update the FreeBSD-flavoured Containerfile and documentation
+3. Develop upstream-compliant Dockerfile patches
+4. Build, test, and validate both flavours
+5. Publish to registries (Docker Hub, GHCR, Quay)
+6. When ready, prepare upstream merge request
+
+Priority order follows the image catalog tiers: foundation images first
+(base, zfs), then application images (postgres, node, python, golang, nginx,
+uv), then specialty images as needed.
+
+## Security Considerations
+
+As a project distributing container images, supply chain security is a
+concern from the outset:
+
+- **Base image pinning** — base images are pinned by SHA256 digest in
+  `versions.json`, ensuring reproducible builds
+- **Image signing** — image signing and provenance attestation (SLSA) are
+  planned for the distribution pipeline
+- **Vulnerability scanning** — automated scanning of built images is planned
+  as part of CI
+- **Minimal attack surface** — the static and dynamic base variants minimize
+  the installed package set
+
+## License
+
+The project is released under the **BSD 2-Clause License**. See `LICENSE` for
+the full text. Note that upstream images may carry their own licenses (e.g.,
+PostgreSQL License, MIT, Apache 2.0) — the FreeBSD container images inherit
+the license terms of their respective application software.
 
 ## Bibliography & Community Resources
 
@@ -306,15 +523,15 @@ resources:
 - [OCI Containers on FreeBSD](https://freebsdfoundation.org/blog/oci-containers-on-freebsd/) —
   FreeBSD Foundation overview
 - [FreeBSD Containers Wiki](https://wiki.freebsd.org/Containers) — community
-  wiki tracking container support status
+  wiki tracking container support status (canonical)
 - [OCI + ZFS on FreeBSD](https://people.freebsd.org/~dch/posts/2025-06-27-oci-zfs/) —
-  Doug Rabson's work on ZFS-backed containers
+  Dave Cottlehuber's work on ZFS-backed containers (canonical)
 - [SkunkWerks documentation](https://docs.skunkwerks.at/s/fUiAmi4pE) —
-  community documentation hub
+  community documentation hub (canonical)
 - [Container support matrix](https://docs.google.com/spreadsheets/d/1IGk2uZd2TG3CUddFmWi6_7PygER08n0XlGmronXq0Pk/) —
-  tracking spreadsheet for FreeBSD container feature coverage
+  tracking spreadsheet for FreeBSD container feature coverage (community-maintained)
 - [HackMD notes](https://hackmd.io/xA1CxQT8SfKLUpCiQz-tWA) — community
-  collaboration notes
+  collaboration notes (community-maintained)
 - [BastilleBSD templates](https://github.com/BastilleBSD/templates) — FreeBSD
   jail templates indicating application demand
 - [AppJail](https://github.com/DtxdF/AppJail) — FreeBSD container/jail
