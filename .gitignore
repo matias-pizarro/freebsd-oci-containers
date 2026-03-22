@@ -42,6 +42,7 @@ htmlcov/
 # Project-specific
 upstreams/
 tmp/
+templates/agent_sandbox/
 .env
 .env.*
 !.env*.dist

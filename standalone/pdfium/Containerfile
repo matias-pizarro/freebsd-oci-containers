@@ -1,0 +1,101 @@
+ARG SRC=src-online
+
+FROM freebsd-zfs:15.0 AS builder-base
+
+# Toolchain and build utilities
+RUN /usr/bin/env pkg install -yr FreeBSD-ports \
+    git python3 ninja gn pkgconf llvm19 bash gmake py311-httplib2 ca_root_nss \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+# Depot tools
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /opt/depot_tools
+ENV PATH="/opt/depot_tools:${PATH}" \
+    DEPOT_TOOLS_UPDATE=0 \
+    VPYTHON_BYPASS="manually managed python not supported by chrome operations"
+
+FROM builder-base AS src-online
+
+# Fetch pdfium source (specific branch)
+RUN git clone --branch chromium/7651-freebsd --single-branch \
+    https://github.com/matias-pizarro/pdfium.git /opt/pdfium
+
+# Sync DEPS
+WORKDIR /opt/pdfium
+ENV SSL_CERT_FILE=/etc/ssl/cert.pem \
+    GIT_SSL_CAINFO=/etc/ssl/cert.pem \
+    GIT_TERMINAL_PROMPT=0
+RUN git config --global http.version HTTP/1.1 && \
+    git config --global fetch.progress true && \
+    git config --global http.lowSpeedLimit 0 && \
+    git config --global http.lowSpeedTime 999999
+RUN gclient config --unmanaged --name pdfium \
+    https://github.com/matias-pizarro/pdfium.git@chromium/7651-freebsd && \
+    gclient sync --revision pdfium@chromium/7651-freebsd \
+    --deps=freebsd --nohooks --no-history --jobs 1
+
+FROM builder-base AS src-local
+
+# Provide a pre-synced pdfium tree in the build context at ./pdfium
+COPY pdfium/ /opt/pdfium/
+WORKDIR /opt/pdfium
+
+ARG SRC=src-online
+FROM ${SRC} AS builder
+
+# Configure (full feature + stability)
+RUN mkdir -p /opt/pdfium/out/Release && \
+    cat > /opt/pdfium/out/Release/args.gn <<'EOF'
+# Release build for stability/perf
+is_debug = false
+
+# Monolithic build; fewer runtime pieces to manage
+is_component_build = false
+
+# Full PDFium API surface
+pdf_is_complete_lib = true
+
+# Chromium-style build layout
+pdf_is_standalone = false
+
+# Full JS in PDFs
+pdf_enable_v8 = true
+
+# Full XFA forms support
+pdf_enable_xfa = true
+
+# Avoid extra clang plugin tooling (less brittle on FreeBSD)
+clang_use_chrome_plugins = false
+
+# FreeBSD: no sysroot
+use_sysroot = false
+
+# Use system libc++ (less custom build complexity)
+use_custom_libcxx = false
+
+# Same for host tools
+use_custom_libcxx_for_host = false
+
+# Don't fail on warnings (stability across compilers)
+treat_warnings_as_errors = false
+
+# Toolchain from ports
+clang_base_path = "/usr/local/llvm19"
+clang_version = "19"
+EOF
+
+# Build
+RUN gn gen /opt/pdfium/out/Release && \
+    ninja -C /opt/pdfium/out/Release pdfium
+
+
+FROM freebsd-zfs:15.0
+
+# Copy only build artifacts, leaving tests and build outputs behind
+RUN mkdir -p /usr/local/lib /usr/local/include/pdfium/cpp /usr/local/share/licenses/pdfium
+COPY --from=builder /opt/pdfium/out/Release/obj/libpdfium.a /usr/local/lib/
+COPY --from=builder /opt/pdfium/public/*.h /usr/local/include/pdfium/
+COPY --from=builder /opt/pdfium/public/cpp/*.h /usr/local/include/pdfium/cpp/
+COPY --from=builder /opt/pdfium/LICENSE /usr/local/share/licenses/pdfium/
+
+CMD ["/bin/sh"]

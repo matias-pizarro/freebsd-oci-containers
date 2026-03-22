@@ -1,0 +1,26 @@
+FROM golang
+
+RUN /usr/bin/env pkg install -yr FreeBSD-ports\
+    git \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+WORKDIR  /usr/local/share/caddy
+
+# install xcaddy
+RUN env GOROOT=/usr/local/go125 \
+      PATH=/usr/local/go125/bin:$PATH \
+      GOTOOLCHAIN=local go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+
+RUN env -u GOMOD -u GOWORK -u GOENV -u GOPATH -u XCADDY_GO -u GO \
+      GOROOT=/usr/local/go125 \
+      PATH=/usr/local/go125/bin:/usr/bin:/bin \
+      GOTOOLCHAIN=local \
+      XCADDY_GO=/usr/local/go125/bin/go \
+      /go/bin/xcaddy build --with github.com/caddy-dns/hetzner/v2
+
+ENV HETZNER_AUTH_API_TOKEN=HETZNER_AUTH_API_TOKEN
+
+COPY Caddyfile /usr/local/share/caddy/
+
+CMD ["/usr/local/bin/bash"]
