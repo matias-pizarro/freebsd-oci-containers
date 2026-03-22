@@ -51,6 +51,13 @@ ignore = [
 ]
 fixable = ["ALL"]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",     # assert is the pytest idiom
+    "RUF012",   # test class attributes don't need ClassVar
+    "D104",     # test packages don't need docstrings
+]
+
 [tool.ruff.lint.flake8-implicit-str-concat]
 allow-multiline = true
 
