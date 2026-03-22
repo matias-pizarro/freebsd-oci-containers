@@ -231,9 +231,7 @@ The image matrix currently covers:
 
 | Version | Type | Status |
 |---------|------|--------|
-| **14.3** | Release | Stable, primary target |
-| **15.0** | Release | Primary target for upstream contributions |
-| **14.snapshot** | Snapshot | Tracking builds |
+| **15.0** | Release | Stable, Primary target for upstream contributions |
 | **15.snapshot** | Snapshot | Tracking builds |
 | **16.snapshot** | Snapshot | Experimental, future readiness |
 
@@ -243,11 +241,15 @@ The build system uses a **template-driven code generation** approach:
 
 - **`versions.json`** — a structured version matrix defining every combination
   of image, FreeBSD version, project version, architecture, registry, and
-  per-project context (e.g., Yarn versions for Node, codenames for Nginx)
+  per-project context (e.g., Yarn versions for Node, codenames for Nginx). Needs
+  reviewing and possible refactoring or deprecation in favour of a better
+  solution.
 - **`templates/`** — Jinja2 templates for Containerfiles, Dockerfiles, CI/CD
   scripts, and documentation pages
 - **`build.py`** — the generation engine that combines `versions.json` with
-  templates to produce the `build/` output directory
+  templates to produce the `build/` output directory. The curren monolithic
+  proof-of-concept needs to be refactored into a testable and
+  streamlined collection of modules.
 
 ### Dual generation pipeline
 
