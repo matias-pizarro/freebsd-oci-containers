@@ -776,6 +776,28 @@ This is the largest task in the plan and should be executed as a dedicated
 session (or multiple sessions). It is broken into sub-tasks, each with its
 own TDD cycle.
 
+**Typed Python from day one.** All new modules in `freebsd_containers/`
+must be fully type-annotated. Before extracting any modules:
+
+1. Remove `"ANN"` from the ruff `ignore` list in `pyproject.toml` (or
+   replace with a targeted subset like `"ANN101"` for `self` annotations
+   if desired)
+2. Add `mypy>=1.15` to the `dev` dependency group in `pyproject.toml`
+3. Add a `[tool.mypy]` section to `pyproject.toml`:
+   ```toml
+   [tool.mypy]
+   python_version = "3.11"
+   strict = true
+   warn_return_any = true
+   warn_unused_configs = true
+   ```
+4. Run `uv sync --group dev` to install mypy
+5. Commit: `chore: enable type annotations (ruff ANN rules + mypy strict)`
+
+Every subsequent module extraction step must pass both `ruff check` and
+`mypy freebsd_containers/` before committing. The old `build.py` monolith
+is not retroactively typed — it gets replaced.
+
 **Critical: golden-output verification.** Before starting, capture the
 current build.py output as a reference:
 
