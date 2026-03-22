@@ -30,14 +30,14 @@ cd freebsd-oci-containers
 ```shell
 # execute as root
 cp -pf annotations/hooks.d/zfs* /usr/local/etc/containers/hooks.d/
-``` 
+```
 
 
 ### 2. To enable sysv IPC in any given container
 ```shell
 # execute as root
 cp -pf annotations/hooks.d/sysv* /usr/local/etc/containers/hooks.d/
-``` 
+```
 
 ## Test with a PostgreSQL container
 
@@ -67,7 +67,7 @@ podman run -it --rm \
 	--env POSTGRES_PASSWORD=password \
 	${postgres_image} \
 	chown -R 770:770 /var/db/postgres
-	
+
 podman run -it --rm \
 	--annotation='sysv=true' \
 	--annotation='zfs.dataset=zroot/jailed/postgres' \

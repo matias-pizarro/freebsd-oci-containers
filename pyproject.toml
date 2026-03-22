@@ -40,6 +40,8 @@ no-build-isolation-package = ["grpcio", "ruff"]
 line-length = 88
 indent-width = 4
 target-version = "py311"
+# build.py is a PoC monolith — excluded until Phase 3 refactoring (Task 3.2)
+exclude = ["build.py"]
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -48,10 +50,6 @@ ignore = [
     "COM812",   # Missing trailing comma - conflicts with formatter
 ]
 fixable = ["ALL"]
-
-[tool.ruff.lint.per-file-ignores]
-# build.py is a PoC monolith — will be refactored in Phase 3 (Task 3.2)
-"build.py" = ["ALL"]
 
 [tool.ruff.lint.flake8-implicit-str-concat]
 allow-multiline = true
