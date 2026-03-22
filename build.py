@@ -113,7 +113,7 @@ def main():
                 try:
                     os_versions[os_major_version][os_minor_version][image_version] = image_digests[os_major_version][os_minor_version][image_version]
                 except KeyError:
-                    import ipdb; ipdb.set_trace()
+                    pass
 
     os_name = "freebsd"
     tags = []
