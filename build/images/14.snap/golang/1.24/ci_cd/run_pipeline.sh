@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-set -Eeuo pipefail
-
-cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-
-./build.sh
-./test.sh
-./push.sh
