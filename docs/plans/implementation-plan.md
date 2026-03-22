@@ -709,7 +709,50 @@ git commit -m "docs: add CONTRIBUTING.md and CODE_OF_CONDUCT.md"
 
 ## Phase 3: Streamline Base Image Builds
 
-### Task 3.1: Refactor build.py into a Python package
+**Prerequisite: Live testing infrastructure.** From Phase 3 onwards, all
+work must be validated against a live FreeBSD environment. Task 3.1 sets
+up the `infra-containers` hcloud project to provide this. No image build
+or documentation task is considered complete until it has been live-tested.
+
+### Task 3.1: Set up infra-containers project for live testing
+
+The `infra-containers` project is a dedicated hcloud project in
+infra-workspace, following the infra-dklos pattern. It provides FreeBSD
+servers for building, testing, and hosting container images. This is the
+**first task** in Phase 3 because all subsequent tasks require live
+testing.
+
+This task requires its own dedicated plan covering Pulumi stack setup,
+layer architecture, and deployment configuration.
+
+- [ ] **Step 1: Create a dedicated plan for infra-containers**
+
+Use the `superpowers:writing-plans` skill to write a separate
+implementation plan for infra-containers. Reference infra-dklos as the
+template. Key areas:
+- Pulumi.yaml with virtualenv: .venv
+- Layer structure (L1: network, L2: volumes, L3: servers, L4: deploy)
+- pyproject.toml with infra-hcloud and infra-sops dependencies
+- Dev environment configuration
+- FreeBSD 15.0 server(s) with Podman, ZFS, and OCI hook support
+- SSH access via bastion hop (matching dklos pattern)
+
+- [ ] **Step 2: Execute the infra-containers plan**
+
+Deploy the dev environment. Verify SSH access and Podman functionality.
+
+- [ ] **Step 3: Document the live testing workflow**
+
+How to load credentials, deploy, SSH in, build images, and run tests.
+This becomes the reference for all subsequent tasks.
+
+- [ ] **Step 4: Commit the plan and documentation**
+
+Save plan to `docs/plans/infra-containers-plan.md` and commit.
+
+---
+
+### Task 3.2: Refactor build.py into a Python package
 
 **Files:**
 - Create: `freebsd_containers/__init__.py`
@@ -852,7 +895,7 @@ extraction step above.
 
 ---
 
-### Task 3.2: Document OCI annotation hooks
+### Task 3.3: Document OCI annotation hooks
 
 **Files:**
 - Modify: `annotations/TEST_ZFS_AND_SYSV_IPC_ANNOTATIONS.md`
@@ -878,7 +921,12 @@ Produce a clear, step-by-step guide covering:
 Every command in the guide should be copy-pasteable and tested. Include
 expected output for verification.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Live-test on infra-containers**
+
+SSH into the infra-containers dev server and verify all hook installation
+and testing steps work end-to-end. Fix any issues found.
+
+- [ ] **Step 5: Commit**
 
 ```bash
 git add annotations/ docs/
@@ -887,7 +935,7 @@ git commit -m "docs: rewrite OCI annotation hook documentation"
 
 ---
 
-### Task 3.3: Document base image build process
+### Task 3.4: Document base image build process
 
 **Files:**
 - Create or update: `docs/images/base/build-guide.md`
@@ -913,35 +961,18 @@ Cover ZFS-specific concerns:
 
 All commands should be tested and include expected output.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Live-test on infra-containers**
+
+Build the base and zfs images on the infra-containers dev server using
+Podman. Verify they work, verify downstream image builds succeed. Fix
+any issues found.
+
+- [ ] **Step 5: Commit**
 
 ```bash
 git add docs/
 git commit -m "docs: add base and zfs image build guides"
 ```
-
----
-
-### Task 3.4: Set up infra-containers project (separate plan)
-
-The `infra-containers` project is a separate repo in infra-workspace,
-following the infra-dklos pattern. It requires its own dedicated plan
-covering Pulumi stack setup, layer architecture, and deployment
-configuration. This is substantial work that does not belong inline here.
-
-- [ ] **Step 1: Create a dedicated plan for infra-containers**
-
-Use the `superpowers:writing-plans` skill to write a separate
-implementation plan for infra-containers. Reference infra-dklos as the
-template. Key areas:
-- Pulumi.yaml with virtualenv: .venv
-- Layer structure (L1: network, L2: volumes, L3: servers, L4: deploy)
-- pyproject.toml with infra-hcloud and infra-sops dependencies
-- Dev environment configuration
-
-- [ ] **Step 2: Commit the plan**
-
-Save to `docs/plans/infra-containers-plan.md` and commit.
 
 ---
 
@@ -1188,7 +1219,13 @@ uv run python build.py --project <IMAGE>
 podman build -f build/images/<IMAGE>/...
 ```
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Live-test on infra-containers**
+
+Build the image on the infra-containers dev server. Run the smoke tests.
+Verify the container starts, the primary process runs, documented env
+vars are respected, and documented ports are listening.
+
+- [ ] **Step 5: Commit**
 
 ```bash
 git commit -m "feat(<IMAGE>): update FreeBSD-flavoured Containerfile"
