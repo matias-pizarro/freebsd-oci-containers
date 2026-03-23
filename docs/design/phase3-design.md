@@ -15,7 +15,7 @@ build system into a production-grade pipeline with live testing, a proper Python
 package, and comprehensive documentation.
 
 The project's objectives — enabling FreeBSD as a first-class container platform —
-requires that every aspect of the build system be testable, reproducible, and
+require that every aspect of the build system be testable, reproducible, and
 documented to the standard expected of a community-facing open-source project.
 
 ---
@@ -50,7 +50,7 @@ infrastructure, we cannot:
 - Test OCI annotation hooks (ZFS datasets, SysV IPC) end-to-end
 - Validate base image variants (static, dynamic, runtime)
 - Run poudriere builds for custom package sets
-- Host the documentation site and container registry
+- Host the container registry and internal docs previews
 
 A dedicated `infra-containers` project provides isolation from dklos/rnd
 environments and purpose-built infrastructure for container image development.
@@ -240,9 +240,40 @@ The dependency is one-directional: `freebsd_containers` documents how to use
 
 ---
 
-## 4. Task 3.2: Refactor build.py into a Python Package
+## 4. Prior Art: Daemonless dbuild
 
-### 4.1 Why
+The [Daemonless](https://daemonless.io/) project's
+[dbuild](https://daemonless.io/guides/dbuild/) tool
+([GitHub](https://github.com/daemonless/dbuild)) is a closely related effort
+that builds, tests, and publishes FreeBSD OCI container images. It is a Python
+3.11+ CLI (BSD-2-Clause) maintained as a FreeBSD port (`sysutils/py-dbuild`).
+
+dbuild's architecture informs several of our design choices:
+
+| dbuild pattern | Our adoption | Notes |
+|----------------|-------------|-------|
+| **Build → Test → Publish pipeline** | Adopted | Our builder orchestrator follows the same three-phase model |
+| **Multi-variant detection** (`Containerfile`, `Containerfile.<variant>`) | Relevant | Aligns with our dual-flavour strategy (`Dockerfile` + `Containerfile`) |
+| **Architecture mapping** (`x86_64`→`amd64`, `arm64`→`aarch64`) | Already present | Same pattern as our `translated_archs` in build.py |
+| **CLI subcommands** (`build`, `test`, `push`, `sbom`, `manifest`, `detect`, `info`, `init`) | Partially adopted | We add `detect` (CI matrix output) and `info` (config overview) to our CLI plan |
+| **Quality gates blocking pushes** | Adopted | Test failures must block registry pushes |
+| **Skip directives** (`[skip test]`, `[skip push]`) | Deferred | Useful for CI; added when CI pipelines mature |
+| **SBOM generation** (CycloneDX via trivy + pkg) | Deferred to 3.9 | Relevant to our security baseline task |
+| **Config-driven variants** (`.daemonless/config.yaml`) | Different approach | We use `versions.json` for the version matrix; dbuild uses per-project YAML |
+
+**Key difference:** dbuild targets a single-image-at-a-time workflow (one
+repo per image, CI per repo). Our build system generates the full image matrix
+from a centralised version matrix and template set. The approaches are
+complementary — dbuild could potentially be used as the per-image build
+executor within our pipeline.
+
+dbuild is added to `BIBLIOGRAPHY.md` as a community resource.
+
+---
+
+## 5. Task 3.2: Refactor build.py into a Python Package
+
+### 5.1 Why
 
 The current `build.py` is a 414-line monolithic script with:
 
@@ -263,7 +294,7 @@ full type annotations enables:
 - **Contributor onboarding**: Clear module boundaries and typed interfaces
 - **Golden-output verification**: Byte-identical output at each extraction step
 
-### 4.2 Module architecture
+### 5.2 Module architecture
 
 The `freebsd_containers/` package is organized into focused modules:
 
@@ -353,14 +384,18 @@ Click is added as a project dependency (`click>=8.1.0`).
 
 **cli.py** — Click command interface:
 - `build` command: full generation (default)
-- `--project <name>`: generate for a single project
-- `--validate`: generate and diff against golden output
-- `--dry-run`: show what would be generated without writing
-- `--registry <id>`: select target registry (default: `local`)
-- `--update-digests`: fetch fresh base image digests from Docker Hub
-- `--verbose` / `--quiet`: control output level
+  - `--project <name>`: generate for a single project
+  - `--validate`: generate and diff against golden output
+  - `--dry-run`: show what would be generated without writing
+  - `--registry <id>`: select target registry (default: `local`)
+  - `--update-digests`: fetch fresh base image digests from Docker Hub
+- `detect` command: output build matrix as JSON for CI consumption
+  (inspired by dbuild's `detect --format github`)
+- `info` command: human-readable overview of current configuration,
+  version matrix, and registry settings
+- Global flags: `--verbose` / `--quiet` for output level control
 
-### 4.3 Typed Python from day one
+### 5.3 Typed Python from day one
 
 All new code in `freebsd_containers/` is fully type-annotated. Before
 extracting any modules:
@@ -382,7 +417,7 @@ extracting any modules:
 The old `build.py` is not retroactively typed — it is progressively replaced.
 The ruff `exclude = ["build.py"]` remains until the refactoring is complete.
 
-### 4.4 Golden-output verification
+### 5.4 Golden-output verification
 
 Before refactoring begins, the current build.py output is captured:
 
@@ -404,7 +439,7 @@ steps.
 
 `build_golden/` is added to `.gitignore` and never committed.
 
-### 4.5 Python version gating (dynamic, not hard-coded)
+### 5.5 Python version gating (dynamic, not hard-coded)
 
 The current build.py hard-codes disabled Python versions:
 
@@ -427,11 +462,11 @@ The refactored code replaces this with **a committed availability manifest**:
 - As new Python versions become available in FreeBSD ports, the update
   command detects them; as older versions are removed, it flags them
 
-This preserves the golden-output determinism guarantee (section 4.4) while
+This preserves the golden-output determinism guarantee (section 5.4) while
 making version gating self-maintaining through deliberate, reviewable updates
 rather than hard-coded exclusions.
 
-### 4.6 Logging and reporting
+### 5.6 Logging and reporting
 
 The refactored package replaces ad-hoc `print()` and `pprint()` calls with
 structured logging:
@@ -442,7 +477,7 @@ structured logging:
   docs pages built
 - Errors and warnings are structured for CI parsing
 
-### 4.7 TDD approach
+### 5.7 TDD approach
 
 Each module extraction follows the red-green-refactor cycle:
 
@@ -468,7 +503,7 @@ tests/
 
 ---
 
-## 5. Design Decisions Summary
+## 6. Design Decisions Summary
 
 | # | Decision | Rationale |
 |---|----------|-----------|
@@ -486,10 +521,12 @@ tests/
 | D12 | FreeBSD sysadmin audience for documentation | Primary user base per project design principles |
 | D13 | Docs as MkDocs templates (not standalone markdown) | Consistent with existing generated documentation site |
 | D14 | Monitoring-ready from day one | Logging, reporting, and hook points without active monitoring overhead |
+| D15 | dbuild as prior art reference | Adopt pipeline model, quality gates, and CLI patterns; diverge on centralised matrix approach |
+| D16 | Quality gates block registry pushes | Test failures must prevent image publication (adopted from dbuild) |
 
 ---
 
-## 6. Risks and Mitigations
+## 7. Risks and Mitigations
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
@@ -501,7 +538,7 @@ tests/
 
 ---
 
-## 7. Out of Scope
+## 8. Out of Scope
 
 The following are explicitly **not** part of this design:
 
@@ -514,7 +551,7 @@ The following are explicitly **not** part of this design:
 
 ---
 
-## 8. Success Criteria
+## 9. Success Criteria
 
 ### Task 3.1
 - [ ] infra-containers project deployed with gateway + artifact server

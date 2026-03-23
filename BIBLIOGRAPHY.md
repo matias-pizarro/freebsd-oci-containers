@@ -29,6 +29,15 @@ Forks of official docker-library projects for developing FreeBSD support patches
 
 ## Related Projects
 
+- [Daemonless](https://daemonless.io/) — Native FreeBSD OCI container images
+  using Podman and ocijail; provides a comprehensive image fleet (databases,
+  media, infrastructure) and the
+  [dbuild](https://daemonless.io/guides/dbuild/)
+  ([GitHub](https://github.com/daemonless/dbuild)) build tool for FreeBSD
+  container image lifecycle (build, test, publish). dbuild is a Python 3.11+
+  CLI available as a FreeBSD port (`sysutils/py-dbuild`). Its pipeline model,
+  quality gates, and CLI design informed several decisions in our Phase 3
+  design (see `docs/design/phase3-design.md`, section 4).
 - [BastilleBSD templates](https://github.com/BastilleBSD/templates) — FreeBSD
   jail templates indicating application demand
 - [AppJail](https://github.com/DtxdF/AppJail) — FreeBSD container/jail
