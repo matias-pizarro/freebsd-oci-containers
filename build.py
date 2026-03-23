@@ -165,7 +165,7 @@ def main():
                     shutil.copytree(docker_docs_project_dir, docs_upstream_dir)
                     for _file in ["license.md", "logo.png", "metadata.json", "README-short.txt"]:
                         _file_dest = _file.replace("-short", "")
-                        if not (docs_freebsd_dir / _file).exists():
+                        if not (docs_freebsd_dir / _file_dest).exists():
                             shutil.copy(docs_upstream_dir / _file, docs_freebsd_dir / _file_dest)
 
                     if (docs_upstream_dir / "compose.yaml").exists():
@@ -205,6 +205,14 @@ def main():
                 if project not in project_context:
                     reference_path = f"images/{reference_os_major_minor_version}/{p_details['slug']}/{reference_project_version}"
                     template_path = f"templates/{project}"
+                    # Resolve CI/CD source paths: project-specific if exists, else shared
+                    ci_cd_source_paths = {}
+                    for script_id in ["build", "test", "push"]:
+                        project_script = base_dir / "templates" / project / "ci_cd" / f"{script_id}.sh.j2"
+                        if project_script.exists():
+                            ci_cd_source_paths[script_id] = f"templates/{project}/ci_cd/{script_id}.sh.j2"
+                        else:
+                            ci_cd_source_paths[script_id] = f"templates/ci_cd/{script_id}.sh.j2"
                     project_context[project] = {
                         "project_alias": project_alias,
                         "details": p_details,
@@ -212,6 +220,7 @@ def main():
                         "reference_os_major_minor_version": reference_os_major_minor_version,
                         "reference_path": reference_path,
                         "template_path": template_path,
+                        "ci_cd_source_paths": ci_cd_source_paths,
                     }
                     usage_file = (template_dir / "docs" / "freebsd" / "content.md")
                     project_context[project]["details"]["usage_file"] = usage_file

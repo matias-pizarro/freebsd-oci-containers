@@ -15,6 +15,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 * FreeBSD fork: [{{ details.upstreams.https.freebsd }}]({{ details.upstreams.https.freebsd }})
 {% endif %}
 {% set reference_github_path = "https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/" + template_path %}
+{% set github_base = "https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/" %}
 {% if details.usage_file.exists() %}
 === "Usage"
 
@@ -38,7 +39,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 {% endif %}
 === "Build"
 
-     {{ reference_path }}/ci_cd/build.sh [:simple-github:]({{ reference_github_path }}/ci_cd/build.sh.j2)
+     {{ reference_path }}/ci_cd/build.sh [:simple-github:]({{ github_base }}{{ ci_cd_source_paths.build }})
 
     ```console
     --8<-- "{{ reference_path }}/ci_cd/build.sh:6"
@@ -46,7 +47,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 
 === "Test"
 
-     {{ reference_path }}/ci_cd/test.sh [:simple-github:]({{ reference_github_path }}/ci_cd/test.sh.j2)
+     {{ reference_path }}/ci_cd/test.sh [:simple-github:]({{ github_base }}{{ ci_cd_source_paths.test }})
 
     ```console
     --8<-- "{{ reference_path }}/ci_cd/test.sh:6:-2"
@@ -54,7 +55,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 
 === "Push"
 
-     {{ reference_path }}/ci_cd/push.sh [:simple-github:]({{ reference_github_path }}/ci_cd/push.sh.j2)
+     {{ reference_path }}/ci_cd/push.sh [:simple-github:]({{ github_base }}{{ ci_cd_source_paths.push }})
 
     ```console
     --8<-- "{{ reference_path }}/ci_cd/push.sh:6"

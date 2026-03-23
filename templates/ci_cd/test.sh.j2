@@ -9,7 +9,9 @@ podman_output=$(
         {{ full_image_tag }} \
         uname -s
 )
-if [ "${podman_output::-1}" == "FreeBSD" ]; then
+# Strip trailing carriage return from tty output
+podman_output="${podman_output%$'\r'}"
+if [ "${podman_output}" == "FreeBSD" ]; then
     echo "Image {{ full_image_tag }} is valid"
 else
     echo "Image {{ full_image_tag }} is not valid"
