@@ -105,7 +105,10 @@ always-on:
 5. **Restore**: Re-create from snapshot or from scratch as needed
 
 The gateway and artifact server are the only permanently running resources.
-Everything else is transient.
+Everything else is transient. The builder and test workers are defined in a
+**separate Pulumi config section** (`containers:on_demand_servers`) so that
+routine `deploy all` does not create them — they are managed via dedicated
+spawn/teardown scripts (`bin/spawn-builder`, `bin/teardown-builder`).
 
 ### 3.1.3 Layer architecture
 
@@ -402,10 +405,10 @@ Click is added as a project dependency (`click>=8.1.0`).
 - Provide the main `build()` entry point called by the CLI
 - Structured logging and reporting
 
-**cli.py** — Click command interface:
-- `build` command: full generation (default)
+**cli.py** — Click command interface (using `invoke_without_command=True`
+so bare `build.py` invocation runs `build` for backward compatibility):
+- `build` command: full generation (default when no subcommand given)
   - `--project <name>`: generate for a single project
-  - `--validate`: generate and diff against golden output
   - `--dry-run`: show what would be generated without writing
   - `--registry <id>`: select target registry (default: `local`)
   - `--update-digests`: fetch fresh base image digests from Docker Hub
@@ -414,6 +417,11 @@ Click is added as a project dependency (`click>=8.1.0`).
 - `info` command: human-readable overview of current configuration,
   version matrix, and registry settings
 - Global flags: `--verbose` / `--quiet` for output level control
+
+Note: `build_golden/` is a **local-only refactoring aid** used during the
+extraction process to verify byte-identical output at each step. It is
+gitignored and deleted after refactoring is complete. It is not a
+user-facing feature or CI artifact.
 
 ### 5.3 Typed Python from day one
 
@@ -587,5 +595,4 @@ The following are explicitly **not** part of this design:
 - [ ] `pytest` passes with >80% coverage on new code
 - [ ] Golden output matches after complete refactoring
 - [ ] `build.py` is a thin wrapper calling `freebsd_containers.cli`
-- [ ] CLI supports `build`, `--project`, `--validate`, `--dry-run`,
-  `--registry`, `--update-digests`
+- [ ] CLI supports `build` (default), `detect`, `info` with documented flags

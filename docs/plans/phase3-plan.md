@@ -175,6 +175,9 @@ config:
       users:
         mpizarro: {root_access: true, local_user: false}
 
+  # On-demand servers (NOT deployed by `deploy all` — managed via
+  # bin/spawn-builder and bin/teardown-builder scripts)
+  containers:on_demand_servers:
     ct_builder_dev:
       network: dev
       subnet: build
@@ -285,6 +288,8 @@ feat: add Pulumi layer programs (L1–L7)
 - `bin/destroy.sh`
 - `bin/sops-env`
 - `bin/setup-venv`
+- `bin/spawn-builder`
+- `bin/teardown-builder`
 
 - [ ] **3.1.4a: Create bin/deploy.sh**
 
@@ -309,11 +314,19 @@ Adapt from infra-dklos, changing project name to `containers`.
 
 FreeBSD-aware venv creation with `--system-site-packages`.
 
-- [ ] **3.1.4e: Add tests for deploy/destroy scripts**
+- [ ] **3.1.4e: Create bin/spawn-builder and bin/teardown-builder**
+
+Scripts that manage the on-demand builder server separately from the
+always-on infrastructure. `spawn-builder` reads from
+`containers:on_demand_servers` config and creates the server via hcloud
+API or a dedicated Pulumi stack. `teardown-builder` snapshots (optional)
+and destroys it.
+
+- [ ] **3.1.4f: Add tests for deploy/destroy scripts**
 
 Test layer ordering, argument validation, symlink management.
 
-- [ ] **3.1.4f: Commit**
+- [ ] **3.1.4g: Commit**
 
 ```
 feat: add deployment and utility scripts
@@ -758,27 +771,30 @@ refactor: create builder orchestrator wiring all modules
 - [ ] **3.2.9a: Write failing tests**
 
 Test CLI using Click's `CliRunner`:
+- bare invocation (no subcommand → runs `build` via `invoke_without_command`)
 - `build` command with default options
 - `build --project postgres` (single project)
-- `build --validate` (diff against golden)
 - `build --dry-run` (no file writes)
 - `build --registry github` (registry selection)
 - `build --update-digests` (digest refresh)
 - `detect` command (JSON matrix output)
+- `detect --format github` (GitHub Actions matrix)
 - `info` command (config overview)
 - `--verbose` / `--quiet` flags
 
 - [ ] **3.2.9b: Implement cli.py**
 
 ```python
-@click.group()
+@click.group(invoke_without_command=True)
 @click.option("--verbose", "-v", is_flag=True)
 @click.option("--quiet", "-q", is_flag=True)
-def cli(verbose: bool, quiet: bool) -> None: ...
+@click.pass_context
+def cli(ctx: click.Context, verbose: bool, quiet: bool) -> None:
+    if ctx.invoked_subcommand is None:
+        ctx.invoke(build)
 
 @cli.command()
 @click.option("--project", help="Generate for a single project")
-@click.option("--validate", is_flag=True, help="Diff against golden output")
 @click.option("--dry-run", is_flag=True, help="Show what would be generated")
 @click.option("--registry", default="local", help="Target registry")
 @click.option("--update-digests", is_flag=True, help="Refresh base image digests")
@@ -819,8 +835,10 @@ cli()
 
 - [ ] **3.2.10b: Final golden output validation**
 
+Bare invocation (no subcommand) must still work for backward compat:
+
 ```bash
-uv run python build.py build
+uv run python build.py
 diff -r build/ build_golden/
 ```
 
@@ -886,7 +904,8 @@ After completing each major step:
 - [ ] `pytest` passes with comprehensive coverage
 - [ ] Golden output byte-identical after complete refactoring
 - [ ] `build.py` is a 4-line thin wrapper
-- [ ] CLI supports: `build`, `detect`, `info` with all documented flags
+- [ ] CLI supports: `build` (default), `detect`, `info` with all documented flags
+- [ ] Bare `build.py` invocation (no subcommand) runs `build` for backward compat
 - [ ] Quality gates: test failures block build completion
 
 ### Both tasks
