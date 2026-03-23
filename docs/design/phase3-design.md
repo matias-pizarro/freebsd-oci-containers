@@ -261,11 +261,31 @@ dbuild's architecture informs several of our design choices:
 | **SBOM generation** (CycloneDX via trivy + pkg) | Deferred to 3.9 | Relevant to our security baseline task |
 | **Config-driven variants** (`.daemonless/config.yaml`) | Different approach | We use `versions.json` for the version matrix; dbuild uses per-project YAML |
 
-**Key difference:** dbuild targets a single-image-at-a-time workflow (one
-repo per image, CI per repo). Our build system generates the full image matrix
-from a centralised version matrix and template set. The approaches are
-complementary — dbuild could potentially be used as the per-image build
-executor within our pipeline.
+**Key differences:**
+
+- **Image definition source of truth.** dbuild treats each image as a
+  self-contained project with its own Containerfile(s) authored directly.
+  Our project takes a fundamentally different approach: we maintain **two
+  canonical sources** per image — an upstream-compliant `Dockerfile` that
+  tracks and patches the official docker-library generation logic, and a
+  FreeBSD-flavoured `Containerfile` that follows FreeBSD conventions. Both
+  are generated from Jinja2 templates combined with the `versions.json`
+  matrix. The generation pipeline *is* the source of truth, not the
+  generated files. This enables upstream merge compatibility (the
+  `Dockerfile` output stays patch-compatible with docker-library projects)
+  while simultaneously producing idiomatic FreeBSD images — a dual-flavour
+  strategy that dbuild does not attempt.
+
+- **Centralised matrix vs per-image repos.** dbuild targets a
+  single-image-at-a-time workflow (one repo per image, CI per repo). Our
+  build system generates the full image matrix (Image x FreeBSD version x
+  Project version x Flavour) from a centralised version matrix and template
+  set. This four-dimensional combinatorial approach ensures consistency
+  across the entire image catalog and enables cross-image validation (e.g.,
+  verifying that all images build against a new FreeBSD release).
+
+The approaches are complementary — dbuild could potentially be used as the
+per-image build executor within our pipeline.
 
 dbuild is added to `BIBLIOGRAPHY.md` as a community resource.
 
