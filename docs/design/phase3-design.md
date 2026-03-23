@@ -65,7 +65,7 @@ the infra-dklos layered pattern. It provides four server roles:
 | Role | Purpose | Lifecycle | Spec guidance |
 |------|---------|-----------|---------------|
 | **Builder** | Image builds, poudriere runs, package compilation | Session-stable: spawned on demand, snapshotted, torn down when idle | Needs CPU + RAM for builds (e.g., CX32 or CX42) |
-| **Artifact server** | Docs hosting (MkDocs), pkg repository, container registry | Long-lived, lightweight | Minimal spec (e.g., CX22), persistent volumes |
+| **Artifact server** | Internal docs preview, pkg repository, container registry | Long-lived, lightweight | Minimal spec (e.g., CX22), persistent volumes |
 | **Test workers** | Transient on-demand servers for image testing, smoke tests, OCI hook validation | Ephemeral: created per test run, destroyed after | Variable spec, created/destroyed programmatically |
 | **Gateway** | Bastion SSH, WireGuard VPN, NAT routing for private servers | Long-lived | Minimal (CX22), public IPv4+IPv6 |
 
@@ -78,9 +78,11 @@ the infra-dklos layered pattern. It provides four server roles:
   needs different specs, create a new server from the snapshot or from scratch.
   This is cheaper and more flexible than a permanent build server.
 
-- **Artifact server is long-lived because it serves content.** The docs site,
-  package repository, and container registry need to be available continuously.
-  A lightweight server with persistent ZFS volumes handles this at minimal cost.
+- **Artifact server is long-lived because it serves content.** The package
+  repository, container registry, and internal docs preview need to be
+  available continuously. A lightweight server with persistent ZFS volumes
+  handles this at minimal cost. (The canonical public docs site remains on
+  GitHub Pages; the artifact server hosts pre-release previews only.)
 
 - **Test workers are ephemeral by design.** Each test run should start from a
   clean state to avoid test pollution. Workers are created, used, and destroyed.
@@ -160,7 +162,8 @@ require Podman and ZFS support.
 - `is_private_network_gateway_client`
 - `is_container_host`
 - ZFS pool for persistent storage (docs site, pkg repo, registry)
-- MkDocs serve or nginx for documentation
+- nginx serving pre-built static docs (internal preview; GitHub Pages
+  remains the canonical public docs host)
 - Container registry (distribution/registry or similar)
 - pkg repository serving
 
@@ -347,7 +350,16 @@ Click is added as a project dependency (`click>=8.1.0`).
 All new code in `freebsd_containers/` is fully type-annotated. Before
 extracting any modules:
 
-1. Remove `"ANN"` from the ruff `ignore` list in `pyproject.toml`
+1. **Scope ANN enforcement to new code only**: Rather than removing `"ANN"`
+   from the global ruff `ignore` list (which would immediately fail on
+   existing unannotated test files), add a per-path override that enables
+   ANN rules for `freebsd_containers/` while leaving legacy code untouched:
+   ```toml
+   [tool.ruff.lint.per-file-ignores]
+   "tests/**/*.py" = ["S101", "RUF012", "D104", "ANN"]
+   ```
+   The global `"ANN"` ignore is removed only after all legacy files are
+   migrated.
 2. Add `mypy>=1.15` to the `dev` dependency group
 3. Add `[tool.mypy]` with `strict = true`
 4. Every module must pass `mypy freebsd_containers/` and `ruff check`
@@ -386,20 +398,23 @@ elif project in ["python", "uv"] and project_version != "3.11":
     build_image = False
 ```
 
-The refactored code replaces this with **dynamic availability checking**:
+The refactored code replaces this with **a committed availability manifest**:
 
-- Each project in `versions.json` can declare a `required_packages` field
-  listing FreeBSD packages needed for that version
-- The build system checks package availability (via the FreeBSD pkg catalog
-  or a local cache) and sets `build_image` accordingly
-- As new Python versions become available in FreeBSD ports (e.g., py312-*
-  packages), they automatically become buildable
-- Older versions that are removed from ports automatically become unbuildable
-- This eliminates manual version gating and makes the system self-maintaining
+- Each project in `versions.json` declares a `buildable_versions` field (or
+  equivalent) listing which versions have the required FreeBSD packages
+  available
+- The build system reads this manifest to determine `build_image` — no live
+  package catalog queries during generation, preserving deterministic output
+- A separate **update command** (`freebsd-containers update-availability`)
+  queries the FreeBSD pkg catalog and proposes updates to the manifest
+- Updates are reviewed and committed explicitly, so the same commit always
+  produces the same output regardless of external package repository state
+- As new Python versions become available in FreeBSD ports, the update
+  command detects them; as older versions are removed, it flags them
 
-The initial implementation uses a simple lookup table (mapping Python version
-to FreeBSD package name pattern) that can later be connected to live pkg
-catalog queries when the builder infrastructure is available.
+This preserves the golden-output determinism guarantee (section 4.4) while
+making version gating self-maintaining through deliberate, reviewable updates
+rather than hard-coded exclusions.
 
 ### 4.6 Logging and reporting
 
@@ -450,7 +465,7 @@ tests/
 | D6 | Click for CLI framework | Maintainability, evolution, community standard, test support |
 | D7 | 10-module package architecture | Single-responsibility, testable, typed modules |
 | D8 | Golden-output verification at each step | Catches regressions immediately, not after 10 steps |
-| D9 | Dynamic Python version gating | Self-maintaining as FreeBSD package availability changes |
+| D9 | Committed availability manifest for version gating | Deterministic output; self-maintaining via explicit update command |
 | D10 | Structured logging replacing print/pprint | Production-grade observability, CI-friendly output |
 | D11 | Tasks 3.1 and 3.2 in parallel | No mutual dependencies until live testing step |
 | D12 | FreeBSD sysadmin audience for documentation | Primary user base per project vision |
