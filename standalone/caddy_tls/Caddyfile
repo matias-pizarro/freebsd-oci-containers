@@ -1,0 +1,8 @@
+{env.DOMAIN_NAME} {
+  respond "Hello World"
+  tls {
+    dns hetzner {env.HETZNER_AUTH_API_TOKEN}
+    propagation_delay 30s
+  },
+  {"identifiers": ["{env.IDENTIFIERS}"], "ca": "{env.CERT_AUTHORITY}", "account": "{ACME_ACCOUNT}"}
+}

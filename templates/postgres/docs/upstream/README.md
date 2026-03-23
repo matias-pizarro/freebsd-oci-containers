@@ -16,10 +16,10 @@ WARNING:
 
 # Quick reference
 
--	**Maintained by**:  
+-	**Maintained by**:
 	[the PostgreSQL Docker Community](https://github.com/docker-library/postgres)
 
--	**Where to get help**:  
+-	**Where to get help**:
 	[the Docker Community Slack](https://dockr.ly/comm-slack), [Server Fault](https://serverfault.com/help/on-topic), [Unix & Linux](https://unix.stackexchange.com/help/on-topic), or [Stack Overflow](https://stackoverflow.com/help/on-topic)
 
 # Supported tags and respective `Dockerfile` links
@@ -74,21 +74,21 @@ WARNING:
 
 # Quick reference (cont.)
 
--	**Where to file issues**:  
+-	**Where to file issues**:
 	[https://github.com/docker-library/postgres/issues](https://github.com/docker-library/postgres/issues?q=)
 
--	**Supported architectures**: ([more info](https://github.com/docker-library/official-images#architectures-other-than-amd64))  
+-	**Supported architectures**: ([more info](https://github.com/docker-library/official-images#architectures-other-than-amd64))
 	[`amd64`](https://hub.docker.com/r/amd64/postgres/), [`arm32v5`](https://hub.docker.com/r/arm32v5/postgres/), [`arm32v6`](https://hub.docker.com/r/arm32v6/postgres/), [`arm32v7`](https://hub.docker.com/r/arm32v7/postgres/), [`arm64v8`](https://hub.docker.com/r/arm64v8/postgres/), [`i386`](https://hub.docker.com/r/i386/postgres/), [`mips64le`](https://hub.docker.com/r/mips64le/postgres/), [`ppc64le`](https://hub.docker.com/r/ppc64le/postgres/), [`riscv64`](https://hub.docker.com/r/riscv64/postgres/), [`s390x`](https://hub.docker.com/r/s390x/postgres/)
 
--	**Published image artifact details**:  
-	[repo-info repo's `repos/postgres/` directory](https://github.com/docker-library/repo-info/blob/master/repos/postgres) ([history](https://github.com/docker-library/repo-info/commits/master/repos/postgres))  
+-	**Published image artifact details**:
+	[repo-info repo's `repos/postgres/` directory](https://github.com/docker-library/repo-info/blob/master/repos/postgres) ([history](https://github.com/docker-library/repo-info/commits/master/repos/postgres))
 	(image metadata, transfer size, etc)
 
--	**Image updates**:  
-	[official-images repo's `library/postgres` label](https://github.com/docker-library/official-images/issues?q=label%3Alibrary%2Fpostgres)  
+-	**Image updates**:
+	[official-images repo's `library/postgres` label](https://github.com/docker-library/official-images/issues?q=label%3Alibrary%2Fpostgres)
 	[official-images repo's `library/postgres` file](https://github.com/docker-library/official-images/blob/master/library/postgres) ([history](https://github.com/docker-library/official-images/commits/master/library/postgres))
 
--	**Source of this description**:  
+-	**Source of this description**:
 	[docs repo's `postgres/` directory](https://github.com/docker-library/docs/tree/master/postgres) ([history](https://github.com/docker-library/docs/commits/master/postgres))
 
 # What is PostgreSQL?
@@ -123,7 +123,7 @@ psql (14.3)
 Type "help" for help.
 
 postgres=# SELECT 1;
- ?column? 
+ ?column?
 ----------
         1
 (1 row)
@@ -299,7 +299,7 @@ Also of note, Alpine-based variants starting with Postgres 15 support [ICU local
 You can set locales in the Alpine-based images with `POSTGRES_INITDB_ARGS` to set a different locale. The following example will set the default locale for a newly initialized database to `de_DE.utf8`:
 
 ```console
-$ docker run -d -e LANG=de_DE.utf8 -e POSTGRES_INITDB_ARGS="--locale-provider=icu --icu-locale=de-DE" -e POSTGRES_PASSWORD=mysecretpassword postgres:15-alpine 
+$ docker run -d -e LANG=de_DE.utf8 -e POSTGRES_INITDB_ARGS="--locale-provider=icu --icu-locale=de-DE" -e POSTGRES_PASSWORD=mysecretpassword postgres:15-alpine
 ```
 
 ## Additional Extensions

@@ -1,0 +1,52 @@
+FROM freebsd-zfs:15.0
+
+# https://web.archive.org/web/20240721190803/https://blog.rlwinm.de/why-and-how-to-run-your-own-freebsd-package-cache-3wbg
+
+RUN /usr/bin/env pkg install -yr FreeBSD-base-proxy FreeBSD-clang-dev FreeBSD-clibs-dev FreeBSD-ee FreeBSD-bsdconfig \
+    && /usr/bin/env pkg install -yr FreeBSD-ports-proxy\
+    ports-mgmt/fastest_pkg security/stunnel www/varnish7 \
+    && rm -f /var/cache/pkg/* \
+    && rm -rf /var/db/pkg/*
+
+COPY stunnel_stunnel.conf /usr/local/etc/stunnel/stunnel.conf
+COPY stunnel_conf.d_00-daemon.conf /usr/local/etc/stunnel/conf.d/00-daemon.conf
+COPY stunnel_conf.d_99-pkg.conf /usr/local/etc/stunnel/conf.d/99-pkg.conf
+
+RUN service stunnel enable
+
+RUN << EOF
+echo "varnish:\\" >> /etc/login.conf
+echo "          :memoryuse=1024M:\\" >> /etc/login.conf
+echo "          :tc=daemon" >> /etc/login.conf
+EOF
+RUN cap_mkdb /etc/login.conf
+
+RUN /usr/sbin/sysrc varnishd_flags=" \
+                -j none \
+                -P /var/run/varnishd.pid \
+                -a :80 \
+                -T localhost:81 \
+                -f /usr/local/etc/varnish/pkg.vcl \
+                -s file,/var/cache/pkg_cache/varnish/varnish.cache,50G,2M,sequential \
+                -h critbit"
+
+COPY varnish_pkg.vcl /usr/local/etc/varnish/pkg.vcl
+COPY newsyslog.conf.d_varnish.conf /usr/local/etc/newsyslog.conf.d/varnish.conf
+
+RUN mkdir -p /var/log/varnish /var/cache/pkg_cache/varnish
+RUN chown -R varnish:varnish /var/log/varnish /var/cache/pkg_cache
+RUN chmod u+rw /var/cache/pkg_cache /var/cache/pkg_cache
+
+RUN service varnishlog enable
+RUN service varnishd enable
+
+RUN varnishd -C -f /usr/local/etc/varnish/pkg.vcl
+
+RUN su -m varnish -c "touch /var/cache/pkg_cache/varnish/.permtest && rm /var/cache/pkg_cache/varnish/.permtest"
+
+EXPOSE 8000
+
+COPY --chmod=0655 pkg_cache_entrypoint.sh /usr/local/bin/pkg_cache_entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/pkg_cache_entrypoint.sh"]
+
+CMD ["/usr/local/bin/bash"]

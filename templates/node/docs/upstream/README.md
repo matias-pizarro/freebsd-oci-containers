@@ -16,10 +16,10 @@ WARNING:
 
 # Quick reference
 
--	**Maintained by**:  
+-	**Maintained by**:
 	[The Node.js Docker Team](https://github.com/nodejs/docker-node)
 
--	**Where to get help**:  
+-	**Where to get help**:
 	[the Docker Community Slack](https://dockr.ly/comm-slack), [Server Fault](https://serverfault.com/help/on-topic), [Unix & Linux](https://unix.stackexchange.com/help/on-topic), or [Stack Overflow](https://stackoverflow.com/help/on-topic)
 
 # Supported tags and respective `Dockerfile` links
@@ -90,21 +90,21 @@ WARNING:
 
 # Quick reference (cont.)
 
--	**Where to file issues**:  
+-	**Where to file issues**:
 	[https://github.com/nodejs/docker-node/issues](https://github.com/nodejs/docker-node/issues?q=)
 
--	**Supported architectures**: ([more info](https://github.com/docker-library/official-images#architectures-other-than-amd64))  
+-	**Supported architectures**: ([more info](https://github.com/docker-library/official-images#architectures-other-than-amd64))
 	[`amd64`](https://hub.docker.com/r/amd64/node/), [`arm32v6`](https://hub.docker.com/r/arm32v6/node/), [`arm32v7`](https://hub.docker.com/r/arm32v7/node/), [`arm64v8`](https://hub.docker.com/r/arm64v8/node/), [`ppc64le`](https://hub.docker.com/r/ppc64le/node/), [`s390x`](https://hub.docker.com/r/s390x/node/)
 
--	**Published image artifact details**:  
-	[repo-info repo's `repos/node/` directory](https://github.com/docker-library/repo-info/blob/master/repos/node) ([history](https://github.com/docker-library/repo-info/commits/master/repos/node))  
+-	**Published image artifact details**:
+	[repo-info repo's `repos/node/` directory](https://github.com/docker-library/repo-info/blob/master/repos/node) ([history](https://github.com/docker-library/repo-info/commits/master/repos/node))
 	(image metadata, transfer size, etc)
 
--	**Image updates**:  
-	[official-images repo's `library/node` label](https://github.com/docker-library/official-images/issues?q=label%3Alibrary%2Fnode)  
+-	**Image updates**:
+	[official-images repo's `library/node` label](https://github.com/docker-library/official-images/issues?q=label%3Alibrary%2Fnode)
 	[official-images repo's `library/node` file](https://github.com/docker-library/official-images/blob/master/library/node) ([history](https://github.com/docker-library/official-images/commits/master/library/node))
 
--	**Source of this description**:  
+-	**Source of this description**:
 	[docs repo's `node/` directory](https://github.com/docker-library/docs/tree/master/node) ([history](https://github.com/docker-library/docs/commits/master/node))
 
 # What is Node.js?

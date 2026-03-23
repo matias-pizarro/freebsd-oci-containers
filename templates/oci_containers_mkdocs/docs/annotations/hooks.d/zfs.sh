@@ -30,4 +30,3 @@ if [ "$STATUS" == "stopped" ]; then
     /sbin/umount -f ${ds}
   done
 fi
-

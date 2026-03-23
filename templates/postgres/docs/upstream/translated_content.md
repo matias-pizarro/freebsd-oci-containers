@@ -30,7 +30,7 @@ psql (14.3)
 Type "help" for help.
 
 postgres=## SELECT 1;
- ?column? 
+ ?column?
 ----------
         1
 (1 row)
@@ -203,7 +203,7 @@ Also of note, Alpine-based variants starting with Postgres 15 support [ICU local
 You can set locales in the Alpine-based images with `POSTGRES_INITDB_ARGS` to set a different locale. The following example will set the default locale for a newly initialized database to `de_DE.utf8`:
 
 ```console
-podman run -d -e LANG=de_DE.utf8 -e POSTGRES_INITDB_ARGS="--locale-provider=icu --icu-locale=de-DE" -e POSTGRES_PASSWORD=mysecretpassword postgres:15-alpine 
+podman run -d -e LANG=de_DE.utf8 -e POSTGRES_INITDB_ARGS="--locale-provider=icu --icu-locale=de-DE" -e POSTGRES_PASSWORD=mysecretpassword postgres:15-alpine
 ```
 
 ### Additional Extensions
