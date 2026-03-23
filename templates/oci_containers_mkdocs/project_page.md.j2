@@ -14,7 +14,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 * Upstream repo: [{{ details.upstreams.https.main }}]({{ details.upstreams.https.main }})
 * FreeBSD fork: [{{ details.upstreams.https.freebsd }}]({{ details.upstreams.https.freebsd }})
 {% endif %}
-{% set reference_github_path = "https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/build/" + reference_path %}
+{% set reference_github_path = "https://github.com/matias-pizarro/freebsd-oci-containers/tree/main/" + template_path %}
 {% if details.usage_file.exists() %}
 === "Usage"
 
@@ -23,7 +23,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 {% endif %}
 === "Containerfile"
 
-     {{ reference_path }}/Containerfile [:simple-github:]({{ reference_github_path }}/Containerfile)
+     {{ reference_path }}/Containerfile [:simple-github:]({{ reference_github_path }}/Containerfile.j2)
 
     ```dockerfile
     --8<-- "{{ reference_path }}/Containerfile"
@@ -38,7 +38,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 {% endif %}
 === "Build"
 
-     {{ reference_path }}/ci_cd/build.sh [:simple-github:]({{ reference_github_path }}/ci_cd/build.sh)
+     {{ reference_path }}/ci_cd/build.sh [:simple-github:]({{ reference_github_path }}/ci_cd/build.sh.j2)
 
     ```console
     --8<-- "{{ reference_path }}/ci_cd/build.sh:6"
@@ -46,7 +46,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 
 === "Test"
 
-     {{ reference_path }}/ci_cd/test.sh [:simple-github:]({{ reference_github_path }}/ci_cd/test.sh)
+     {{ reference_path }}/ci_cd/test.sh [:simple-github:]({{ reference_github_path }}/ci_cd/test.sh.j2)
 
     ```console
     --8<-- "{{ reference_path }}/ci_cd/test.sh:6:-2"
@@ -54,7 +54,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
 
 === "Push"
 
-     {{ reference_path }}/ci_cd/push.sh [:simple-github:]({{ reference_github_path }}/ci_cd/push.sh)
+     {{ reference_path }}/ci_cd/push.sh [:simple-github:]({{ reference_github_path }}/ci_cd/push.sh.j2)
 
     ```console
     --8<-- "{{ reference_path }}/ci_cd/push.sh:6"
@@ -65,7 +65,7 @@ CI/CD pipelines will soon add amd64/aarch64 support for 15.0, 14.snap, 15.snap a
     *Supported tags and respective Containerfile links*
 
     {% for full_image_tag, image in images.items() %}
-    * {% for tag in image.supported_tags %}[{{ tag }}]({{ reference_github_path }}/Containerfile){% if not loop.last %}, {% endif %}{% endfor %}
+    * {% for tag in image.supported_tags %}[{{ tag }}]({{ reference_github_path }}/Containerfile.j2){% if not loop.last %}, {% endif %}{% endfor %}
     {% endfor %}
 {% if details.license_file_available %}
 === "License"
