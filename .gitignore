@@ -19,7 +19,8 @@ htmlcov/
 *.pkg
 
 # Claude Code internal state
-**/.claude/
+.claude/*
+!.claude/skills/
 .claude.json
 .claude.json.backup
 
