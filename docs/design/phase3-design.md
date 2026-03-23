@@ -143,8 +143,23 @@ Internet
          └── ... (on-demand)
 ```
 
-**IP range:** `10.102.0.0/16` — chosen to avoid overlap with dklos
-(`10.100.0.0/16`) and rnd (`10.101.0.0/16`).
+**Private network range:** `10.102.0.0/16` — chosen to avoid overlap with
+dklos (`10.100.0.0/16`) and rnd (`10.101.0.0/16`).
+
+**VPN CIDR:** `172.19.0.0/24` (IPv4) and `2a01:4f8:1c1e:5da3:ac19::0/120`
+(IPv6) for the dev tunnel. This follows the dklos allocation sequence
+(16/17/18) and avoids collision with rnd (25/26). Full allocation map:
+
+| Project | Env | IPv4 VPN |
+|---------|-----|----------|
+| dklos | dev | `172.16.0.0/24` |
+| dklos | stg | `172.17.0.0/24` |
+| dklos | prod | `172.18.0.0/24` |
+| **containers** | **dev** | **`172.19.0.0/24`** |
+| rnd | stg | `172.25.0.0/24` / `172.26.0.0/24` |
+
+> **Known issue:** rnd dev tunnels (`172.17.0.0/24`, `172.18.0.0/24`) collide
+> with dklos stg/prod. Tracked in workspace backlog.
 
 ### 3.1.4 Server configuration
 
