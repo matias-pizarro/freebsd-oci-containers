@@ -11,8 +11,8 @@
 
 An interactive brainstorming session produced two key documents:
 
-1. **Vision & design document** — long-term objectives, design principles,
-   and architectural vision for the FreeBSD OCI Containers project
+1. **Design principles document** — long-term objectives, design decisions,
+   and architectural principles for the FreeBSD OCI Containers project
 2. **Implementation plan** — detailed four-phase plan covering tooling
    alignment, base image streamlining, and per-image upstream updates
 
@@ -23,7 +23,7 @@ review with amendments.
 
 | File | Purpose |
 |------|---------|
-| `docs/design/vision-and-design.md` | Vision & design doc (also `README.md` via symlink, future MkDocs index) |
+| `docs/design/design-principles.md` | Design principles doc (also `README.md` via symlink, future MkDocs index) |
 | `docs/plans/implementation-plan.md` | Detailed 4-phase implementation plan |
 
 ## Commits
@@ -122,7 +122,7 @@ review between tasks.
 
 ## File References
 
-- **Spec:** `docs/design/vision-and-design.md`
+- **Spec:** `docs/design/design-principles.md`
 - **Plan:** `docs/plans/implementation-plan.md`
 - **Audit:** `docs/reviews/2026-02-18_audit_review.md`
 - **Rationalization plan:** `docs/reviews/2026-02-18_rationalization_plan.md`

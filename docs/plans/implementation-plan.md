@@ -4,11 +4,11 @@
 
 **Goal:** Take the freebsd_containers project from proof-of-concept to a professional, community-ready open-source project with clean tooling, tested build system, documented workflows, and per-image upstream readiness.
 
-**Architecture:** Four sequential phases: (1) already complete — vision captured; (2) tooling alignment with infra-workspace conventions and audit cleanup; (3) base image build streamlining with OCI hook documentation and live testing; (4) per-image upstream project updates. Each phase builds on the previous. Phase 4 is a repeatable template applied image-by-image.
+**Architecture:** Four sequential phases: (1) already complete — design principles captured; (2) tooling alignment with infra-workspace conventions and audit cleanup; (3) base image build streamlining with OCI hook documentation and live testing; (4) per-image upstream project updates. Each phase builds on the previous. Phase 4 is a repeatable template applied image-by-image.
 
 **Tech Stack:** Python 3.11, uv, Jinja2, ruff, commitizen, pytest, pytest-mock, pre-commit, MkDocs Material, Podman, GitHub Actions
 
-**Spec:** `docs/design/vision-and-design.md`
+**Spec:** `docs/design/design-principles.md`
 
 ---
 
@@ -551,7 +551,7 @@ git commit -m "refactor: separate standalone containers from build matrix"
 **Files:**
 - Remove: `PROJECTS.md` (merge content into bibliography)
 - Modify: `BIBLIOGRAPHY.md`
-- Modify: `docs/design/vision-and-design.md` (already the README via symlink)
+- Modify: `docs/design/design-principles.md` (already the README via symlink)
 
 - [ ] **Step 1: Merge PROJECTS.md content into BIBLIOGRAPHY.md**
 
@@ -596,17 +596,17 @@ git commit -m "chore: add .roborev.toml configuration"
 
 ---
 
-### Task 2.10: Add vision doc and review docs to git
+### Task 2.10: Add design principles doc and review docs to git
 
 **Files:**
-- Add: `docs/design/vision-and-design.md`
+- Add: `docs/design/design-principles.md`
 - Add: `docs/reviews/`
 
 - [ ] **Step 1: Stage and commit documentation**
 
 ```bash
 git add docs/design/ docs/reviews/
-git commit -m "docs: add vision document, audit review, and rationalization plan"
+git commit -m "docs: add design principles document, audit review, and rationalization plan"
 ```
 
 ---
@@ -691,7 +691,7 @@ Cover:
 - How to report issues
 - How to submit patches (fork, branch, PR workflow)
 - Development setup (link to local-setup.md once it exists)
-- Coding conventions (link to vision-and-design.md Conventions section)
+- Coding conventions (link to design-principles.md Conventions section)
 - Commit message format (conventional commits)
 
 - [ ] **Step 3: Create CODE_OF_CONDUCT.md**
@@ -1136,7 +1136,7 @@ Test that all non-empty digest entries in versions.json match the
 
 - [ ] **Step 2: Document security roadmap**
 
-Add a section to the vision doc or a separate `docs/design/security.md`
+Add a section to the design principles doc or a separate `docs/design/security.md`
 covering:
 - Current: base image digest pinning (implemented)
 - Planned: image signing with cosign/SLSA provenance attestation

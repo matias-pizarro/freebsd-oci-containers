@@ -56,7 +56,7 @@ uv run python build.py
 ## Coding Conventions
 
 The project follows the conventions established in the
-[Vision & Design document](docs/design/vision-and-design.md#conventions):
+[Design Principles document](docs/design/design-principles.md#conventions):
 
 - **Python >=3.11**, managed with **uv**
 - **Linting**: ruff with `select = ["ALL"]`, Google-style docstrings

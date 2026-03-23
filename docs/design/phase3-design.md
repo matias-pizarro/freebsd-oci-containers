@@ -483,7 +483,7 @@ tests/
 | D9 | Committed availability manifest for version gating | Deterministic output; self-maintaining via explicit update command |
 | D10 | Structured logging replacing print/pprint | Production-grade observability, CI-friendly output |
 | D11 | Tasks 3.1 and 3.2 in parallel | No mutual dependencies until live testing step |
-| D12 | FreeBSD sysadmin audience for documentation | Primary user base per project vision |
+| D12 | FreeBSD sysadmin audience for documentation | Primary user base per project design principles |
 | D13 | Docs as MkDocs templates (not standalone markdown) | Consistent with existing generated documentation site |
 | D14 | Monitoring-ready from day one | Logging, reporting, and hook points without active monitoring overhead |
 

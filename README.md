@@ -1,1 +1,1 @@
-docs/design/vision-and-design.md
+docs/design/design-principles.md
