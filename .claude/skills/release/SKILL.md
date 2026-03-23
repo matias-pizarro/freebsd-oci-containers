@@ -10,10 +10,31 @@ Orchestrates the release workflow for freebsd-oci-containers. Two phases:
 1. **Merge feature branch to Integration** — lint, test, roborev review, merge
 2. **Merge to Main** — version bump, tag, push, cleanup
 
+When invoked with no arguments, Phase 1 is skipped and the workflow starts
+directly at Phase 2 (releasing what is already on `integration`).
+
 ## Arguments
 
 - **First argument**: `--from-feature <branch>` to include a feature branch merge. Optional.
 - **Second argument**: `--integration-only` to stop after Phase 1. Optional.
+
+## Prerequisites
+
+The `integration` branch must exist. If it does not:
+
+```bash
+git fetch --prune --tags --force origin
+
+if git show-ref --verify --quiet "refs/remotes/origin/integration"; then
+    git checkout --track origin/integration
+else
+    # Bootstrap integration from main
+    git checkout main
+    git merge --ff-only origin/main
+    git checkout -b integration
+    git push -u origin integration
+fi
+```
 
 ---
 
@@ -54,6 +75,14 @@ if git show-ref --verify --quiet "refs/heads/${feature_branch}"; then
 else
     git checkout -b "${feature_branch}" "origin/${feature_branch}"
 fi
+
+# Verify we're on the expected branch
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [[ "${current_branch}" != "${feature_branch}" ]]; then
+    echo "ERROR: Failed to checkout feature branch ${feature_branch}"
+    echo "Currently on: ${current_branch}"
+    exit 1
+fi
 ```
 
 ### 1.2 Run Linter
@@ -65,7 +94,9 @@ uv run --group lint ruff check . && uv run --group lint ruff format --check .
 ### 1.3 Run Tests
 
 ```bash
-uv run --group dev pytest tests/ -v
+if [[ -d tests ]]; then
+    uv run --group dev pytest tests/ -v
+fi
 ```
 
 If tests fail, iterate until fixed.
@@ -90,7 +121,7 @@ Address all findings. Commit fixes. Re-run until review passes.
 ### 1.6 Update Integration
 
 ```bash
-git fetch --prune origin
+git fetch --prune --tags origin
 git checkout integration
 git merge --ff-only origin/integration
 
@@ -112,7 +143,10 @@ Resolve conflicts if any.
 
 ```bash
 uv run --group lint ruff check . && uv run --group lint ruff format --check .
-uv run --group dev pytest tests/ -v
+
+if [[ -d tests ]]; then
+    uv run --group dev pytest tests/ -v
+fi
 ```
 
 If fixes needed, commit and run `roborev review --branch --wait` again.
@@ -120,14 +154,14 @@ If fixes needed, commit and run `roborev review --branch --wait` again.
 ### 1.9 Check if Integration Advanced
 
 ```bash
-git fetch --prune origin
+git fetch --prune --tags origin
 git checkout integration
 git merge --ff-only origin/integration
 
 CURRENT_INTEGRATION_COMMIT=$(git rev-parse HEAD)
 if [[ "${CURRENT_INTEGRATION_COMMIT}" != "${INTEGRATION_COMMIT_AT_MERGE}" ]]; then
-    echo "NOTE: Integration has advanced. Returning to step 1.7."
-    # Loop back to step 1.7
+    echo "NOTE: Integration has advanced. Re-checkout feature branch and repeat steps 1.7–1.9."
+    # Loop back: checkout feature branch, merge integration, re-validate
 fi
 ```
 
@@ -168,6 +202,7 @@ fi
 
 if [[ -n "$(git status --porcelain)" ]]; then
     echo "ERROR: Uncommitted changes detected"
+    git status --short
     exit 1
 fi
 ```
@@ -175,7 +210,9 @@ fi
 ### 2.2 Run Tests
 
 ```bash
-uv run --group dev pytest tests/ -v
+if [[ -d tests ]]; then
+    uv run --group dev pytest tests/ -v
+fi
 ```
 
 If tests fail, create a fix branch and go through Phase 1 first.
@@ -206,6 +243,8 @@ fi
 ### 2.4 Bump Version on Integration
 
 ```bash
+# Capture pre-bump SHA. Step 2.5 re-fetches and compares to detect
+# if origin/integration advanced during the bump (safety net for races).
 PRE_BUMP_SHA=$(git rev-parse origin/integration)
 cz bump --increment <patch|minor|major> --no-verify
 LATEST_TAG=$(git describe --tags --abbrev=0)
