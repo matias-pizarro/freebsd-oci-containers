@@ -28,7 +28,7 @@ doas curl -vs --unix-socket /var/run/podman/podman.sock \
 pod_name="foo"
 doas curl -vs --unix-socket /var/run/podman/podman.sock \
     -H content-type:application/json \
-    http://d/v${API_VERSION}/libpod/pods/${pod_name}/json | jq
+    http://d/v${api_version}/libpod/pods/${pod_name}/json | jq
 
 You can find context on the podman API at those links:
     - https://docs.podman.io/en/latest/_static/api.html
