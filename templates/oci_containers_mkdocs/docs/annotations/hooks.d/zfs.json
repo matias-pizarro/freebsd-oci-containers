@@ -10,4 +10,3 @@
   },
   "stages": ["createRuntime", "poststop"]
 }
-

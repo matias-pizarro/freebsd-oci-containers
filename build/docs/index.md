@@ -1,1 +1,0 @@
---8<-- "docs/images/nginx/index.md"

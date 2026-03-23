@@ -1,1 +1,0 @@
-FROM ghcr.io/freebsd/freebsd-static:15.snap@sha256:be2e2ad17f55c3007b91202f41308760b03399b0c32d3e4866ebbfddea21c96d

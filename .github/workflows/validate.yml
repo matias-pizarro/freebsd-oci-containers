@@ -1,0 +1,38 @@
+name: Validate
+
+on:
+  push:
+    branches: [ main, integration, 'feat/**' ]
+  pull_request:
+    branches: [ main, integration ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --group lint
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --group dev
+      - run: uv run pytest tests/ -v
+
+  build-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - name: Run build.py and verify deterministic output
+        run: |
+          uv run python build.py
+          cp -r build/ build_first/
+          uv run python build.py
+          diff -r build/ build_first/

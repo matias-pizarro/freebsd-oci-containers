@@ -1,19 +1,86 @@
 [project]
 name = "freebsd-containers"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.2.0"
+description = "FreeBSD OCI container image generation and management"
 readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "BSD-2-Clause" }
 dependencies = [
-    "ipdb>=0.13.13",
     "jinja2>=3.1.6",
-    "mkdocs>=1.6.1",
     "requests>=2.32.5",
 ]
 
 [dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.0",
+    "pytest-mock>=3.15.0",
+    "ipython>=9.10.0",
+]
+lint = [
+    "commitizen>=4.13.9",
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.7 ; 'freebsd' not in sys_platform",
+]
 docs = [
     "mkdocs-material>=9.6.19,<10",
     "mkdocstrings[python]>=0.30.0,<1",
     "pymdown-extensions>=10.16.1,<11",
 ]
+
+[tool.uv]
+default-groups = []
+override-dependencies = [
+    "grpcio ; 'freebsd' not in sys_platform",
+    "ruff ; 'freebsd' not in sys_platform",
+]
+no-build-isolation-package = ["grpcio", "ruff"]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py311"
+# build.py is a PoC monolith — excluded until Phase 3 refactoring (Task 3.2)
+exclude = ["build.py"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",      # Annotations - ignore for now
+    "COM812",   # Missing trailing comma - conflicts with formatter
+]
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",     # assert is the pytest idiom
+    "RUF012",   # test class attributes don't need ClassVar
+    "D104",     # test packages don't need docstrings
+]
+
+[tool.ruff.lint.flake8-implicit-str-concat]
+allow-multiline = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: slow tests that build wheels or create venvs",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "pep440"
+version_provider = "uv"
+update_changelog_on_bump = true
+major_version_zero = true

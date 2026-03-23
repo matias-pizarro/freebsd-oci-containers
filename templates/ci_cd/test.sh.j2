@@ -1,11 +1,21 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -Eeuo pipefail
 
 cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
-# TBD: smoke test of built images
-
-podman run -it --rm \
-    ghcr.io/matias-pizarro/freebsd-oci-containers/nginx:freebsd nginx -v
+# Default smoke test: verify the image runs and reports FreeBSD
+podman_output=$(
+    podman run -it --rm \
+        {{ full_image_tag }} \
+        uname -s
+)
+# Strip trailing carriage return from tty output
+podman_output="${podman_output%$'\r'}"
+if [ "${podman_output}" == "FreeBSD" ]; then
+    echo "Image {{ full_image_tag }} is valid"
+else
+    echo "Image {{ full_image_tag }} is not valid"
+    exit 1
+fi
 
 exit 0

@@ -8,7 +8,7 @@ const express = require("express");
 // Creates an express object
 const app = express();
 
-// It listens to HTTP get request. 
+// It listens to HTTP get request.
 // Here it listens to the root i.e '/'
 app.get("/", (req, res) => {
 
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 });
 
 // It configures the system to listen
-// to port 8888. Any number can be 
+// to port 8888. Any number can be
 // given instead of 8888, the only
 // condition is that no other server
 // should be running at that port
