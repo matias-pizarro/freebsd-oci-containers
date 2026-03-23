@@ -7,7 +7,7 @@ high-demand application container images, the same building blocks that
 underpin most container-based platform and software development across Linux
 and macOS.
 
-The project's mission is twofold:
+The project's objectives are twofold:
 
 1. **Enable FreeBSD as a first-class container platform** by providing
    production-ready OCI images that let existing containerized projects and

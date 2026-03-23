@@ -14,7 +14,7 @@ Phase 2 aligned the freebsd_containers project with infra-workspace conventions
 build system into a production-grade pipeline with live testing, a proper Python
 package, and comprehensive documentation.
 
-The project's mission — enabling FreeBSD as a first-class container platform —
+The project's objectives — enabling FreeBSD as a first-class container platform —
 requires that every aspect of the build system be testable, reproducible, and
 documented to the standard expected of a community-facing open-source project.
 
