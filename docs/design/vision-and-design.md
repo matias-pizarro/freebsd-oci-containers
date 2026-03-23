@@ -1,9 +1,9 @@
 # FreeBSD OCI Containers
 
-## Vision & Mission
+## Context and Objectives
 
 FreeBSD OCI Containers aims to build for FreeBSD a comprehensive base of
-high-demand application container images — the same building blocks that
+high-demand application container images, the same building blocks that
 underpin most container-based platform and software development across Linux
 and macOS.
 
@@ -16,9 +16,9 @@ The project's mission is twofold:
    generation logic of official Docker images, with the goal of submitting
    merge requests that add FreeBSD to official support matrices.
 
-FreeBSD 15.0 introduces mature OCI container support. The missing piece is not
-the runtime — it's the ecosystem of application images that developers expect
-to find. This project fills that gap.
+FreeBSD 15.0 introduces mature OCI container support. Now that
+the runtime is available it is critical to develop the ecosystem of application
+images that developers expect to find. This project aims to help fill that gap.
 
 ## Target Users
 
@@ -40,9 +40,10 @@ Every supported application is provided in two flavours:
 ### Upstream-compliant (`Dockerfile`)
 
 A drop-in replacement that honours the API, contracts, and documentation of
-the official Docker community images. The goal is for a user to swap
-`FROM postgres:17` for `FROM freebsd/postgres:17` and have things work. These
-images:
+the official Docker community images. The eventual goal is for a user to be able
+to use `FROM postgres:17` on FreeBSD. The intermediate goal is for that user to
+swap `FROM postgres:17` for `FROM freebsd/postgres:17` and have things work.
+These images:
 
 - Use the filename `Dockerfile` to signal upstream compatibility
 - Track the generation logic of each official docker-library project (e.g.,
@@ -77,7 +78,7 @@ images:
 
 ### A note on filenames
 
-The OCI image specification does not mandate either filename — `Dockerfile` is
+The OCI image specification does not mandate either filename, `Dockerfile` is
 Docker's convention, `Containerfile` is Podman's. The choice here is
 deliberate: `Dockerfile` signals "this works like the official Docker image
 you already know"; `Containerfile` signals "this is built the FreeBSD way."
@@ -87,15 +88,15 @@ Both are standard OCI images and work with any compliant runtime.
 
 For upstream-compliant images, "drop-in replacement" means specifically:
 
-- **Entrypoint and CMD** — same default entrypoint and command as the official
+- **Entrypoint and CMD** : same default entrypoint and command as the official
   image (e.g., `docker-entrypoint.sh` for PostgreSQL)
-- **Environment variables** — same configuration variables with the same
+- **Environment variables** : same configuration variables with the same
   semantics (e.g., `POSTGRES_PASSWORD`, `POSTGRES_DB`)
-- **Exposed ports** — same default ports (e.g., 5432 for PostgreSQL)
-- **Volume mount points** — same data directories (e.g., `/var/lib/postgresql/data`)
-- **Configuration file locations** — same paths where applicable
-- **Signal handling** — same graceful shutdown behaviour
-- **Health checks** — equivalent health check mechanisms
+- **Exposed ports** : same default ports (e.g., 5432 for PostgreSQL)
+- **Volume mount points** : same data directories (e.g., `/var/lib/postgresql/data`)
+- **Configuration file locations** : same paths where applicable
+- **Signal handling** : same graceful shutdown behaviour
+- **Health checks** : equivalent health check mechanisms
 
 FreeBSD-flavoured images may diverge on any of these where the FreeBSD
 convention provides a better experience (e.g., using `/var/db/postgres`
@@ -104,7 +105,7 @@ instead of `/var/lib/postgresql/data`). Divergences are documented per image.
 ## Base Image Architecture
 
 All images build on the foundation `base` and `zfs` images. These are not
-versioned by application version — instead they provide three variants that
+versioned by application version, instead they provide three variants that
 serve different use cases:
 
 | Variant | Contents | Use case |
@@ -115,7 +116,7 @@ serve different use cases:
 
 The `zfs` variant extends any of these with ZFS dataset support via OCI
 annotations (see below). Downstream images declare which base variant they
-build on — the choice depends on their runtime requirements.
+build on, the choice depends on their runtime requirements.
 
 ## OCI Annotations and Runtime Hooks
 
@@ -172,10 +173,10 @@ PostgreSQL's `versioning_scheme` is `M[.m][-OSn[OSmm]]`, which produces:
 
 | Pattern | Example tags |
 |---------|-------------|
-| `M` | `17` — latest minor of major version 17 |
-| `M.m` | `17.7` — specific minor version |
-| `M-OSn` | `17-freebsd15` — major version on FreeBSD 15 |
-| `M.m-OSnOSmm` | `17.7-freebsd15.0` — fully qualified |
+| `M` | `17` : latest minor of major version 17 |
+| `M.m` | `17.7` : specific minor version |
+| `M-OSn` | `17-freebsd15` : major version on FreeBSD 15 |
+| `M.m-OSnOSmm` | `17.7-freebsd15.0` : fully qualified |
 
 For the upstream-compliant flavour, these mirror Docker Hub's official
 PostgreSQL tags with a FreeBSD suffix. For the FreeBSD-flavoured variant,
@@ -209,20 +210,20 @@ The image catalog is organized in tiers by priority and dependency:
 
 The catalog draws from three sources:
 
-- **[docker-library](https://github.com/docker-library)** — the primary
+- **[docker-library](https://github.com/docker-library)** : the primary
   source of official image definitions and the target for upstream
   contributions
-- **[BastilleBSD templates](https://github.com/BastilleBSD/templates)** —
+- **[BastilleBSD templates](https://github.com/BastilleBSD/templates)** :
   FreeBSD jail templates that indicate community demand for specific
   applications
-- **[AppJail](https://github.com/DtxdF/AppJail)** — another FreeBSD
+- **[AppJail](https://github.com/DtxdF/AppJail)** : another FreeBSD
   container/jail ecosystem whose application coverage informs image
   prioritization
 
 The catalog is expected to grow over time. New images follow the same
 dual-flavour strategy and are added based on community demand and upstream
 availability. Note that docker-library is the main source of official image
-definitions and documentation, but it is not the only one — some applications
+definitions and documentation, but it is not the only one  as some applications
 maintain their own independent image projects.
 
 ### Supported FreeBSD versions
@@ -239,14 +240,14 @@ The image matrix currently covers:
 
 The build system uses a **template-driven code generation** approach:
 
-- **`versions.json`** — a structured version matrix defining every combination
+- **`versions.json`** : a structured version matrix defining every combination
   of image, FreeBSD version, project version, architecture, registry, and
   per-project context (e.g., Yarn versions for Node, codenames for Nginx). Needs
   reviewing and possible refactoring or deprecation in favour of a better
   solution.
-- **`templates/`** — Jinja2 templates for Containerfiles, Dockerfiles, CI/CD
+- **`templates/`** : Jinja2 templates for Containerfiles, Dockerfiles, CI/CD
   scripts, and documentation pages
-- **`build.py`** — the generation engine that combines `versions.json` with
+- **`build.py`** : the generation engine that combines `versions.json` with
   templates to produce the `build/` output directory. The curren monolithic
   proof-of-concept needs to be refactored into a testable and
   streamlined collection of modules.
@@ -264,12 +265,12 @@ The build system produces both flavours through two complementary paths:
    official docker-library projects. This path validates that our patches
    produce correct output and serves as the basis for upstream PRs.
 
-The `build/` directory is a generated artifact — never committed to version
+The `build/` directory is a generated artifact and never committed to version
 control. It contains:
 
-- `images/` — Containerfiles and Dockerfiles for every matrix combination
-- `ci_cd/` — generated CI/CD pipeline scripts
-- `docs/` — generated MkDocs documentation pages
+- `images/` : Containerfiles and Dockerfiles for every matrix combination
+- `ci_cd/` : generated CI/CD pipeline scripts
+- `docs/` : generated MkDocs documentation pages
 
 ### Build system roadmap
 
@@ -277,7 +278,7 @@ The build system is currently a monolithic script and will be refactored into
 a proper Python package (`freebsd_containers/`) with modules for template
 rendering, version management, registry configuration, CLI interface, and
 tests. The Jinja2 + version matrix architecture is sound and will be
-preserved — the implementation needs professionalization.
+preserved but the implementation needs industrialization.
 
 The effective matrix is four-dimensional: **Image x FreeBSD version x Project
 version x Flavour**. The build system must handle this combinatorial space
@@ -292,7 +293,7 @@ Testing operates at multiple levels:
 Unit and integration tests for `build.py` (and its successor package) verify
 that template rendering, version matrix expansion, and tag generation produce
 correct, deterministic output. CI runs the generation step and validates that
-output matches expectations — detecting drift between templates and generated
+output matches expectations, detecting drift between templates and generated
 artifacts.
 
 ### Container image build tests
@@ -333,13 +334,13 @@ MkDocs Material and published to GitHub Pages.
 
 The documentation has three layers:
 
-1. **Project documentation** — vision, architecture, build system,
+1. **Project documentation** : objectives, architecture, build system,
    contribution guides, conventions. Written manually and maintained alongside
    code.
-2. **Image documentation** — per-image usage guides, configuration reference,
+2. **Image documentation** : per-image usage guides, configuration reference,
    and examples. Auto-generated by `build.py` from templates, with executable
    code snippets that double as functional tests.
-3. **Upstream mirror documentation** — for upstream-compliant images,
+3. **Upstream mirror documentation** : for upstream-compliant images,
    documentation that mirrors the format and content of `docker-library/docs`,
    adapted for FreeBSD. This serves both as our user-facing docs and as the
    basis for documentation PRs to the upstream docs repository.
@@ -353,11 +354,11 @@ Images are distributed through multiple channels to maximize reach:
 
 | Channel | Scope | Status |
 |---------|-------|--------|
-| **Docker Hub** (`docker.io`) | Both flavours | Primary distribution — the default registry for most container users |
+| **Docker Hub** (`docker.io`) | Both flavours | Primary distribution, the default registry for most container users |
 | **GitHub Container Registry** (`ghcr.io`) | Both flavours | Native to the project's GitHub home |
 | **Quay.io** (`quay.io`) | Both flavours | Additional reach, particularly in enterprise/Red Hat ecosystems |
-| **Docker Hub official** | Upstream-compliant only | Long-term goal — FreeBSD images built alongside Linux/macOS in Docker's own CI pipelines |
-| **FreeBSD packages** | Both flavours | Long-term goal — images built as part of the poudriere CI process and distributed through the FreeBSD package infrastructure |
+| **Docker Hub official** | Upstream-compliant only | Long-term goal, FreeBSD images built alongside Linux/macOS in Docker's own CI pipelines |
+| **FreeBSD packages** | Both flavours | Long-term goal, images built as part of the poudriere CI process and distributed through the FreeBSD package infrastructure |
 
 The first three channels are under our control and part of the initial build.
 The last two are upstream integration goals that depend on the project proving
@@ -369,20 +370,20 @@ configured registries atomically.
 ## Infrastructure
 
 The project leverages the **infra-hcloud** ecosystem for live testing and
-hosting through a dedicated **`infra-containers`** project. The infra-hcloud
+development through a dedicated **`infra-containers`** project. The infra-hcloud
 codebase is currently private. Open-sourcing it is a short-to-mid-term goal,
 targeted for end of Q2 2026.
 
 `infra-containers` is a sibling to `infra-dklos` and `infra-rnd` in the
 infra-workspace. It provides:
 
-- **Build infrastructure** — servers for building and testing container images
+- **Build infrastructure** : servers for building and testing container images
   across FreeBSD versions and architectures
-- **Registry hosting** — optional self-hosted registry for pre-release image
+- **Registry hosting** : optional self-hosted registry for pre-release image
   testing
-- **Live testing** — automated deployment and validation of built images
+- **Live testing** : automated deployment and validation of built images
   against real FreeBSD servers
-- **CI runners** — infrastructure for running the container build and test
+- **CI runners** : infrastructure for running the container build and test
   pipeline
 
 This follows the same Pulumi-based IaC patterns as the other infra-hcloud
@@ -390,7 +391,7 @@ application projects, with layered deployment (L1-L7), SOPS-managed secrets,
 and bastion-hop SSH access.
 
 The `infra-containers` project is developed separately but is an integral part
-of the freebsd_containers ecosystem — every aspect of the container project
+of the freebsd_containers ecosystem, every aspect of the container project
 can be live-tested and hosted through it.
 
 ## Upstream Contribution Path
@@ -398,18 +399,18 @@ can be live-tested and hosted through it.
 The strategic goal is for FreeBSD to be included in the official support
 matrices of docker-library projects. The contribution path is:
 
-1. **Track upstream generation logic** — for each image, study the official
+1. **Track upstream generation logic** : for each image, study the official
    docker-library project's `update.sh`, `apply-templates.sh`, or equivalent
    scripts that generate Dockerfiles across versions and architectures
-2. **Develop FreeBSD patches** — create minimal, merge-compatible patches that
+2. **Develop FreeBSD patches** : create minimal, merge-compatible patches that
    add FreeBSD as an additional target alongside existing Linux variants
-3. **Prove the images work** — build, test, and distribute FreeBSD images
+3. **Prove the images work** : build, test, and distribute FreeBSD images
    independently, demonstrating stability and compatibility
-4. **Contribute documentation** — prepare matching documentation PRs for
+4. **Contribute documentation** : prepare matching documentation PRs for
    `docker-library/docs` following their established format
-5. **Submit merge requests** — once images are proven and documented, submit
+5. **Submit merge requests** : once images are proven and documented, submit
    PRs to each upstream project requesting FreeBSD inclusion
-6. **Integrate into Docker CI** — the ultimate goal is for FreeBSD images to
+6. **Integrate into Docker CI** : the ultimate goal is for FreeBSD images to
    be built in the existing Docker CI pipelines and distributed on Docker Hub
    alongside Linux images
 
@@ -432,11 +433,11 @@ traditional poudriere-based CI process. This would mean:
 - Images are distributed through the standard FreeBSD package infrastructure
 - Updates follow the existing FreeBSD release and security patch cadence
 
-This is a downstream concern. The images must exist, be proven, and gain
-community adoption before FreeBSD ports maintainers would consider integrating
-them. This goal is stated here to ensure it informs architectural decisions
-(e.g., keeping image definitions compatible with ports infrastructure) but is
-not part of the initial build effort.
+This is a downstream concern. The mechanism to integrate this as part of the
+broader FreeBSD ports platform needs to be aligned. This goal is stated here to
+ensure it informs architectural decisions (e.g., keeping image definitions
+compatible with ports infrastructure) but is not part of the initial build
+effort.
 
 ## Conventions
 
@@ -461,9 +462,9 @@ and hosting (see Infrastructure above).
 
 ## Roadmap
 
-### Phase 1: Capture vision and high-level plan
+### Phase 1: Capture context, objectives and high-level plan
 
-Capture the long-term objectives and design vision in project documentation.
+Capture the long-term objectives and design decisions in project documentation.
 This document serves as both the community-facing project description and the
 ground truth for development work.
 
@@ -501,20 +502,20 @@ uv), then specialty images as needed.
 As a project distributing container images, supply chain security is a
 concern from the outset:
 
-- **Base image pinning** — base images are pinned by SHA256 digest in
+- **Base image pinning** : base images are pinned by SHA256 digest in
   `versions.json`, ensuring reproducible builds
-- **Image signing** — image signing and provenance attestation (SLSA) are
+- **Image signing** : image signing and provenance attestation (SLSA) are
   planned for the distribution pipeline
-- **Vulnerability scanning** — automated scanning of built images is planned
+- **Vulnerability scanning** : automated scanning of built images is planned
   as part of CI
-- **Minimal attack surface** — the static and dynamic base variants minimize
+- **Minimal attack surface** : the static and dynamic base variants minimize
   the installed package set
 
 ## License
 
 The project is released under the **BSD 2-Clause License**. See `LICENSE` for
 the full text. Note that upstream images may carry their own licenses (e.g.,
-PostgreSQL License, MIT, Apache 2.0) — the FreeBSD container images inherit
+PostgreSQL License, MIT, Apache 2.0), the FreeBSD container images inherit
 the license terms of their respective application software.
 
 ## Bibliography & Community Resources
@@ -522,21 +523,13 @@ the license terms of their respective application software.
 The FreeBSD OCI container ecosystem is young and fast-moving. Key community
 resources:
 
-- [OCI Containers on FreeBSD](https://freebsdfoundation.org/blog/oci-containers-on-freebsd/) —
-  FreeBSD Foundation overview
-- [FreeBSD Containers Wiki](https://wiki.freebsd.org/Containers) — community
-  wiki tracking container support status (canonical)
-- [OCI + ZFS on FreeBSD](https://people.freebsd.org/~dch/posts/2025-06-27-oci-zfs/) —
-  Dave Cottlehuber's work on ZFS-backed containers (canonical)
-- [SkunkWerks documentation](https://docs.skunkwerks.at/s/fUiAmi4pE) —
+- [Podman OCI Containers on FreeBSD](https://docs.skunkwerks.at/s/fUiAmi4pE):
   community documentation hub (canonical)
-- [Container support matrix](https://docs.google.com/spreadsheets/d/1IGk2uZd2TG3CUddFmWi6_7PygER08n0XlGmronXq0Pk/) —
+- [OCI + ZFS on FreeBSD](https://people.freebsd.org/~dch/posts/2025-06-27-oci-zfs/):
+  Dave Cottlehuber's work on ZFS-backed containers (canonical)
+- [FreeBSD Cloud Native Container Technologies Working Group - workstreams](https://docs.google.com/spreadsheets/d/1IGk2uZd2TG3CUddFmWi6_7PygER08n0XlGmronXq0Pk/):
   tracking spreadsheet for FreeBSD container feature coverage (community-maintained)
-- [HackMD notes](https://hackmd.io/xA1CxQT8SfKLUpCiQz-tWA) — community
+- [FreeBSD Cloud Native Container Technologies Working Group - meeting notes](https://hackmd.io/xA1CxQT8SfKLUpCiQz-tWA): community
   collaboration notes (community-maintained)
-- [BastilleBSD templates](https://github.com/BastilleBSD/templates) — FreeBSD
-  jail templates indicating application demand
-- [AppJail](https://github.com/DtxdF/AppJail) — FreeBSD container/jail
-  management with application templates
-- [Doug Rabson — OCI on FreeBSD (video)](https://www.youtube.com/watch?v=HV-wUUzRCMo) —
+- [Doug Rabson: OCI on FreeBSD (video)](https://www.youtube.com/watch?v=HV-wUUzRCMo):
   conference talk on FreeBSD container runtime
