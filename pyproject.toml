@@ -74,6 +74,10 @@ fixable = ["ALL"]
 "freebsd_containers/docs.py" = [
     "PLR0913",  # render_docs needs many explicit parameters
 ]
+"freebsd_containers/cli.py" = [
+    "FBT001",   # Click callbacks require bool positional args
+    "PLR0913",  # Click callbacks have many parameters
+]
 "freebsd_containers/builder.py" = [
     "C901",     # orchestrator has inherent complexity
     "PLR0912",  # many branches in main build loop
