@@ -55,6 +55,9 @@ fixable = ["ALL"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
     "ANN",      # Annotations - tests use pytest conventions
+    "D102",     # test methods don't need docstrings (names are descriptive)
+    "PLR2004",  # magic values in test assertions are fine
+    "PLC0415",  # imports inside test functions (e.g. pytest.raises)
     "S101",     # assert is the pytest idiom
     "RUF012",   # test class attributes don't need ClassVar
     "D104",     # test packages don't need docstrings

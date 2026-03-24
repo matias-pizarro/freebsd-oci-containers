@@ -9,6 +9,17 @@ import shutil
 import jinja2 as j2
 import requests
 
+from freebsd_containers.config import (
+    ARCH_MAP,
+    COMPOSE_PATTERN,
+    DOCKER_PATTERN,
+    DOLLAR_PROMPT_PATTERN,
+    HASH_PATTERN,
+    HASH_REPLACEMENT,
+    IMAGE_PATTERN,
+    LOGO_PATTERN,
+)
+
 """
 This is n initial iteration aimed at identifying base components and logic.
 Once this is done it needs to be divided in functions, objects and possibly
@@ -18,18 +29,18 @@ modules as well. It then needs to be documented and define tests.
 
 base_dir = pathlib.Path(__file__).resolve().parent
 base_dir_part_count = len(base_dir.parts)
-translated_archs = {"amd64": "amd64", "arm64": "aarch64", }
+translated_archs = ARCH_MAP
 update_base_image_hashes = False
 registry_id = "local"
 # registry_id = "github"
 
-dollar_prompt_pattern = re.compile(r"\$ ")
-docker_pattern = re.compile(r'\bdocker\b')
-compose_pattern = re.compile(r'#* *%%COMPOSE%%')
-image_pattern = re.compile(r'%%IMAGE%%')
-logo_pattern = re.compile(r'%%LOGO%%')
-hash_pattern = re.compile(r"(\#+ )")
-hash_replacement_pattern = '#\\1'
+dollar_prompt_pattern = DOLLAR_PROMPT_PATTERN
+docker_pattern = DOCKER_PATTERN
+compose_pattern = COMPOSE_PATTERN
+image_pattern = IMAGE_PATTERN
+logo_pattern = LOGO_PATTERN
+hash_pattern = HASH_PATTERN
+hash_replacement_pattern = HASH_REPLACEMENT
 replacement_pattern = r'ALERT \\1'
 
 def main():
