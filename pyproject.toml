@@ -67,6 +67,9 @@ fixable = ["ALL"]
 "freebsd_containers/versions.py" = [
     "PLR2004",  # version parsing uses index constants (1, 2, 3)
 ]
+"freebsd_containers/cicd.py" = [
+    "PLR0913",  # render_cicd_scripts needs many explicit parameters
+]
 
 [tool.ruff.lint.flake8-implicit-str-concat]
 allow-multiline = true
