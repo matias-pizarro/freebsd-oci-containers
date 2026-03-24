@@ -74,6 +74,12 @@ fixable = ["ALL"]
 "freebsd_containers/docs.py" = [
     "PLR0913",  # render_docs needs many explicit parameters
 ]
+"freebsd_containers/builder.py" = [
+    "C901",     # orchestrator has inherent complexity
+    "PLR0912",  # many branches in main build loop
+    "PLR0913",  # helper functions need many parameters
+    "PLR0915",  # many statements in build()
+]
 
 [tool.ruff.lint.flake8-implicit-str-concat]
 allow-multiline = true

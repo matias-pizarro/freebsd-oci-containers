@@ -43,9 +43,9 @@ def resolve_cicd_source_paths(
             base_dir / "templates" / project / "ci_cd" / f"{script_id}.sh.j2"
         )
         if project_script.exists():
-            paths[script_id] = f"{project}/ci_cd/{script_id}.sh.j2"
+            paths[script_id] = f"templates/{project}/ci_cd/{script_id}.sh.j2"
         else:
-            paths[script_id] = f"ci_cd/{script_id}.sh.j2"
+            paths[script_id] = f"templates/ci_cd/{script_id}.sh.j2"
     return paths
 
 

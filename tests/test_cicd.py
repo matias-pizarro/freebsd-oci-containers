@@ -22,7 +22,7 @@ class TestResolveCicdSourcePaths:
         # base does not have its own ci_cd/build.sh.j2 — should fallback
         paths = resolve_cicd_source_paths(project_root, "base")
         assert "build" in paths
-        assert paths["build"].startswith("ci_cd/")
+        assert paths["build"].startswith("templates/ci_cd/")
 
     def test_all_script_ids_present(self, project_root):
         paths = resolve_cicd_source_paths(project_root, "base")
