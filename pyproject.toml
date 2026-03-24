@@ -18,6 +18,7 @@ dev = [
     "pytest>=9.0.0",
     "pytest-mock>=3.15.0",
     "ipython>=9.10.0",
+    "types-requests>=2.32.4.20260324",
 ]
 lint = [
     "commitizen>=4.13.9",
