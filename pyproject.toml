@@ -43,8 +43,6 @@ no-build-isolation-package = ["grpcio", "ruff"]
 line-length = 88
 indent-width = 4
 target-version = "py311"
-# build.py is a PoC monolith — excluded until Phase 3 refactoring (Task 3.2)
-exclude = ["build.py"]
 
 [tool.ruff.lint]
 select = ["ALL"]
