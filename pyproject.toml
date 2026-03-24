@@ -62,6 +62,7 @@ fixable = ["ALL"]
     "PLR2004",  # magic values in test assertions are fine
     "S101",     # assert is the pytest idiom
     "RUF012",   # test class attributes don't need ClassVar
+    "TC003",    # tests use stdlib imports at runtime (Path, etc.)
     "D104",     # test packages don't need docstrings
 ]
 "freebsd_containers/versions.py" = [
@@ -69,6 +70,9 @@ fixable = ["ALL"]
 ]
 "freebsd_containers/cicd.py" = [
     "PLR0913",  # render_cicd_scripts needs many explicit parameters
+]
+"freebsd_containers/docs.py" = [
+    "PLR0913",  # render_docs needs many explicit parameters
 ]
 
 [tool.ruff.lint.flake8-implicit-str-concat]
