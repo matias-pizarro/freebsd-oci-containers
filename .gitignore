@@ -48,3 +48,4 @@ templates/agent_sandbox/
 .env.*
 !.env*.dist
 package-lock.json
+build_golden/

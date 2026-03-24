@@ -6,12 +6,14 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "BSD-2-Clause" }
 dependencies = [
+    "click>=8.1.0",
     "jinja2>=3.1.6",
     "requests>=2.32.5",
 ]
 
 [dependency-groups]
 dev = [
+    "mypy>=1.15",
     "pre-commit>=4.5.1",
     "pytest>=9.0.0",
     "pytest-mock>=3.15.0",
@@ -46,13 +48,13 @@ exclude = ["build.py"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "ANN",      # Annotations - ignore for now
     "COM812",   # Missing trailing comma - conflicts with formatter
 ]
 fixable = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
+    "ANN",      # Annotations - tests use pytest conventions
     "S101",     # assert is the pytest idiom
     "RUF012",   # test class attributes don't need ClassVar
     "D104",     # test packages don't need docstrings
@@ -76,6 +78,12 @@ docstring-code-line-length = "dynamic"
 markers = [
     "integration: slow tests that build wheels or create venvs",
 ]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
 
 [tool.commitizen]
 name = "cz_conventional_commits"
