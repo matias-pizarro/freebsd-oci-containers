@@ -62,6 +62,9 @@ fixable = ["ALL"]
     "RUF012",   # test class attributes don't need ClassVar
     "D104",     # test packages don't need docstrings
 ]
+"freebsd_containers/versions.py" = [
+    "PLR2004",  # version parsing uses index constants (1, 2, 3)
+]
 
 [tool.ruff.lint.flake8-implicit-str-concat]
 allow-multiline = true
